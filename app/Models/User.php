@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -61,4 +62,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function getUpdatedDateAttribute()
+    {
+        return $this->updated_at->format('d/m/Y H:i');
+    }
+
+    public function getCreatedDateAttribute()
+    {
+        return $this->updated_at->format('d/m/Y H:i');
+    }
+
 }
