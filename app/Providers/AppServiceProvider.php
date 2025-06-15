@@ -29,20 +29,20 @@ class AppServiceProvider extends ServiceProvider
             return $user->role->name === 'admin';
         });
 
-        Gate::define('is-storekeeper', function (User $user) {
-            return $user->role->name === 'storekeeper';
+        Gate::define('is-manager', function (User $user) {
+            return $user->role->name === 'manager';
         });
 
-        Gate::define('is-seamstress', function (User $user) {
-            return $user->role->name === 'seamstress';
+        Gate::define('is-contractor', function (User $user) {
+            return $user->role->name === 'contractor';
         });
 
-        Gate::define('is-storekeeper-or-admin', function (User $user) {
-            return $user->role->name === 'storekeeper' || $user->role->name === 'admin';
+        Gate::define('is-manager-or-admin', function (User $user) {
+            return $user->role->name === 'manager' || $user->role->name === 'admin';
         });
 
-        Gate::define('is-seamstress-or-admin', function (User $user) {
-            return $user->role->name === 'seamstress' || $user->role->name === 'admin';
+        Gate::define('is-contractor-or-admin', function (User $user) {
+            return $user->role->name === 'contractor' || $user->role->name === 'admin';
         });
     }
 }
