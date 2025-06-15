@@ -304,28 +304,11 @@ return [
             'url' => 'home',
             'icon' => 'fas fa-fw fa-home',
         ],
-        [
-            'text' => 'inventory',
-            'icon' => 'fas fa-fw fa-boxes',
-            'submenu' => [
-                [
-                    'text' => 'inventory_by_warehouse',
-                    'url' => 'admin/inventory/warehouse',
-                    'icon' => 'fas fa-fw fa-boxes',
-                    'can' => 'is-storekeeper-or-admin',
-                ],
-                [
-                    'text' => 'inventory_by_workshop',
-                    'url' => 'admin/inventory/workshop',
-                    'icon' => 'fas fa-fw fa-boxes',
-                ],
-            ]
-        ],
 
         [
-            'text' => 'transactions',
-            'url' => 'admin/transactions',
-            'icon' => 'fas fa-fw fa-coins',
+            'text' => 'orders',
+            'url' => 'admin/orders',
+            'icon' => 'fas fa-fw fa-clipboard-list',
             'can' => 'is-admin',
         ],
 
@@ -344,21 +327,6 @@ return [
                     'url' => 'admin/users',
                     'icon' => 'fas fa-fw fa-user',
                 ],
-                [
-                    'text' => 'materials',
-                    'url' => 'admin/materials',
-                    'icon' => 'fas fa-fw fa-toilet-paper',
-                ],
-                [
-                    'text' => 'suppliers',
-                    'url' => 'admin/suppliers',
-                    'icon' => 'fas fa-fw fa-truck',
-                ],
-                [
-                    'text' => 'marketplace_items',
-                    'url' => 'admin/marketplace_items',
-                    'icon' => 'fas fa-fw fa-shopping-basket',
-                ]
             ]
         ],
     ],
