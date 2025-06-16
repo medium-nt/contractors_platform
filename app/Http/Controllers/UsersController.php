@@ -42,6 +42,8 @@ class UsersController extends Controller
     {
         return view('users.edit', [
             'title' => 'Изменить пользователя',
+//            'has_orders' => $user->orders()->count(),
+            'has_orders' => 1,
             'user' => User::query()->findOrFail($user->id),
         ]);
     }
@@ -55,6 +57,12 @@ class UsersController extends Controller
 
     public function destroy(User $user): RedirectResponse
     {
+//        if ($user->orders()->count() > 0) {
+//            return redirect()
+//                ->route('users.index')
+//                ->with('error', 'Нельзя удалить пользователя, у которого есть заказы');
+//        }
+
         User::query()->findOrFail($user->id)->delete();
 
         return redirect()->route('users.index')->with('success', 'Пользователь удален');

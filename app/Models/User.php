@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function orders(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+
     public function getUpdatedDateAttribute()
     {
         return $this->updated_at->format('d/m/Y H:i');
