@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
 
         Role::query()->create([
             'name' => 'contractor',
-            'title' => 'Поставщик',
+            'title' => 'Эксперт',
         ]);
 
         Role::query()->create([

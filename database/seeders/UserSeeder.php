@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::query()->create([
-            'name' => 'Тестовый Поставщик',
+            'name' => 'Тестовый Эксперт',
             'email' => '2@2.ru',
             'password' => bcrypt('222222'),
             'role_id' => 2
