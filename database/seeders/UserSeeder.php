@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
             'name' => 'Тестовый Админ',
             'email' => '1@1.ru',
             'password' => bcrypt('111111'),
+            'is_approved' => 1,
             'role_id' => 3
         ]);
 
@@ -23,6 +24,7 @@ class UserSeeder extends Seeder
             'name' => 'Тестовый Эксперт',
             'email' => '2@2.ru',
             'password' => bcrypt('222222'),
+            'is_approved' => 1,
             'role_id' => 2
         ]);
 
@@ -30,6 +32,7 @@ class UserSeeder extends Seeder
             'name' => 'Тестовая Менеджер',
             'email' => '3@3.ru',
             'password' => bcrypt('333333'),
+            'is_approved' => 1,
             'role_id' => 1
         ]);
 

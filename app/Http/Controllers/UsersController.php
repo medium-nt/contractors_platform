@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-//use App\Http\Requests\StoreUsersRequest;
 use App\Http\Requests\StoreUsersRequest;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -33,6 +31,8 @@ class UsersController extends Controller
     public function store(StoreUsersRequest $request): RedirectResponse
     {
         $validate = $request->safe()->toArray();
+        $validate['is_approved'] = 1;
+
         User::query()->create($validate);
 
         return redirect()->route('users.index')->with('success', 'Пользователь добавлен');
@@ -80,9 +80,8 @@ class UsersController extends Controller
         $rules = [
             'name' => 'required|string|min:2|max:255',
             'email' => 'required|email|max:255',
-            'role_id' => 'required|in:1,2',
             'password' => 'nullable|confirmed|string|min:6',
-            'avatar' => 'sometimes|nullable|image|mimes:png|max:512|dimensions:width=256,height=256,ratio=1:1',
+            'role_id' => 'required|in:1,2',
         ];
 
         $validatedData = $request->validate($rules);
