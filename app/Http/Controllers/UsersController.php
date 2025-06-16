@@ -94,4 +94,11 @@ class UsersController extends Controller
 
         $user->update($validatedData);
     }
+
+    public function approve(User $user)
+    {
+        $user->update(['is_approved' => 1]);
+
+        return redirect()->route('users.index')->with('success', 'Пользователь одобрен');
+    }
 }

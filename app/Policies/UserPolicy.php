@@ -61,4 +61,9 @@ class UserPolicy
     {
         return false;
     }
+
+    public function approve(User $user): bool
+    {
+        return $user->role->name == 'admin';
+    }
 }

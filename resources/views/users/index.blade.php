@@ -39,17 +39,31 @@
                                 <td>{{ $user->updated_date }}</td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                    <a href="{{ route('users.edit', ['user' => $user->id]) }}" class="btn btn-primary mr-1">
+                                    <a href="{{ route('users.edit', ['user' => $user->id]) }}"
+                                       title="Редактировать"
+                                       class="btn btn-primary mr-1">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                        <form action="{{ route('users.destroy', ['user' => $user->id]) }}" method="POST">
+                                    <form action="{{ route('users.destroy', ['user' => $user->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger mr-1"
+                                                onclick="return confirm('Вы уверены что хотите удалить данного сотрудника?')"
+                                                title="Удалить">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    @if(!$user->is_approved)
+                                        <form action="{{ route('users.approve', ['user' => $user->id]) }}" method="POST">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Вы уверены что хотите удалить данного сотрудника?')">
-                                                <i class="fas fa-trash"></i>
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-success mr-1"
+                                                    onclick="return confirm('Вы уверены что хотите одобрить данного сотрудника?')"
+                                                    title="Одобрить">
+                                                <i class="fas fa-check"></i>
                                             </button>
                                         </form>
+                                    @endif
                                     </div>
                                 </td>
                             </tr>
