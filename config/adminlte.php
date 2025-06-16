@@ -309,6 +309,7 @@ return [
             'text' => 'orders',
             'url' => 'admin/orders',
             'icon' => 'fas fa-fw fa-clipboard-list',
+            'can' => 'is-approved',
         ],
 
         [
