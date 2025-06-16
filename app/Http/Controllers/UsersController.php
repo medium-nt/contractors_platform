@@ -81,7 +81,7 @@ class UsersController extends Controller
             'name' => 'required|string|min:2|max:255',
             'email' => 'required|email|max:255',
             'password' => 'nullable|confirmed|string|min:6',
-            'role_id' => 'required|in:1,2',
+            'role_id' => 'sometimes|required|in:1,2',
         ];
 
         $validatedData = $request->validate($rules);
