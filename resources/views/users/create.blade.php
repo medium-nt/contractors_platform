@@ -43,6 +43,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="last_name">Фамилия</label>
+                        <input type="text"
+                               class="form-control @error('name') is-invalid @enderror"
+                               id="last_name"
+                               name="last_name"
+                               placeholder=""
+                               value="{{ old('last_name') }}"
+                               required>
+                    </div>
+
+                    <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email"
                                class="form-control @error('email') is-invalid @enderror"

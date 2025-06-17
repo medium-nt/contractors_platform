@@ -2,7 +2,8 @@
 
 return [
 
-    'full_name' => 'Полное имя',
+    'name' => 'Имя',
+    'last_name' => 'Фамилия',
     'email' => 'Почта',
     'password' => 'Пароль',
     'retype_password' => 'Подтверждение пароля',

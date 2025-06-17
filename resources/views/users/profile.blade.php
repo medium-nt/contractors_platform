@@ -37,6 +37,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="last_name">Фамилия</label>
+                        <input type="text" class="form-control" id="last_name" value="{{ $user->last_name }}"
+                               name="last_name" placeholder="Фамилия" required>
+                    </div>
+
+                    <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" value="{{ $user->email }}"
                                name="email" placeholder="Email" required>

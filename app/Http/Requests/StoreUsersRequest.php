@@ -23,6 +23,7 @@ class StoreUsersRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
+            'last_name' => 'required|max:255',
             'email' => 'required|max:255|email',
             'password' => 'required|confirmed|min:6|string',
             'role_id' => 'required|in:1,2',
@@ -32,13 +33,20 @@ class StoreUsersRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Поле "ФИО" обязательно для заполнения',
-            'name.min' => 'Поле "ФИО" должно быть не менее 2 символов',
-            'name.max' => 'Поле "ФИО" должно быть не больше 255 символов',
+            'name.required' => 'Поле "Имя" обязательно для заполнения',
+            'name.min' => 'Поле "Имя" должно быть не менее 2 символов',
+            'name.max' => 'Поле "Имя" должно быть не больше 255 символов',
+
+            'last_name.required' => 'Поле "Фамилия" обязательно для заполнения',
+            'last_name.min' => 'Поле "Фамилия" должно быть не менее 2 символов',
+            'last_name.max' => 'Поле "Фамилия" должно быть не больше 255 символов',
+
             'email.required' => 'Поле "Email" обязательно для заполнения',
             'email.email' => 'Поле "Email" должно быть адресом электронной почты',
+
             'password.required' => 'Поле "Пароль" обязательно для заполнения',
             'password.confirmed' => 'Поля "Пароль" и "Подтверждение пароля" должны совпадать',
+
             'role_id.required' => 'Поле "Роль" обязательно для заполнения',
             'role_id.in' => 'Указана неизвестная роль для пользователя',
         ];

@@ -20,8 +20,9 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Имя</th>
-                            <th scope="col">Роль</th>
+                            <th scope="col">Фамилия</th>
                             <th scope="col">email</th>
+                            <th scope="col">Роль</th>
                             <th scope="col">Создан</th>
                             <th scope="col">Обновлен</th>
                             <th scope="col">Действия</th>
@@ -33,8 +34,9 @@
                             <tr>
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->role->title }}</td>
+                                <td>{{ $user->last_name }}</td>
                                 <td>{{ $user->email }}</td>
+                                <td>{{ $user->role->title }}</td>
                                 <td>{{ $user->created_date }}</td>
                                 <td>{{ $user->updated_date }}</td>
                                 <td>

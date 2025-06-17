@@ -34,9 +34,15 @@
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name">ФИО</label>
+                            <label for="name">Имя</label>
                             <input type="text" class="form-control" id="name"
                                    name="name" value="{{ $user->name }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Фамилия</label>
+                            <input type="text" class="form-control" id="last_name"
+                                   name="last_name" value="{{ $user->last_name }}" required>
                         </div>
 
                         <div class="form-group">
