@@ -80,7 +80,7 @@
                         <select name="role_id" id="role_id" class="form-control" required>
                             <option value="" disabled selected>---</option>
                             <option value="1">Менеджер</option>
-                            <option value="2">Поставщик</option>
+                            <option value="2">Эксперт</option>
                         </select>
                     </div>
 

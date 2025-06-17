@@ -50,7 +50,7 @@
                             <label for="role_id">Роль</label>
                             <select name="role_id" id="role_id" class="form-control" required>
                                 <option value="1" @if($user->role_id == 1) selected @endif>Менеджер</option>
-                                <option value="2" @if($user->role_id == 2) selected @endif>Поставщик</option>
+                                <option value="2" @if($user->role_id == 2) selected @endif>Эксперт</option>
                             </select>
                         </div>
                         @endif
