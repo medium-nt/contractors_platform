@@ -33,16 +33,16 @@ class AppServiceProvider extends ServiceProvider
             return $user->role->name === 'manager' && $user->is_approved;
         });
 
-        Gate::define('is-contractor', function (User $user) {
-            return $user->role->name === 'contractor' && $user->is_approved;
+        Gate::define('is-expert', function (User $user) {
+            return $user->role->name === 'expert' && $user->is_approved;
         });
 
         Gate::define('is-manager-or-admin', function (User $user) {
             return ($user->role->name === 'manager' || $user->role->name === 'admin') && $user->is_approved;
         });
 
-        Gate::define('is-contractor-or-admin', function (User $user) {
-            return ($user->role->name === 'contractor' || $user->role->name === 'admin') && $user->is_approved;
+        Gate::define('is-expert-or-admin', function (User $user) {
+            return ($user->role->name === 'expert' || $user->role->name === 'admin') && $user->is_approved;
         });
 
         Gate::define('is-approved', function (User $user) {

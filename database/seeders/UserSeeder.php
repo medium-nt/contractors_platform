@@ -12,33 +12,39 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::query()->create([
-            'name' => 'Тестовый',
-            'last_name' => 'Админ',
-            'email' => '1@1.ru',
-            'password' => bcrypt('111111'),
-            'is_approved' => 1,
-            'role_id' => 3
-        ]);
+        User::query()->firstOrCreate(
+            ['email' => '1@1.ru'],
+            [
+                'name' => 'Тестовый',
+                'last_name' => 'Админ',
+                'password' => bcrypt('111111'),
+                'is_approved' => 1,
+                'role_id' => 3
+            ]
+        );
 
-        User::query()->create([
-            'name' => 'Тестовый',
-            'last_name' => 'Эксперт',
-            'email' => '2@2.ru',
-            'password' => bcrypt('222222'),
-            'is_approved' => 1,
-            'role_id' => 2
-        ]);
+        User::query()->firstOrCreate(
+            ['email' => '2@2.ru'],
+            [
+                'name' => 'Тестовый',
+                'last_name' => 'Эксперт',
+                'password' => bcrypt('222222'),
+                'is_approved' => 1,
+                'role_id' => 2
+            ]
+        );
 
-        User::query()->create([
-            'name' => 'Тестовый',
-            'last_name' => 'Менеджер',
-            'email' => '3@3.ru',
-            'password' => bcrypt('333333'),
-            'is_approved' => 1,
-            'role_id' => 1
-        ]);
+        User::query()->firstOrCreate(
+            ['email' => '3@3.ru'],
+            [
+                'name' => 'Тестовый',
+                'last_name' => 'Менеджер',
+                'password' => bcrypt('333333'),
+                'is_approved' => 1,
+                'role_id' => 1
+            ]
+        );
 
-        User::factory(10)->create();
+//        User::factory(10)->create();
     }
 }
