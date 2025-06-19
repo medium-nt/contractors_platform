@@ -337,6 +337,11 @@ return [
                     'url' => 'admin/subjects',
                     'icon' => 'fas fa-fw fa-book-open',
                 ],
+                [
+                    'text' => 'plagiarism_platforms',
+                    'url' => 'admin/plagiarism_platforms',
+                    'icon' => 'fas fa-fw fa-shield-virus',
+                ],
             ]
         ],
     ],

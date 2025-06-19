@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TypesWorkSeeder::class);
         $this->call(SubjectSeeder::class);
+        $this->call(PlagiarismPlatformSeeder::class);
 
 
     }
