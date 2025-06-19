@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(SubjectSeeder::class);
         $this->call(PlagiarismPlatformSeeder::class);
 
+        $this->call(StatusSeeder::class);
+
 
     }
 }
