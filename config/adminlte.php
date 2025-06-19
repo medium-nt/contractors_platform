@@ -332,6 +332,11 @@ return [
                     'url' => 'admin/types_work',
                     'icon' => 'fas fa-fw fa-tasks',
                 ],
+                [
+                    'text' => 'subjects',
+                    'url' => 'admin/subjects',
+                    'icon' => 'fas fa-fw fa-book-open',
+                ],
             ]
         ],
     ],
