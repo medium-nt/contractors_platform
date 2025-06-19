@@ -6,4 +6,5 @@ return [
     'system_settings' => 'Настройки системы',
     'users' => 'Пользователи',
     'orders' => 'Заказы',
+    'types_work' => 'Типы работ',
 ];

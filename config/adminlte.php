@@ -327,6 +327,11 @@ return [
                     'url' => 'admin/users',
                     'icon' => 'fas fa-fw fa-user',
                 ],
+                [
+                    'text' => 'types_work',
+                    'url' => 'admin/types_work',
+                    'icon' => 'fas fa-fw fa-tasks',
+                ],
             ]
         ],
     ],
