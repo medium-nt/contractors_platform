@@ -12,31 +12,42 @@
         <div class="card">
             <div class="card-body">
 
-                Тут будет таблица заказов
+                <a href="{{ route('orders.create') }}" class="btn btn-primary mr-3 mb-3">Добавить заказ</a>
 
-{{--                <a href="{{ route('users.create') }}" class="btn btn-primary mr-3 mb-3">Добавить сотрудника</a>--}}
-
-{{--                <div class="table-responsive">--}}
-{{--                    <table class="table table-hover table-bordered">--}}
-{{--                        <thead class="thead-dark">--}}
-{{--                        <tr>--}}
-{{--                            <th scope="col">#</th>--}}
-{{--                            <th scope="col">Имя</th>--}}
-{{--                            <th scope="col">Роль</th>--}}
-{{--                            <th scope="col">email</th>--}}
-{{--                            <th scope="col">Создан</th>--}}
-{{--                            <th scope="col">Обновлен</th>--}}
-{{--                            <th scope="col">Действия</th>--}}
-{{--                        </tr>--}}
-{{--                        </thead>--}}
-{{--                        <tbody>--}}
-
-{{--                        </tbody>--}}
-{{--                    </table>--}}
-{{--                </div>--}}
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Название</th>
+                            <th scope="col">Тип работы</th>
+                            <th scope="col">Предмет</th>
+                            <th scope="col">Создан</th>
+                            <th scope="col">Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($orders as $order)
+                            <tr>
+                                <td>{{ $order->id }}</td>
+                                <td>{{ $order->title }}</td>
+                                <td>{{ $order->type_work_id }}</td>
+                                <td>{{ $order->subject_id }}</td>
+                                <td>{{ $order->created_date }}</td>
+                                <td>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">Заказы не найдены</td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
 
                 {{-- Pagination --}}
-{{--                <x-pagination-component :collection="$users" />--}}
+                <x-pagination-component :collection="$orders" />
 
             </div>
         </div>
