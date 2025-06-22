@@ -57,17 +57,46 @@ class OrdersController extends Controller
 
     public function edit(Order $order): View
     {
-        return view('users.edit', [
+        return view('orders.edit', [
             'title' => 'Изменить задание',
+            'typeWorks' => TypeWork::all(),
+            'subjects' => Subject::all(),
+            'experts' => User::query()->where('role_id', 2)->get(),
+            'plagiarismPlatforms' => PlagiarismPlatform::all(),
             'order' => Order::query()->findOrFail($order->id),
         ]);
     }
 
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(Request $request, Order $order): RedirectResponse
     {
-        $this->saved($request, $user);
+        $order->update($request->all());
 
-        return redirect()->route('orders.index')->with('success', 'Изменения сохранены.');
+        $taskIds = $request->input('task_ids', []);
+        $tasks = $request->input('task');
+        $deadlines = $request->input('deadline_task');
+
+        foreach ($tasks as $i => $taskText) {
+            $task = Task::query()->updateOrCreate(
+                [
+                    'id' => $taskIds[$i] ?? null
+                ],
+                [
+                    'order_id' => $order->id,
+                    'title' => $taskText,
+                    'deadline_at' => $deadlines[$i] ?? null
+                ]
+            );
+
+            $existingTaskIds[] = $task->id;
+        }
+
+        Task::where('order_id', $order->id)
+            ->whereNotIn('id', $existingTaskIds)
+            ->delete();
+
+        return redirect()
+            ->route('orders.edit', ['order' => $order->id])
+            ->with('success', 'Изменения сохранены.');
     }
 
     public function destroy(User $user): RedirectResponse

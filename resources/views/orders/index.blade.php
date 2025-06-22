@@ -35,6 +35,9 @@
                                 <td>{{ $order->subject->title }}</td>
                                 <td>{{ $order->created_date }}</td>
                                 <td>
+                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-primary">
+                                        <i class="far fa-edit"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @empty
