@@ -31,8 +31,8 @@
                             <tr>
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->title }}</td>
-                                <td>{{ $order->type_work_id }}</td>
-                                <td>{{ $order->subject_id }}</td>
+                                <td>{{ $order->typeWork->title }}</td>
+                                <td>{{ $order->subject->title }}</td>
                                 <td>{{ $order->created_date }}</td>
                                 <td>
                                 </td>

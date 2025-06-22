@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
@@ -26,4 +27,28 @@ class Order extends Model
         return $this->updated_at->format('d/m/Y H:i');
     }
 
+    public function expert(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'expert_id');
+    }
+
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    public function subject(): BelongsTo
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function typeWork(): BelongsTo
+    {
+        return $this->belongsTo(TypeWork::class);
+    }
+
+    public function plagiarismPlatform(): BelongsTo
+    {
+        return $this->belongsTo(PlagiarismPlatform::class);
+    }
 }
