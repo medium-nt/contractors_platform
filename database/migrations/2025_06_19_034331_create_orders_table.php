@@ -25,7 +25,7 @@ return new class extends Migration
                 ->on('subjects')
                 ->onDelete('restrict');
             $table->text('description');
-            $table->string('hidden_field');
+            $table->string('hidden_field')->nullable();
 
             $table->unsignedBigInteger('manager_id');
             $table->foreign('manager_id')

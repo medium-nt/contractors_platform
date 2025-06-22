@@ -33,6 +33,12 @@ class StoreOrderRequest extends FormRequest
             'expert_id' => 'nullable|exists:users,id',
             'deadline_at' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
             'warranty_up_to' => 'required|date|after_or_equal:now',
+
+            'task' => 'required|array',
+            'task.*' => 'required|string|min:2|max:255',
+            'deadline_task' => 'required|array',
+            'deadline_task.*' => 'required|date|after_or_equal:now',
+
         ];
     }
 
@@ -74,6 +80,16 @@ class StoreOrderRequest extends FormRequest
             'warranty_up_to.required' => 'Поле "Гарантия до" обязательно для заполнения',
             'warranty_up_to.date' => 'Поле "Гарантия до" должно быть датой',
             'warranty_up_to.after_or_equal' => 'Поле "Гарантия до" должно быть больше или равно текущей дате',
+
+            'task.required' => 'Поле "Текст задачи" обязательно для заполнения',
+            'task.*.required' => 'Поле "Текст задачи" обязательно для заполнения',
+            'task.*.min' => 'В поле "Текст задачи" должно быть не менее 2 символов',
+            'task.*.max' => 'В поле "Текст задачи" должно быть не более 255 символов',
+
+            'deadline_task.required' => 'Поле "Срок выполнения задачи" обязательно для заполнения',
+            'deadline_task.*.required' => 'Поле "Срок выполнения задачи" обязательно для заполнения',
+            'deadline_task.*.date' => 'Поле "Срок выполнения задачи" должно быть датой',
+            'deadline_task.*.after_or_equal' => 'Поле "Срок выполнения задачи" должно быть больше или равно текущей дате',
         ];
     }
 }

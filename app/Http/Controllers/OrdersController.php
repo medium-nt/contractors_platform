@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\PlagiarismPlatform;
 use App\Models\Subject;
+use App\Models\Task;
 use App\Models\TypeWork;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -38,7 +39,18 @@ class OrdersController extends Controller
     {
         $request->merge(['manager_id' => auth()->user()->id]);
 
-        Order::query()->create($request->all());
+        $order = Order::query()->create($request->all());
+
+        $tasks = $request->input('task');
+        $deadlines = $request->input('deadline_task');
+
+        foreach ($tasks as $i => $taskText) {
+            Task::query()->create([
+                'order_id' => $order->id,
+                'title' => $taskText,
+                'deadline_at' => $deadlines[$i],
+            ]);
+        }
 
         return redirect()->route('orders.index')->with('success', 'Новый заказ создан');
     }

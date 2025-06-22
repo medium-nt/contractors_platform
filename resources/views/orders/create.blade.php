@@ -8,7 +8,7 @@
 {{-- Content body: main page content --}}
 
 @section('content_body')
-    <div class="col-md-6">
+    <div class="col-12">
         <div class="card">
 
             @if(session('success'))
@@ -90,8 +90,7 @@
                                    min="1"
                                    max="100"
                                    placeholder=""
-                                   value="{{ old('text_uniqueness') }}"
-                                   required>
+                                   value="{{ old('text_uniqueness') }}">
                         </div>
 
                         <div class="form-group col-md-9">
@@ -127,8 +126,7 @@
                                    id="hidden_field"
                                    name="hidden_field"
                                    placeholder=""
-                                   value="{{ old('hidden_field') }}"
-                                   required>
+                                   value="{{ old('hidden_field') }}">
                         </div>
                     </div>
 
@@ -172,6 +170,95 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="form-group col-md-8">
+                            <label for="task">Задача</label>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="task">Срок</label>
+                        </div>
+                    </div>
+
+                    <div id="tasks">
+                        @php
+                            $tasks = old('task', []);
+                            $deadlines = old('deadline_task', []);
+                            $count = max(count($tasks), count($deadlines));
+                        @endphp
+
+                        @for ($i = 0; $i < $count; $i++)
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    <input type="text"
+                                           class="form-control @error("task.$i") is-invalid @enderror"
+                                           name="task[]"
+                                           value="{{ old('task.' . $i) }}"
+                                           required>
+                                    @error("task.$i")
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <input type="datetime-local"
+                                           class="form-control @error("deadline_task.$i") is-invalid @enderror"
+                                           name="deadline_task[]"
+                                           value="{{ old('deadline_task.' . $i) }}"
+                                           required>
+                                    @error("deadline_task.$i")
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-1">
+                                    @if($i > 0)
+                                        <button type="button"
+                                                class="btn btn-danger"
+                                                onclick="removeTask(this)">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    @else
+                                        <button type="button"
+                                                class="btn btn-success"
+                                                onclick="addTask()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        @endfor
+
+                        @if(empty(old('task')))
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <input type="text"
+                                       class="form-control"
+                                       id="task"
+                                       name="task[]"
+                                       placeholder=""
+                                       value=""
+                                       required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <input type="datetime-local"
+                                       class="form-control"
+                                       id="deadline_task"
+                                       name="deadline_task[]"
+                                       placeholder=""
+                                       value=""
+                                       required>
+                            </div>
+                            <div class="form-group col-md-1">
+                                <button type="button"
+                                        class="btn btn-success"
+                                        id="add-task"
+                                        name="add-task"
+                                        onclick="addTask()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                     </div>
@@ -179,4 +266,47 @@
             </form>
         </div>
     </div>
+@stop
+
+@section('js')
+    <script>
+        function addTask() {
+            let row = `
+                <div class="row">
+                    <div class="form-group col-md-8">
+                        <input type="text"
+                               class="form-control"
+                               id="task"
+                               name="task[]"
+                               placeholder=""
+                               value=""
+                               required>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="datetime-local"
+                               class="form-control"
+                               id="deadline_task"
+                               name="deadline_task[]"
+                               placeholder=""
+                               value=""
+                               required>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <button type="button"
+                                class="btn btn-danger"
+                                id="remove-task"
+                                name="remove-task"
+                                onclick="removeTask(this)">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            $('#tasks').append(row);
+        }
+
+        function removeTask(button) {
+            $(button).parent().parent().remove();
+        }
+    </script>
 @stop
