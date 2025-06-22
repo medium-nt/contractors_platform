@@ -145,13 +145,13 @@
 
                         <div class="form-group col-md-3">
                             <label for="warranty_up_to">Гарантия до</label>
-                            <input type="datetime-local"
+                            <input type="date"
                                    class="form-control @error('warranty_up_to') is-invalid @enderror"
                                    id="warranty_up_to"
                                    name="warranty_up_to"
                                    placeholder=""
-                                   min="{{ now()->addDay()->format('Y-m-d\TH:i') }}"
-                                   max="{{ now()->addMonth()->format('Y-m-d\TH:i') }}"
+                                   min="{{ now()->addDay()->format('Y-m-d') }}"
+                                   max="{{ now()->addMonth()->format('Y-m-d') }}"
                                    value="{{ old('warranty_up_to') }}"
                                    required>
                         </div>
