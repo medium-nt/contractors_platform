@@ -215,49 +215,19 @@
                                                 onclick="removeTask(this)">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                    @else
-                                        <button type="button"
-                                                class="btn btn-success"
-                                                onclick="addTask()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
                                     @endif
                                 </div>
                             </div>
                         @endfor
-
-                        @if(empty(old('task')))
-                        <div class="row">
-                            <div class="form-group col-md-8">
-                                <input type="text"
-                                       class="form-control"
-                                       id="task"
-                                       name="task[]"
-                                       placeholder=""
-                                       value=""
-                                       required>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <input type="datetime-local"
-                                       class="form-control"
-                                       id="deadline_task"
-                                       name="deadline_task[]"
-                                       placeholder=""
-                                       value=""
-                                       required>
-                            </div>
-                            <div class="form-group col-md-1">
-                                <button type="button"
-                                        class="btn btn-success"
-                                        id="add-task"
-                                        name="add-task"
-                                        onclick="addTask()">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        @endif
                     </div>
+
+                    <button type="button"
+                            class="btn btn-success"
+                            onclick="addTask()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+
+                    <hr>
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Сохранить</button>

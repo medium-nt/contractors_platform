@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreOrderRequest extends FormRequest
+class OrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,11 +34,11 @@ class StoreOrderRequest extends FormRequest
             'deadline_at' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
             'warranty_up_to' => 'required|date|after_or_equal:now',
 
-            'task' => 'required|array',
+            'task_ids' => 'sometimes|array',
+            'task' => 'sometimes|array',
             'task.*' => 'required|string|min:2|max:255',
-            'deadline_task' => 'required|array',
+            'deadline_task' => 'sometimes|array',
             'deadline_task.*' => 'required|date|after_or_equal:now',
-
         ];
     }
 
@@ -80,6 +80,8 @@ class StoreOrderRequest extends FormRequest
             'warranty_up_to.required' => 'Поле "Гарантия до" обязательно для заполнения',
             'warranty_up_to.date' => 'Поле "Гарантия до" должно быть датой',
             'warranty_up_to.after_or_equal' => 'Поле "Гарантия до" должно быть больше или равно текущей дате',
+
+            'task_ids.array' => 'Техническая ошибка. Поля "Id Задачи" содержат неверные значения',
 
             'task.required' => 'Поле "Текст задачи" обязательно для заполнения',
             'task.*.required' => 'Поле "Текст задачи" обязательно для заполнения',

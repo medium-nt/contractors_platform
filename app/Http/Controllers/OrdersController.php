@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\PlagiarismPlatform;
 use App\Models\Subject;
@@ -35,7 +35,7 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function store(StoreOrderRequest $request): RedirectResponse
+    public function store(OrderRequest $request): RedirectResponse
     {
         $request->merge(['manager_id' => auth()->user()->id]);
 
@@ -44,12 +44,14 @@ class OrdersController extends Controller
         $tasks = $request->input('task');
         $deadlines = $request->input('deadline_task');
 
-        foreach ($tasks as $i => $taskText) {
-            Task::query()->create([
-                'order_id' => $order->id,
-                'title' => $taskText,
-                'deadline_at' => $deadlines[$i],
-            ]);
+        if (!empty($tasks)) {
+            foreach ($tasks as $i => $taskText) {
+                Task::query()->create([
+                    'order_id' => $order->id,
+                    'title' => $taskText,
+                    'deadline_at' => $deadlines[$i],
+                ]);
+            }
         }
 
         return redirect()->route('orders.index')->with('success', 'Новый заказ создан');
@@ -67,7 +69,7 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function update(Request $request, Order $order): RedirectResponse
+    public function update(OrderRequest $request, Order $order): RedirectResponse
     {
         $order->update($request->all());
 
@@ -75,19 +77,23 @@ class OrdersController extends Controller
         $tasks = $request->input('task');
         $deadlines = $request->input('deadline_task');
 
-        foreach ($tasks as $i => $taskText) {
-            $task = Task::query()->updateOrCreate(
-                [
-                    'id' => $taskIds[$i] ?? null
-                ],
-                [
-                    'order_id' => $order->id,
-                    'title' => $taskText,
-                    'deadline_at' => $deadlines[$i] ?? null
-                ]
-            );
+        $existingTaskIds = [];
 
-            $existingTaskIds[] = $task->id;
+        if (!empty($tasks)) {
+            foreach ($tasks as $i => $taskText) {
+                $task = Task::query()->updateOrCreate(
+                    [
+                        'id' => $taskIds[$i] ?? null
+                    ],
+                    [
+                        'order_id' => $order->id,
+                        'title' => $taskText,
+                        'deadline_at' => $deadlines[$i] ?? null
+                    ]
+                );
+
+                $existingTaskIds[] = $task->id;
+            }
         }
 
         Task::where('order_id', $order->id)

@@ -25,6 +25,13 @@
                 @method('PUT')
                 @csrf
                 <div class="card-body">
+
+                    <div class="form-group">
+                        <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left mr-1"></i>Назад
+                        </a>
+                    </div>
+
                     <div class="form-group">
                         <label for="title">Название работы</label>
                         <input type="text"
@@ -164,6 +171,7 @@
                         </div>
                     </div>
 
+                    <hr>
                     <div class="row">
                         <div class="form-group col-md-8">
                             <label for="task">Задача</label>
@@ -175,19 +183,20 @@
 
                     <div id="tasks">
                         @php
+                            $tasksIds = old('task_ids', $order->tasks);
                             $tasks = old('task', $order->tasks);
                             $deadlines = old('deadline_task', $order->tasks);
-                            $count = max(count($tasks), count($deadlines));
+                            $count = max(count($tasks), count($deadlines), count($tasksIds));
                         @endphp
 
                         @for ($i = 0; $i < $count; $i++)
-                            <input type="hidden" name="task_ids[]" value="{{ $tasks[$i]->id }}">
+                            <input type="hidden" name="task_ids[]" value="{{ $tasksIds[$i]->id ?? $tasksIds[$i] ?? null }}">
                             <div class="row">
                                 <div class="form-group col-md-8">
                                     <input type="text"
                                            class="form-control @error("task.$i") is-invalid @enderror"
                                            name="task[]"
-                                           value="{{ old('task.' . $i, $tasks[$i]->title) }}"
+                                           value="{{ old('task.' . $i, $tasks[$i]->title ?? $tasks[$i]) }}"
                                            required>
                                     @error("task.$i")
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -197,62 +206,30 @@
                                     <input type="datetime-local"
                                            class="form-control @error("deadline_task.$i") is-invalid @enderror"
                                            name="deadline_task[]"
-                                           value="{{ old('deadline_task.' . $i, $deadlines[$i]->deadline_at) }}"
+                                           value="{{ old('deadline_task.' . $i, $deadlines[$i]->deadline_at ?? $deadlines[$i]) }}"
                                            required>
                                     @error("deadline_task.$i")
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-1">
-                                    @if($i > 0)
-                                        <button type="button"
-                                                class="btn btn-danger"
-                                                onclick="removeTask(this)">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    @else
-                                        <button type="button"
-                                                class="btn btn-success"
-                                                onclick="addTask()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    @endif
+                                    <button type="button"
+                                            class="btn btn-danger"
+                                            onclick="removeTask(this)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
                                 </div>
                             </div>
                         @endfor
-
-                        @if(empty(old('task', $order->tasks)))
-                        <div class="row">
-                            <div class="form-group col-md-8">
-                                <input type="text"
-                                       class="form-control"
-                                       id="task"
-                                       name="task[]"
-                                       placeholder=""
-                                       value=""
-                                       required>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <input type="datetime-local"
-                                       class="form-control"
-                                       id="deadline_task"
-                                       name="deadline_task[]"
-                                       placeholder=""
-                                       value=""
-                                       required>
-                            </div>
-                            <div class="form-group col-md-1">
-                                <button type="button"
-                                        class="btn btn-success"
-                                        id="add-task"
-                                        name="add-task"
-                                        onclick="addTask()">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        @endif
                     </div>
+
+                    <button type="button"
+                            class="btn btn-success"
+                            onclick="addTask()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+
+                    <hr>
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Сохранить</button>
