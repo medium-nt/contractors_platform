@@ -91,6 +91,7 @@
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">Статус</th>
                             <th scope="col">Название</th>
                             <th scope="col">Тип работы</th>
                             <th scope="col">Предмет</th>
@@ -102,6 +103,8 @@
                         @forelse($orders as $order)
                             <tr>
                                 <td>{{ $order->id }}</td>
+                                <td>
+                                    <span class="badge" style="background-color: {{ $order->status->color }}"> {{ $order->status->title }}</span></td>
                                 <td>{{ $order->title }}</td>
                                 <td>{{ $order->typeWork->title }}</td>
                                 <td>{{ $order->subject->title }}</td>

@@ -57,4 +57,9 @@ class Order extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

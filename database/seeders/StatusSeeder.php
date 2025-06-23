@@ -14,42 +14,42 @@ class StatusSeeder extends Seeder
     {
         Status::query()->firstOrCreate(
             ['title' => 'новый'],
-            ['color' => '#FF0000']
+            ['color' => '#ced4da']
         );
 
         Status::query()->firstOrCreate(
             ['title' => 'в работе'],
-            ['color' => '#FFFF00']
+            ['color' => '#a8cbfe']
         );
 
         Status::query()->firstOrCreate(
             ['title' => 'на проверке'],
-            ['color' => '#FFFF00']
+            ['color' => '#ffc107']
         );
 
         Status::query()->firstOrCreate(
             ['title' => 'на доработке'],
-            ['color' => '#FFFF00']
+            ['color' => '#fea75f']
         );
 
         Status::query()->firstOrCreate(
             ['title' => 'на гарантии'],
-            ['color' => '#FFFF00']
+            ['color' => '#9d7ed5']
         );
 
         Status::query()->firstOrCreate(
             ['title' => 'успешно закрыт'],
-            ['color' => '#FFFF00']
+            ['color' => '#28a745']
         );
 
         Status::query()->firstOrCreate(
             ['title' => 'отменен'],
-            ['color' => '#FFFF00']
+            ['color' => '#dc3545']
         );
 
         Status::query()->firstOrCreate(
             ['title' => 'отказ клиента'],
-            ['color' => '#FFFF00']
+            ['color' => '#e77681']
         );
     }
 }
