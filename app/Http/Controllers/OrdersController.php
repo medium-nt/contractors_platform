@@ -5,23 +5,31 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\PlagiarismPlatform;
+use App\Models\Status;
 use App\Models\Subject;
 use App\Models\Task;
 use App\Models\TypeWork;
 use App\Models\User;
+use App\Services\OrderService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = array();
-        $data['orders'] = Order::query()->paginate(10);
-        $data['title'] = 'Заказы';
+        $items = OrderService::getFiltered($request);
+        $paginatedItems = $items->paginate(10);
 
-        return view('orders.index', $data);
+        return view('orders.index', [
+            'title' => 'Заказы',
+            'typeWorks' => TypeWork::all(),
+            'subjects' => Subject::all(),
+            'statuses' => Status::all(),
+            'orders' => $paginatedItems
+                ->appends($request->except(['page'])),
+        ]);
     }
 
     public function create()

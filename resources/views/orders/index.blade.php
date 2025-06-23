@@ -9,6 +9,78 @@
 
 @section('content_body')
     <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('orders.index') }}" method="get">
+                    <div class="row">
+                        <div class="form-group col-md-2">
+                            <select name="type_work_id"
+                                    id="type_work_id"
+                                    class="form-control"
+                                    required>
+                                <option value="all" selected>Все</option>
+                                @foreach($typeWorks as $typeWork)
+                                    <option value="{{ $typeWork->id }}"
+                                            @if(request()->get('type_work_id') == $typeWork->id) selected @endif>
+                                        {{ $typeWork->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <select name="subject_id"
+                                    id="subject_id"
+                                    class="form-control"
+                                    required>
+                                <option value="all" selected>Все</option>
+                                @foreach($subjects as $subject)
+                                    <option value="{{ $subject->id }}"
+                                            @if(request()->get('subject_id') == $subject->id) selected @endif>
+                                        {{ $subject->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <input type="text"
+                                   name="search"
+                                   id="search"
+                                   class="form-control"
+                                   value="{{ request()->get('search') }}">
+                        </div>
+
+                        <div class="form-group col-md-2">
+
+                            <input type="hidden" name="status" value="{{ request()->get('status') }}">
+
+                            <button type="submit"
+                                    class="btn btn-primary mr-3"
+                                    id="search-btn">
+                                Поиск
+                            </button>
+                            <a href="{{ route('orders.index') }}" class="btn btn-default">Сбросить</a>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+
+                    @foreach($statuses as $status)
+                    <a href="{{ route('orders.index', [
+                        'status' => $status->id,
+                        'type_work_id' => request('type_work_id'),
+                        'subject_id' => request('subject_id'),
+                        'search' => request('search'),
+                    ]) }}"
+                       class="btn btn-link">{{ Str::ucfirst($status->title) }}</a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-body">
 
