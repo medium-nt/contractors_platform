@@ -109,7 +109,7 @@ class OrdersController extends Controller
             ->delete();
 
         return redirect()
-            ->route('orders.edit', ['order' => $order->id])
+            ->route('orders.show', ['order' => $order->id])
             ->with('success', 'Изменения сохранены.');
     }
 

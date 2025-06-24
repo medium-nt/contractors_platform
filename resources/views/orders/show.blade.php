@@ -13,9 +13,14 @@
             <div class="card-body">
 
                 <div class="form-group">
-                    <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary mr-3">
                         <i class="fas fa-arrow-left mr-1"></i>Назад
                     </a>
+                    @if(auth()->user()->role->name == 'admin' || auth()->user()->role->name == 'manager')
+                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-primary">
+                            <i class="far fa-edit mr-1"></i> Редактировать
+                        </a>
+                    @endif
                 </div>
 
                 <div class="form-group">

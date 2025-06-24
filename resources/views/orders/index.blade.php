@@ -110,11 +110,6 @@
                                 <td>{{ $order->subject->title }}</td>
                                 <td>{{ $order->created_date }}</td>
                                 <td>
-                                    @if(auth()->user()->role->name == 'admin' || auth()->user()->role->name == 'manager')
-                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-primary">
-                                        <i class="far fa-edit"></i>
-                                    </a>
-                                    @endif
                                     <a href="{{ route('orders.show', $order->id) }}" class="btn btn-info">
                                         <i class="far fa-eye"></i>
                                     </a>

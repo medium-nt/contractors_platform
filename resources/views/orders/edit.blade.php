@@ -27,7 +27,7 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('orders.show', ['order' => $order->id]) }}" class="btn btn-outline-secondary">
                             <i class="fas fa-arrow-left mr-1"></i>Назад
                         </a>
                     </div>
