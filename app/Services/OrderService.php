@@ -23,6 +23,16 @@ class OrderService
             $orders = $orders->where('subject_id', $request->subject_id);
         }
 
+        $user = auth()->user();
+
+        if($user->role_id == 1) {
+            $orders = $orders->where('manager_id', $user->id);
+        }
+
+        if($user->role_id == 2 && $statusId != 1) {
+            $orders = $orders->where('expert_id', $user->id);
+        }
+
         if ($request->has('search') && $request->search !== null && $request->search !== '') {
             $orders = $orders->where(function ($query) use ($request) {
                 $query->where('title', 'like', '%' . $request->search . '%')
