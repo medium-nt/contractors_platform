@@ -134,6 +134,20 @@
 
                 <hr>
 
+                <div class="row">
+                    <div class="form-group">
+                        <label for="comment">Файлы:</label>
+                        <div class="form-group">
+                        @foreach($files as $file)
+                            <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
+                                {{ $file['name'] }}
+                            </a>
+                            <br>
+                        @endforeach
+                        </div>
+                    </div>
+                </div>
+
                 @if(auth()->user()->role->name == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
                 <div class="form-group">
                     <a href="{{ route('orders.complete', $order->id) }}" class="btn btn-success"

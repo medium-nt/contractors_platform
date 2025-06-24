@@ -27,7 +27,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('orders.store') }}" method="POST">
+            <form action="{{ route('orders.store') }}" method="POST" enctype="multipart/form-data">
                 @method('POST')
                 @csrf
                 <div class="card-body">
@@ -226,6 +226,22 @@
                             onclick="addTask()">
                         <i class="fas fa-plus"></i>
                     </button>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="description">Файлы к заказу</label>
+                            <input type="file"
+                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
+                                   class="form-control @error('files') is-invalid @enderror"
+                                   id="files"
+                                   name="files[]"
+                                   placeholder=""
+                                   value=""
+                                   multiple>
+                        </div>
+                    </div>
 
                     <hr>
 

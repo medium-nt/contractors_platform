@@ -38,4 +38,8 @@ Route::prefix('/orders')->group(function () {
     Route::get('/{order}/complete', [App\Http\Controllers\OrdersController::class, 'complete'])
         ->can('complete', 'order')
         ->name('orders.complete');
+
+    Route::get('/{order}/{name}/download', [App\Http\Controllers\OrdersController::class, 'download'])
+        ->can('download', 'order')
+        ->name('orders.download');
 });

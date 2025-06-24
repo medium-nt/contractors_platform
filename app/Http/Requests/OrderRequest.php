@@ -39,6 +39,9 @@ class OrderRequest extends FormRequest
             'task.*' => 'required|string|min:2|max:255',
             'deadline_task' => 'sometimes|array',
             'deadline_task.*' => 'required|date|after_or_equal:now',
+
+            'files' => 'nullable|array',
+            'files.*' => 'required|file|mimetypes:image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc',
         ];
     }
 
@@ -92,6 +95,8 @@ class OrderRequest extends FormRequest
             'deadline_task.*.required' => 'Поле "Срок выполнения задачи" обязательно для заполнения',
             'deadline_task.*.date' => 'Поле "Срок выполнения задачи" должно быть датой',
             'deadline_task.*.after_or_equal' => 'Поле "Срок выполнения задачи" должно быть больше или равно текущей дате',
+
+            'files.array' => 'Техническая ошибка. Раздел "Файлы" содержит неверные значения',
         ];
     }
 }

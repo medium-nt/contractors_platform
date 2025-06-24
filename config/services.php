@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'yandex' => [
+        'token' => env('YANDEX_DISK_TOKEN'),
+    ],
+
+
 ];

@@ -11,9 +11,11 @@ use App\Models\Task;
 use App\Models\TypeWork;
 use App\Models\User;
 use App\Services\OrderService;
+use App\Services\YandexDiskService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class OrdersController extends Controller
 {
@@ -48,6 +50,15 @@ class OrdersController extends Controller
         $request->merge(['manager_id' => auth()->user()->id]);
 
         $order = Order::query()->create($request->all());
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filename = $file->getClientOriginalName();
+                $path = 'orders/' . $order->id . '/order_files/' . $filename;
+
+                YandexDiskService::write($path, file_get_contents($file));
+            }
+        }
 
         $tasks = $request->input('task');
         $deadlines = $request->input('deadline_task');
@@ -125,6 +136,7 @@ class OrdersController extends Controller
         return view('orders.show', [
             'title' => 'Заказ',
             'order' => $order,
+            'files' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/order_files'),
         ]);
     }
 
@@ -145,5 +157,17 @@ class OrdersController extends Controller
         ]);
 
         return redirect()->route('orders.index')->with('success', 'Заказ выполнен');
+    }
+
+    public function download(Order $order, $fileName)
+    {
+        $path = 'orders/' . $order->id . '/order_files/' . $fileName;
+        $content = YandexDiskService::read('alexstud/' . $path);
+        $filename = basename('alexstud/' . $path);
+
+        return Response::make($content, 200, [
+            'Content-Type' => 'application/octet-stream',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ]);
     }
 }
