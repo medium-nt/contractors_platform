@@ -120,24 +120,30 @@ class OrdersController extends Controller
         return redirect()->route('orders.index')->with('success', 'Заказ удален');
     }
 
-    private function saved(Request $request, User $user): void
+    public function show(Order $order): View
     {
-//        $rules = [
-//            'name' => 'required|string|min:2|max:255',
-//            'email' => 'required|email|max:255',
-//            'password' => 'nullable|confirmed|string|min:6',
-//            'role_id' => 'sometimes|required|in:1,2',
-//        ];
-//
-//        $validatedData = $request->validate($rules);
-//
-//        if ($request->filled('password')) {
-//            $validatedData['password'] = bcrypt($validatedData['password']);
-//        } else {
-//            unset($validatedData['password']);
-//        }
-//
-//        $user->update($validatedData);
+        return view('orders.show', [
+            'title' => 'Заказ',
+            'order' => $order,
+        ]);
     }
 
+    public function takeToWork(Order $order)
+    {
+        $order->update([
+            'expert_id' => auth()->user()->id,
+            'status_id' => 2
+        ]);
+
+        return redirect()->route('orders.index')->with('success', 'Заказ принят');
+    }
+
+    public function complete(Order $order)
+    {
+        $order->update([
+            'status_id' => 3
+        ]);
+
+        return redirect()->route('orders.index')->with('success', 'Заказ выполнен');
+    }
 }

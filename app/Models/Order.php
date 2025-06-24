@@ -21,6 +21,7 @@ class Order extends Model
         'warranty_up_to',
         'expert_id',
         'manager_id',
+        'status_id',
     ];
 
     public function getCreatedDateAttribute()

@@ -2,63 +2,70 @@
 
 namespace App\Policies;
 
+use App\Models\Order;
 use App\Models\User;
 
 class OrderPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(User $user): bool
     {
         return true;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view(User $user): bool
     {
         return true;
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
         return true;
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user): bool
+    public function show(User $user, Order $order): bool
     {
-        return true;
+        if($user->role->name == 'admin') {
+            return true;
+        }
+
+        if ($user->role->name == 'expert' && ($user->id == $order->expert_id || $order->status_id == 1)) {
+            return true;
+        }
+
+        if ($user->role->name == 'manager' && $user->id == $order->manager_id) {
+            return true;
+        }
+
+        return false;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
+    public function update(User $user): bool
+    {
+        return $user->role->name == 'admin' || $user->role->name == 'manager';
+    }
+
     public function delete(User $user): bool
     {
         return false;
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
     public function restore(User $user): bool
     {
         return false;
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
     public function forceDelete(User $user): bool
     {
         return false;
+    }
+
+    public function takeToWork(User $user): bool
+    {
+        return $user->role->name == 'expert';
+    }
+
+    public function complete(User $user, Order $order): bool
+    {
+        return $user->role->name == 'expert' && $user->id == $order->expert_id;
     }
 }
