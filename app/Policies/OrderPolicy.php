@@ -39,9 +39,9 @@ class OrderPolicy
         return false;
     }
 
-    public function update(User $user): bool
+    public function update(User $user, Order $order): bool
     {
-        return $user->role->name == 'admin' || $user->role->name == 'manager';
+        return $user->role->name == 'admin' || ($user->role->name == 'manager' && $user->id == $order->manager_id);
     }
 
     public function delete(User $user): bool
