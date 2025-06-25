@@ -11,7 +11,13 @@ class YandexDiskService {
 
     private static function getToken(): string
     {
-        return config('services.yandex.token');
+        $token = config('services.yandex.token');
+
+        if (!$token) {
+            throw new \RuntimeException('Yandex token is not set in config/services.php or .env');
+        }
+
+        return $token;
     }
 
     private static function getCertPath(): string
