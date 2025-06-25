@@ -82,6 +82,7 @@ class OrdersController extends Controller
             'title' => 'Заказ',
             'order' => $order,
             'files' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/order_files'),
+            'resultFiles' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/result_files'),
         ]);
     }
 

@@ -171,33 +171,51 @@
             </div>
         </div>
 
-        @if(auth()->user()->role->name == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6 col-sm-12">
-                            <form method="POST"
-                                  enctype="multipart/form-data"
-                                  action="{{ route('orders.complete', $order->id) }}">
-                                @csrf
-                                @method('PUT')
-                                <div class="form-group">
-                                    <label for="file">Загрузить результат:</label>
-                                    <input type="file" class="form-control" name="files[]"
-                                           accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
-                                           multiple required>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success"
-                                            onclick="return confirm('Вы уверены что работа выполнена полностью?')"
-                                    >Сдать выполненную работу</button>
-                                </div>
-                            </form>
-                        </div>
+        <div class="card">
+            <div class="card-body">
+
+                @if($order->status_id > 2)
+                <div class="row">
+                    <div class="form-group col-xl-3 col-md-6 col-sm-12">
+                        <label for="comment">Файлы результата:</label>
+                        <ul class="list-group">
+                            @foreach($resultFiles as $file)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
+                                        {{ $file['name'] }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
+                @endif
+
+                @if(auth()->user()->role->name == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 col-sm-12">
+                        <form method="POST"
+                              enctype="multipart/form-data"
+                              action="{{ route('orders.complete', $order->id) }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group">
+                                <label for="file">Загрузить результат:</label>
+                                <input type="file" class="form-control" name="files[]"
+                                       accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
+                                       multiple required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success"
+                                        onclick="return confirm('Вы уверены что работа выполнена полностью?')"
+                                >Сдать выполненную работу</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                @endif
             </div>
-        @endif
+        </div>
     </div>
 @stop
 
