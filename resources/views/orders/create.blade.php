@@ -256,6 +256,19 @@
 
 @section('js')
     <script>
+        $('button[type="submit"]').on('click', function() {
+            var button = $(this);
+            button.hide();
+            button.after('<span class="saving"><i class="fas fa-spinner fa-pulse mr-1"></i>Идет сохранение...</span>');
+
+            setTimeout(function() {
+                button.next('.saving').remove();
+                button.show();
+            }, 5000);
+        });
+    </script>
+
+    <script>
         function addTask() {
             let row = `
                 <div class="row">

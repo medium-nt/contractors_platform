@@ -21,7 +21,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('orders.update', ['order' => $order->id]) }}" method="POST">
+            <form action="{{ route('orders.update', ['order' => $order->id]) }}" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <div class="card-body">
@@ -232,19 +232,33 @@
                     <hr>
 
                     <div class="row">
+                        <div class="form-group">
+                            <label for="files">Добавить файлы к заказу</label>
+                            <input type="file"
+                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
+                                   class="form-control"
+                                   id="files"
+                                   name="files[]"
+                                   multiple>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-xl-3 col-md-6 col-sm-12">
                             <label for="comment">Загруженные файлы:</label>
                             <ul class="list-group">
                                 @foreach($files as $file)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
-                                            {{ $file['name'] }}
-                                        </a>
-                                        <a href="{{ route('orders.delete', ['order' => $order->id, 'name' => $file['name']]) }}"
-                                           class="btn btn-danger btn-sm">
-                                            <i class="fas fa-times"></i>
-                                        </a>
-                                    </li>
+                                    <div class="file">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
+                                                {{ $file['name'] }}
+                                            </a>
+                                            <a href="{{ route('orders.delete', ['order' => $order->id, 'name' => $file['name']]) }}"
+                                               class="btn btn-danger btn-sm">
+                                                <i class="fas fa-times"></i>
+                                            </a>
+                                        </li>
+                                    </div>
                                 @endforeach
                             </ul>
                         </div>
@@ -262,6 +276,45 @@
 @stop
 
 @section('js')
+    <script>
+        $('a.btn-danger').on('click', function(e) {
+            e.preventDefault();
+
+            var button = $(this);
+            var container = button.closest('.file');
+
+            button.hide();
+            button.after('<span class="deleting"><i class="fas fa-spinner fa-pulse mr-1"></i>Удаление...</span>');
+
+            $.ajax({
+                url: button.attr('href'),
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    container.remove();
+                },
+                error: function() {
+                    button.next('.deleting').remove();
+                    button.show();
+                    alert('Ошибка при удалении файла');
+                }
+            });
+        });
+
+        $('button[type="submit"]').on('click', function() {
+            var button = $(this);
+            button.hide();
+            button.after('<span class="saving"><i class="fas fa-spinner fa-pulse mr-1"></i>Идет сохранение...</span>');
+
+            setTimeout(function() {
+                button.next('.saving').remove();
+                button.show();
+            }, 5000);
+        });
+    </script>
+
     <script>
         function addTask() {
             let row = `

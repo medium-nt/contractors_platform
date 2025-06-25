@@ -102,6 +102,15 @@ class OrdersController extends Controller
     {
         $order->update($request->all());
 
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filename = $file->getClientOriginalName();
+                $path = 'orders/' . $order->id . '/order_files/' . $filename;
+
+                YandexDiskService::write($path, file_get_contents($file));
+            }
+        }
+
         $taskIds = $request->input('task_ids', []);
         $tasks = $request->input('task');
         $deadlines = $request->input('deadline_task');
