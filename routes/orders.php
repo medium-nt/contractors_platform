@@ -39,7 +39,11 @@ Route::prefix('/orders')->group(function () {
         ->can('complete', 'order')
         ->name('orders.complete');
 
-    Route::get('/{order}/{name}/download', [App\Http\Controllers\OrdersController::class, 'download'])
-        ->can('download', 'order')
+    Route::get('/{order}/{name}/download', [App\Http\Controllers\OrdersController::class, 'downloadFile'])
+        ->can('downloadFile', 'order')
         ->name('orders.download');
+
+    Route::get('/{order}/{name}/delete', [App\Http\Controllers\OrdersController::class, 'deleteFile'])
+        ->can('deleteFile', 'order')
+        ->name('orders.delete');
 });

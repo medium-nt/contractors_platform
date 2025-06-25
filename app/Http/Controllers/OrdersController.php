@@ -76,6 +76,15 @@ class OrdersController extends Controller
         return redirect()->route('orders.index')->with('success', 'Новый заказ создан');
     }
 
+    public function show(Order $order): View
+    {
+        return view('orders.show', [
+            'title' => 'Заказ',
+            'order' => $order,
+            'files' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/order_files'),
+        ]);
+    }
+
     public function edit(Order $order): View
     {
         return view('orders.edit', [
@@ -85,6 +94,7 @@ class OrdersController extends Controller
             'experts' => User::query()->where('role_id', 2)->get(),
             'plagiarismPlatforms' => PlagiarismPlatform::all(),
             'order' => Order::query()->findOrFail($order->id),
+            'files' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/order_files'),
         ]);
     }
 
@@ -131,15 +141,6 @@ class OrdersController extends Controller
         return redirect()->route('orders.index')->with('success', 'Заказ удален');
     }
 
-    public function show(Order $order): View
-    {
-        return view('orders.show', [
-            'title' => 'Заказ',
-            'order' => $order,
-            'files' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/order_files'),
-        ]);
-    }
-
     public function takeToWork(Order $order)
     {
         $order->update([
@@ -159,7 +160,7 @@ class OrdersController extends Controller
         return redirect()->route('orders.index')->with('success', 'Заказ выполнен');
     }
 
-    public function download(Order $order, $fileName)
+    public function downloadFile(Order $order, $fileName)
     {
         $path = 'orders/' . $order->id . '/order_files/' . $fileName;
         $content = YandexDiskService::read('alexstud/' . $path);
@@ -169,5 +170,16 @@ class OrdersController extends Controller
             'Content-Type' => 'application/octet-stream',
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ]);
+    }
+
+    public function deleteFile(Order $order, $fileName): RedirectResponse
+    {
+        $result = YandexDiskService::deleteFile('alexstud/orders/' . $order->id . '/order_files/' . $fileName);
+
+        if (!$result) {
+            return redirect()->route('orders.edit', ['order' => $order->id])->with('error', 'Ошибка! Файл не удален');
+        }
+
+        return redirect()->route('orders.edit', ['order' => $order->id])->with('success', 'Файл удален');
     }
 }

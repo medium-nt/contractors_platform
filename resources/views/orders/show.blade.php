@@ -135,16 +135,17 @@
                 <hr>
 
                 <div class="row">
-                    <div class="form-group">
-                        <label for="comment">Файлы:</label>
-                        <div class="form-group">
-                        @foreach($files as $file)
-                            <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
-                                {{ $file['name'] }}
-                            </a>
-                            <br>
-                        @endforeach
-                        </div>
+                    <div class="form-group col-xl-3 col-md-6 col-sm-12">
+                        <label for="comment">Загруженные файлы:</label>
+                        <ul class="list-group">
+                            @foreach($files as $file)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
+                                        {{ $file['name'] }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
 

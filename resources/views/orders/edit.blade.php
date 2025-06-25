@@ -231,6 +231,27 @@
 
                     <hr>
 
+                    <div class="row">
+                        <div class="form-group col-xl-3 col-md-6 col-sm-12">
+                            <label for="comment">Загруженные файлы:</label>
+                            <ul class="list-group">
+                                @foreach($files as $file)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
+                                            {{ $file['name'] }}
+                                        </a>
+                                        <a href="{{ route('orders.delete', ['order' => $order->id, 'name' => $file['name']]) }}"
+                                           class="btn btn-danger btn-sm">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+
+                    <hr>
+
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                     </div>

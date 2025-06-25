@@ -116,24 +116,20 @@ class YandexDiskService {
 
     public static function deleteFile($path): bool
     {
-//        $client = new Client();
-//        $response = $client->delete('https://cloud-api.yandex.net/v1/disk/resources?path=app:/' . urlencode($path) . '&permanently=true', [
-//            'headers' => [
-//                'Authorization' => 'OAuth ' . TOKEN,
-//            ],
-//            'verify' => false,
-//            'allow_redirects' => true,
-//            'http_errors' => false,
-//        ]);
-//
-//        $http_code = $response->getStatusCode();
-//        if ($http_code == 204 || $http_code == 202) {
-//            $ans = true;
-//        } else {
-//            $ans = false;
-//        }
-//
-//        return $ans;
+        $response = Http::withHeaders(['Authorization' => 'OAuth ' . self::getToken()])
+            ->withOptions([
+                'verify' => self::getCertPath(),
+            ])
+            ->delete('https://cloud-api.yandex.net/v1/disk/resources?path=' . urlencode($path) . '&permanently=true');
+
+        $ans = false;
+
+        $http_code = $response->status();
+        if ($http_code == 204 || $http_code == 202) {
+            $ans = true;
+        }
+
+        return $ans;
     }
 
 }
