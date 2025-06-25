@@ -52,7 +52,7 @@
                                    value="{{ request()->get('search') }}">
                         </div>
 
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-4">
 
                             <input type="hidden" name="status" value="{{ request()->get('status') }}">
 
