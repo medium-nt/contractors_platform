@@ -160,8 +160,29 @@ class OrdersController extends Controller
         return redirect()->route('orders.index')->with('success', 'Заказ принят');
     }
 
-    public function complete(Order $order)
+    public function complete(Request $request, Order $order)
     {
+        $request->validate([
+            'files' => 'required|array',
+            'files.*' => 'required|file|mimetypes:image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc',
+        ], [
+            'files.required' => 'Обязательно добавьте хотя бы один файл.',
+            'files.array' => 'Обязательно добавьте хотя бы один файл.',
+
+            'files.*.required' => 'Не загружено ни одного файла.',
+            'files.*.file' => 'Вы пытаетесь загрузить не файл.',
+            'files.*.mimetypes' => 'Допустимые форматы: изображения, PDF, DOC, DOCX.',
+        ]);
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filename = $file->getClientOriginalName();
+                $path = 'orders/' . $order->id . '/result_files/' . $filename;
+
+                YandexDiskService::write($path, file_get_contents($file));
+            }
+        }
+
         $order->update([
             'status_id' => 3
         ]);

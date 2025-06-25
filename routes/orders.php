@@ -35,7 +35,7 @@ Route::prefix('/orders')->group(function () {
         ->can('takeToWork', 'order')
         ->name('orders.take_to_work');
 
-    Route::get('/{order}/complete', [App\Http\Controllers\OrdersController::class, 'complete'])
+    Route::put('/{order}/complete', [App\Http\Controllers\OrdersController::class, 'complete'])
         ->can('complete', 'order')
         ->name('orders.complete');
 

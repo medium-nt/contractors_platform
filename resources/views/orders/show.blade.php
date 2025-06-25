@@ -10,6 +10,17 @@
 @section('content_body')
     <div class="col-12">
         <div class="card">
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="card-body">
 
                 <div class="form-group">
@@ -149,15 +160,6 @@
                     </div>
                 </div>
 
-                @if(auth()->user()->role->name == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
-                <div class="form-group">
-                    <a href="{{ route('orders.complete', $order->id) }}" class="btn btn-success"
-                            onclick="return confirm('Вы уверены что работа выполнена полностью?')">
-                        Сдать выполненную работу
-                    </a>
-                </div>
-                @endif
-
                 @if(auth()->user()->role->name == 'expert' && $order->status_id == 1 && $order->expert_id == null)
                 <div class="form-group">
                     <a href="{{ route('orders.take_to_work', $order->id) }}" class="btn btn-success"
@@ -168,10 +170,51 @@
                 @endif
             </div>
         </div>
+
+        @if(auth()->user()->role->name == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 col-sm-12">
+                            <form method="POST"
+                                  enctype="multipart/form-data"
+                                  action="{{ route('orders.complete', $order->id) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="form-group">
+                                    <label for="file">Загрузить результат:</label>
+                                    <input type="file" class="form-control" name="files[]"
+                                           accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
+                                           multiple required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success"
+                                            onclick="return confirm('Вы уверены что работа выполнена полностью?')"
+                                    >Сдать выполненную работу</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 @stop
 
 @section('js')
+    <script>
+        $('button[type="submit"]').on('click', function() {
+            var button = $(this);
+            button.hide();
+            button.after('<span class="saving"><i class="fas fa-spinner fa-pulse mr-1"></i>Идет сохранение...</span>');
+
+            setTimeout(function() {
+                button.next('.saving').remove();
+                button.show();
+            }, 5000);
+        });
+    </script>
+
     <script>
         function addTask() {
             let row = `
