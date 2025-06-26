@@ -31,9 +31,17 @@ Route::prefix('/orders')->group(function () {
         ->can('delete', 'order')
         ->name('orders.destroy');
 
-    Route::get('/{order}/take_to_work', [App\Http\Controllers\OrdersController::class, 'takeToWork'])
-        ->can('takeToWork', 'order')
-        ->name('orders.take_to_work');
+    Route::post('/{order}/set_response', [App\Http\Controllers\OrdersController::class, 'setResponse'])
+        ->can('setResponse', 'order')
+        ->name('orders.set_response');
+
+    Route::post('/{order}/del_response', [App\Http\Controllers\OrdersController::class, 'delResponse'])
+        ->can('setResponse', 'order')
+        ->name('orders.del_response');
+
+    Route::get('/{order}/check_expert/{expert}', [App\Http\Controllers\OrdersController::class, 'checkExpert'])
+        ->can('checkExpert', 'order')
+        ->name('orders.check_expert');
 
     Route::put('/{order}/complete', [App\Http\Controllers\OrdersController::class, 'complete'])
         ->can('complete', 'order')

@@ -81,4 +81,14 @@ class OrderPolicy
         return ($user->role->name == 'manager' && $user->id == $order->manager_id)
             || ($user->role->name == 'admin');
     }
+
+    public function setResponse(User $user, Order $order): bool
+    {
+        return $user->role->name == 'expert';
+    }
+
+    public function checkExpert(User $user, Order $order): bool
+    {
+        return $user->role->name == 'manager' && $user->id == $order->manager_id;
+    }
 }

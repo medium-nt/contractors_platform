@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
+use App\Models\OrderResponse;
 use App\Models\PlagiarismPlatform;
 use App\Models\Status;
 use App\Models\Subject;
@@ -87,6 +88,23 @@ class OrdersController extends Controller
             'order' => $order,
             'files' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/order_files'),
             'resultFiles' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/result_files'),
+            'responses' => OrderResponse::query()
+                ->where('order_id', $order->id)
+                ->get()
+                ->map(function ($response) {
+                    $response->all_tasks = Order::query()
+                        ->where('expert_id', $response->expert_id)
+                        ->count();
+                    $response->working_tasks = Order::query()
+                        ->where('expert_id', $response->expert_id)
+                        ->whereIn('status_id', [2, 3, 4])
+                        ->count();
+                    return $response;
+                }),
+            'response' => OrderResponse::query()
+                ->where('order_id', $order->id)
+                ->where('expert_id', auth()->user()->id)
+                ->first(),
         ]);
     }
 
@@ -153,20 +171,6 @@ class OrdersController extends Controller
 //        User::query()->findOrFail($user->id)->delete();
 
         return redirect()->route('orders.index')->with('success', 'Заказ удален');
-    }
-
-    public function takeToWork(Order $order)
-    {
-        if ($order->expert_id) {
-            return redirect()->route('orders.index', ['order' => $order->id])->with('error', 'Этот заказ уже взят в работу');
-        }
-
-        $order->update([
-            'expert_id' => auth()->user()->id,
-            'status_id' => 2
-        ]);
-
-        return redirect()->route('orders.index')->with('success', 'Заказ принят');
     }
 
     public function complete(Request $request, Order $order)
@@ -243,6 +247,49 @@ class OrdersController extends Controller
         }
 
         return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Статус изменен');
+
+    }
+
+    public function setResponse(Order $order, Request $request): RedirectResponse
+    {
+        $request->validate([
+            'comment' => 'required|string|min:5|max:255',
+        ], [
+            'comment.required' => 'Обязательно добавьте комментарий.',
+            'comment.string' => 'Комментарий должен быть строкой.',
+            'comment.min' => 'Комментарий должен быть не менее 5 символов.',
+            'comment.max' => 'Комментарий должен быть не более 255 символов.',
+        ]);
+
+        OrderResponse::query()->create([
+            'order_id' => $order->id,
+            'expert_id' => auth()->user()->id,
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Ваш отклик принят');
+    }
+
+    public function delResponse(Order $order)
+    {
+        OrderResponse::query()
+            ->where('order_id', $order->id)
+            ->where('expert_id', auth()->user()->id)
+            ->delete();
+
+        return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Ваш отклик удален');
+    }
+
+    public function checkExpert(Order $order, User $expert)
+    {
+        $order->update([
+            'expert_id' => $expert->id,
+            'status_id' => 2
+        ]);
+
+        return redirect()
+            ->route('orders.show', ['order' => $order->id])
+            ->with('success', 'Заказ передан в работу выбранному эксперту');
 
     }
 }

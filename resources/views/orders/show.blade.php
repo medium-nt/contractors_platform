@@ -187,18 +187,88 @@
                 @endif
 
                 <div class="row">
-                    <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="col-xl-6 col-md-6 col-sm-12">
 
                     @if($roleName == 'expert' && $order->status_id == 1 && $order->expert_id == null)
-                        <div class="form-group">
-                            <a href="{{ route('orders.take_to_work', $order->id) }}" class="btn btn-success"
-                               onclick="return confirm('Вы уверены что хотите взять эту заявку в работу?')">
-                                Взять в работу
-                            </a>
-                        </div>
+                        @if($response)
+                            <div class="form-group">
+                                <form method="POST" action="{{ route('orders.del_response', $order->id) }}">
+                                    @method('POST')
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="comment">Ваш комментарии к отклику:</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               value="{{ $response->comment }}"
+                                               disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <button onclick="return confirm('Вы уверены что хотите удалить свой отклик на данную заявку?')"
+                                            class="btn btn-danger"
+                                            type="submit"
+                                        >Удалить отклик</button>
+                                    </div>
+                                </form>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <form method="POST" action="{{ route('orders.set_response', $order->id) }}">
+                                    @method('POST')
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="comment">Комментарии:</label>
+                                        <input type="text"
+                                               class="form-control @error('description') is-invalid @enderror"
+                                               minlength="3"
+                                               name="comment"
+                                               value="{{ old('comment') }}"
+                                               required>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success"
+                                                onclick="return confirm('Вы уверены что хотите откликнуться на данную заявку?')"
+                                        >Оставить отклик</button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
                     @endif
 
                     @if(($roleName == 'manager' || $roleName == 'admin') && $order->status_id == 1 && $order->expert_id == null)
+                        <div class="form-group">
+                            <label for="comment">Отклики экспертов:</label>
+                            <ul class="list-group">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Эксперт</th>
+                                        <th scope="col">Комментарий</th>
+                                        <th scope="col">Всего заданий</th>
+                                        <th scope="col">В работе</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($responses as $response)
+                                        <tr>
+                                            <td>{{ $response->expert->name }}</td>
+                                            <td>{{ $response->comment }}</td>
+                                            <td>{{ $response->all_tasks }}</td>
+                                            <td>{{ $response->working_tasks }}</td>
+                                            <td>
+                                                <a href="{{ route('orders.check_expert', ['order' => $order->id, 'expert' => $response->expert_id]) }}"
+                                                   onclick="return confirm('Вы уверены что хотите выбрать данного эксперта?')"
+                                                   class="btn btn-success btn">
+                                                    <i class="fas fa-check mr-1"></i>Выбрать данного эксперта
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </ul>
+                        </div>
+
                         <div class="form-group">
                             <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 7 ]) }}" class="btn btn-danger mr-3"
                                onclick="return confirm('Вы уверены что хотите отменить этот заказ?')">
