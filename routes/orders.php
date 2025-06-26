@@ -46,4 +46,7 @@ Route::prefix('/orders')->group(function () {
     Route::post('/{order}/{name}/delete', [App\Http\Controllers\OrdersController::class, 'deleteFile'])
         ->can('deleteFile', 'order')
         ->name('orders.delete');
+
+    Route::get('/{order}/change_status/{status}', [App\Http\Controllers\OrdersController::class, 'changeStatus'])
+        ->name('orders.change_status');
 });

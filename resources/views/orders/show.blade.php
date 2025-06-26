@@ -7,6 +7,10 @@
 
 {{-- Content body: main page content --}}
 
+@php
+    $roleName = auth()->user()->role->name;
+@endphp
+
 @section('content_body')
     <div class="col-12">
         <div class="card">
@@ -27,7 +31,7 @@
                     <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary mr-3">
                         <i class="fas fa-arrow-left mr-1"></i>Назад
                     </a>
-                    @if(auth()->user()->role->name == 'admin' || auth()->user()->role->name == 'manager')
+                    @if($roleName == 'admin' || $roleName == 'manager')
                         <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-primary">
                             <i class="far fa-edit mr-1"></i> Редактировать
                         </a>
@@ -74,7 +78,7 @@
                         <input type="number" class="form-control" placeholder="" value="{{ $order->price }}" disabled>
                     </div>
 
-                    @if(auth()->user()->role->name != 'expert')
+                    @if($roleName != 'expert')
                     <div class="form-group col-md-9">
                         <label for="hidden_field">Скрытое поле</label>
                         <input type="text" class="form-control" placeholder="" value="{{ $order->hidden_field }}" disabled>
@@ -159,15 +163,6 @@
                         </ul>
                     </div>
                 </div>
-
-                @if(auth()->user()->role->name == 'expert' && $order->status_id == 1 && $order->expert_id == null)
-                <div class="form-group">
-                    <a href="{{ route('orders.take_to_work', $order->id) }}" class="btn btn-success"
-                       onclick="return confirm('Вы уверены что хотите взять эту заявку в работу?')">
-                        Взять в работу
-                    </a>
-                </div>
-                @endif
             </div>
         </div>
 
@@ -191,29 +186,74 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->role->name == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
                 <div class="row">
                     <div class="col-xl-3 col-md-6 col-sm-12">
-                        <form method="POST"
-                              enctype="multipart/form-data"
-                              action="{{ route('orders.complete', $order->id) }}">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group">
-                                <label for="file">Загрузить результат:</label>
-                                <input type="file" class="form-control" name="files[]"
-                                       accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
-                                       multiple required>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-success"
-                                        onclick="return confirm('Вы уверены что работа выполнена полностью?')"
-                                >Сдать выполненную работу</button>
-                            </div>
-                        </form>
+
+                    @if($roleName == 'expert' && $order->status_id == 1 && $order->expert_id == null)
+                        <div class="form-group">
+                            <a href="{{ route('orders.take_to_work', $order->id) }}" class="btn btn-success"
+                               onclick="return confirm('Вы уверены что хотите взять эту заявку в работу?')">
+                                Взять в работу
+                            </a>
+                        </div>
+                    @endif
+
+                    @if(($roleName == 'manager' || $roleName == 'admin') && $order->status_id == 1 && $order->expert_id == null)
+                        <div class="form-group">
+                            <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 7 ]) }}" class="btn btn-danger mr-3"
+                               onclick="return confirm('Вы уверены что хотите отменить этот заказ?')">
+                                Отмена
+                            </a>
+                            <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 8 ]) }}" class="btn btn-danger"
+                               onclick="return confirm('Вы уверены что хотите отменить этот заказ?')">
+                                Отказ клиента
+                            </a>
+                        </div>
+                    @endif
+
+                    @if($roleName == 'manager' && $order->status_id == 3)
+                        <div class="form-group">
+                            <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 4 ]) }}" class="btn btn-warning mr-3"
+                               onclick="return confirm('Вы уверены что хотите вернуть этот заказ в доработку?')">
+                                В доработку
+                            </a>
+                            <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 5 ]) }}" class="btn btn-success"
+                               onclick="return confirm('Вы уверены что хотите отметить этот заказ выполненным?')">
+                                Готово
+                            </a>
+                        </div>
+                    @endif
+
+                    @if($roleName == 'manager' && $order->status_id == 5)
+                        <div class="form-group">
+                            <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 4 ]) }}" class="btn btn-warning mr-3"
+                               onclick="return confirm('Вы уверены что хотите вернуть этот заказ в доработку?')">
+                                В доработку
+                            </a>
+                        </div>
+                    @endif
+
+                    @if($roleName == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
+                    <form method="POST"
+                          enctype="multipart/form-data"
+                          action="{{ route('orders.complete', $order->id) }}">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="file">Загрузить результат:</label>
+                            <input type="file" class="form-control" name="files[]"
+                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
+                                   multiple required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success"
+                                    onclick="return confirm('Вы уверены что работа выполнена полностью?')"
+                            >Сдать выполненную работу</button>
+                        </div>
+                    </form>
+                    @endif
                     </div>
                 </div>
-                @endif
             </div>
         </div>
     </div>

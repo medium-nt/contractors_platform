@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\Status;
 use Illuminate\Database\Eloquent\Builder;
 
 class OrderService
@@ -42,6 +43,42 @@ class OrderService
         }
 
         return $orders;
+    }
+
+    public static function changeStatus(Order $order, Status $newStatus): bool
+    {
+        $roleName = auth()->user()->role->name;
+        $accept = false;
+
+        switch ($newStatus->id) {
+            case 4:
+                if ($roleName == 'manager' && ($order->status_id == 3 || $order->status_id == 5)) {
+                    $accept = true;
+                }
+                break;
+            case 5:
+                if ($roleName == 'manager' && $order->status_id == 3) {
+                    $accept = true;
+                    $order->completed_at = now();
+                }
+                break;
+            case 7:
+            case 8:
+                if (($roleName == 'manager' || $roleName == 'admin') && $order->status_id == 1) {
+                    $accept = true;
+                }
+                break;
+            default:
+                break;
+        }
+
+        if($accept) {
+            $order->status_id = $newStatus->id;
+            $order->save();
+            return true;
+        }
+
+        return false;
     }
 
 }

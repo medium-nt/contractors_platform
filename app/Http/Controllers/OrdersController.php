@@ -213,4 +213,16 @@ class OrdersController extends Controller
 
         return redirect()->route('orders.edit', ['order' => $order->id])->with('success', 'Файл удален');
     }
+
+    public function changeStatus(Order $order, Status $status): RedirectResponse
+    {
+        $result = OrderService::changeStatus($order, $status);
+
+        if (!$result) {
+            return redirect()->route('orders.show', ['order' => $order->id])->with('error', 'Ошибка! Статус не изменен');
+        }
+
+        return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Статус изменен');
+
+    }
 }

@@ -22,6 +22,7 @@ class Order extends Model
         'expert_id',
         'manager_id',
         'status_id',
+        'completed_at',
     ];
 
     public function getCreatedDateAttribute()
