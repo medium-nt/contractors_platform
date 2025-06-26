@@ -157,6 +157,10 @@ class OrdersController extends Controller
 
     public function takeToWork(Order $order)
     {
+        if ($order->expert_id) {
+            return redirect()->route('orders.index', ['order' => $order->id])->with('error', 'Этот заказ уже взят в работу');
+        }
+
         $order->update([
             'expert_id' => auth()->user()->id,
             'status_id' => 2
