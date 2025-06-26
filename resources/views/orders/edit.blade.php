@@ -152,7 +152,6 @@
                                    name="warranty_up_to"
                                    placeholder=""
                                    min="{{ now()->addDay()->format('Y-m-d') }}"
-                                   max="{{ now()->addMonth()->format('Y-m-d') }}"
                                    value="{{ old('warranty_up_to', \Carbon\Carbon::parse($order->warranty_up_to)->format('Y-m-d') ) }}"
                                    required>
                         </div>
