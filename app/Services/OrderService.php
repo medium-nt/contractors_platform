@@ -26,11 +26,11 @@ class OrderService
 
         $user = auth()->user();
 
-        if($user->role_id == 1) {
+        if($user->role->name == 'manager') {
             $orders = $orders->where('manager_id', $user->id);
         }
 
-        if($user->role_id == 2 && $statusId != 1) {
+        if($user->role->name == 'expert' && $statusId != 1) {
             $orders = $orders->where('expert_id', $user->id);
         }
 
