@@ -203,6 +203,18 @@ class OrdersController extends Controller
         ]);
     }
 
+    public function downloadResultFile(Order $order, $fileName)
+    {
+        $path = 'orders/' . $order->id . '/result_files/' . $fileName;
+        $content = YandexDiskService::read('alexstud/' . $path);
+        $filename = basename('alexstud/' . $path);
+
+        return Response::make($content, 200, [
+            'Content-Type' => 'application/octet-stream',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ]);
+    }
+
     public function deleteFile(Order $order, $fileName): RedirectResponse
     {
         $result = YandexDiskService::deleteFile('alexstud/orders/' . $order->id . '/order_files/' . $fileName);

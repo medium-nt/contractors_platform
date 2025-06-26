@@ -176,7 +176,7 @@
                         <ul class="list-group">
                             @foreach($resultFiles as $file)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
+                                    <a href="{{ route('orders.download_result', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
                                         {{ $file['name'] }}
                                     </a>
                                 </li>
