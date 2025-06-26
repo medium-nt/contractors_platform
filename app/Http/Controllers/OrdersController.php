@@ -49,6 +49,10 @@ class OrdersController extends Controller
     {
         $request->merge(['manager_id' => auth()->user()->id]);
 
+        if ($request->has('expert_id')) {
+            $request->merge(['status_id' => 2]);
+        }
+
         $order = Order::query()->create($request->all());
 
         if ($request->hasFile('files')) {
