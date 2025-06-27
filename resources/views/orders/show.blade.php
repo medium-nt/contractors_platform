@@ -299,9 +299,13 @@ use Carbon\Carbon;
                                onclick="return confirm('Вы уверены что хотите вернуть этот заказ в доработку?')">
                                 В доработку
                             </a>
-                            <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 5 ]) }}" class="btn btn-success"
-                               onclick="return confirm('Вы уверены что хотите отметить этот заказ выполненным?')">
-                                Готово
+                            <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 5 ]) }}" class="btn btn-primary mr-3"
+                               onclick="return confirm('Вы уверены что хотите отправить этот заказ на гарантию?')">
+                                На гарантию
+                            </a>
+                            <a href="{{ route('orders.change_status', ['order' => $order->id, 'status' => 6 ]) }}" class="btn btn-success"
+                               onclick="return confirm('Вы уверены что хотите отметить этот заказ успешно выполненным?')">
+                                Закрыть как выполненный
                             </a>
                         </div>
                     @endif

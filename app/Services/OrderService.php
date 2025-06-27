@@ -61,6 +61,7 @@ class OrderService
                 }
                 break;
             case 5:
+            case 6:
                 if ($roleName == 'manager' && $order->status_id == 3) {
                     $accept = true;
                     $order->completed_at = now();
