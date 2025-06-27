@@ -40,6 +40,10 @@ use Carbon\Carbon;
                             <i class="far fa-edit mr-1"></i> Редактировать
                         </a>
                     @endif
+
+                    @if(auth()->user()->role->name != 'expert')
+                    <span class="badge" style="background-color: {{ $order->status->color }}"> {{ $order->status->title }}</span>
+                    @endif
                 </div>
 
                 <div class="form-group">
@@ -109,10 +113,12 @@ use Carbon\Carbon;
                                disabled>
                     </div>
 
+                    @if(auth()->user()->role->name != 'expert')
                     <div class="form-group col-md-6">
                         <label for="expert_id">Эксперт:</label>
                         <input type="text" class="form-control" name="expert_id" value="{{ $order->expert->name ?? '' }}" disabled>
                     </div>
+                    @endif
                 </div>
 
                 <hr>
