@@ -72,7 +72,7 @@ class OrderPolicy
     public function downloadFile(User $user, Order $order): bool
     {
         return ($user->role->name == 'manager' && $user->id == $order->manager_id)
-            || ($user->role->name == 'expert' && $user->id == $order->expert_id)
+            || ($user->role->name == 'expert' && (($order->status_id != 1 && $user->id == $order->expert_id) || $order->status_id == 1))
             || ($user->role->name == 'admin');
     }
 
