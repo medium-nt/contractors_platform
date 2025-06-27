@@ -47,11 +47,9 @@ use Carbon\Carbon;
                     @if(auth()->user()->role->name != 'expert')
                         <h5>
                             <span class="badge ml-auto xl" style="background-color: {{ $order->status->color }}">
-                            {{ $order->status->title }}
-                        </span>
+                                {{ $order->status->title }}
+                            </span>
                         </h5>
-
-{{--                        <span class="badge" style="background-color: {{ $order->status->color }}"> {{ $order->status->title }}</span>--}}
                     @endif
                 </div>
 
