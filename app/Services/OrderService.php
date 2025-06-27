@@ -14,7 +14,11 @@ class OrderService
 
         $orders = Order::query();
 
-        $orders->where('status_id', $statusId);
+        if ($statusId == 10) {
+            $orders = $orders->whereIn('status_id', [5, 6]);
+        } else {
+            $orders = $orders->where('status_id', $statusId);
+        }
 
         if ($request->has('type_work_id') && $request->type_work_id !== 'all') {
             $orders = $orders->where('type_work_id', $request->type_work_id);

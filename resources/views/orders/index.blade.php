@@ -69,6 +69,9 @@
                 <div class="row">
 
                     @foreach($statuses as $status)
+                        @if(auth()->user()->role->name == 'expert' && $status->id > 4)
+                            @continue
+                        @endif
                     <a href="{{ route('orders.index', [
                         'status' => $status->id,
                         'type_work_id' => request('type_work_id'),
@@ -77,6 +80,15 @@
                     ]) }}"
                        class="btn btn-link">{{ Str::ucfirst($status->title) }}</a>
                     @endforeach
+                    @if(auth()->user()->role->name == 'expert')
+                        <a href="{{ route('orders.index', [
+                            'status' => 10,
+                            'type_work_id' => request('type_work_id'),
+                            'subject_id' => request('subject_id'),
+                            'search' => request('search'),
+                        ]) }}"
+                           class="btn btn-link">Готово</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -106,7 +118,12 @@
                             <tr>
                                 <td>{{ $order->id }}</td>
                                 <td>
-                                    <span class="badge" style="background-color: {{ $order->status->color }}"> {{ $order->status->title }}</span></td>
+                                    @if(auth()->user()->role->name == 'expert' && ($order->status_id == 5 || $order->status_id == 6))
+                                        <span class="badge" style="background-color: #28a745">готово</span>
+                                    @else
+                                        <span class="badge" style="background-color: {{ $order->status->color }}"> {{ $order->status->title }}</span>
+                                    @endif
+                                </td>
                                 <td>{{ $order->title }}</td>
                                 <td>{{ $order->typeWork->title }}</td>
                                 <td>{{ $order->subject->title }}</td>
