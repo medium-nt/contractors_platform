@@ -31,7 +31,9 @@ use Carbon\Carbon;
 
             <div class="card-body">
 
-                <div class="form-group">
+                <div class="form-group d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+
                     <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary mr-3">
                         <i class="fas fa-arrow-left mr-1"></i>Назад
                     </a>
@@ -40,9 +42,16 @@ use Carbon\Carbon;
                             <i class="far fa-edit mr-1"></i> Редактировать
                         </a>
                     @endif
+                    </div>
 
                     @if(auth()->user()->role->name != 'expert')
-                    <span class="badge" style="background-color: {{ $order->status->color }}"> {{ $order->status->title }}</span>
+                        <h5>
+                            <span class="badge ml-auto xl" style="background-color: {{ $order->status->color }}">
+                            {{ $order->status->title }}
+                        </span>
+                        </h5>
+
+{{--                        <span class="badge" style="background-color: {{ $order->status->color }}"> {{ $order->status->title }}</span>--}}
                     @endif
                 </div>
 
