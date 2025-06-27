@@ -1,3 +1,7 @@
+@php
+use Carbon\Carbon;
+@endphp
+
 @extends('layouts.app')
 
 {{-- Customize layout sections --}}
@@ -157,6 +161,7 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <a href="{{ route('orders.download', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
                                         {{ $file['name'] }}
+                                        ({{ Carbon::parse($file['modified'])->format('d/m/Y H:i') }})
                                     </a>
                                 </li>
                             @endforeach
@@ -178,6 +183,7 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <a href="{{ route('orders.download_result', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
                                         {{ $file['name'] }}
+                                        ({{ Carbon::parse($file['modified'])->format('d/m/Y H:i') }})
                                     </a>
                                 </li>
                             @endforeach
