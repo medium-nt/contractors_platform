@@ -111,6 +111,7 @@ use Carbon\Carbon;
                                disabled>
                     </div>
 
+                    @if(auth()->user()->role->name != 'expert')
                     <div class="form-group col-md-3">
                         <label for="warranty_up_to">Гарантия до</label>
                         <input type="date"
@@ -120,7 +121,6 @@ use Carbon\Carbon;
                                disabled>
                     </div>
 
-                    @if(auth()->user()->role->name != 'expert')
                     <div class="form-group col-md-6">
                         <label for="expert_id">Эксперт:</label>
                         <input type="text" class="form-control" name="expert_id" value="{{ $order->expert->name ?? '' }}" disabled>
