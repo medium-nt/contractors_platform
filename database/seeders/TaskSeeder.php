@@ -32,5 +32,15 @@ class TaskSeeder extends Seeder
                 'deadline_at' => now()->addDays(2),
             ]
         );
+
+        Task::query()->firstOrCreate(
+            [
+                'title' => 'Персональная задача',
+                'manager_id' => 3,
+            ],
+            [
+                'deadline_at' => now()->addDays(3),
+            ]
+        );
     }
 }
