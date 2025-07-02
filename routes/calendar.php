@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Order;
+use App\Models\Task;
 
 Route::prefix('/calendar')->group(function () {
     Route::get('', [App\Http\Controllers\CalendarController::class, 'index'])
-        ->can('viewAny', Order::class)
+        ->can('viewAny', Task::class)
         ->name('calendar.index');
 });
