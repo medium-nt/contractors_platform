@@ -313,6 +313,13 @@ return [
         ],
 
         [
+            'text' => 'calendar',
+            'url' => 'admin/calendar',
+            'icon' => 'fas fa-fw fa-calendar-alt',
+            'can' => 'is-approved',
+        ],
+
+        [
             'text' => 'settings',
             'icon' => 'fas fa-fw fa-cog',
             'can' => 'is-admin',

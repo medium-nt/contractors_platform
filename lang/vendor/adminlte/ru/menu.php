@@ -9,4 +9,5 @@ return [
     'types_work' => 'Типы работ',
     'subjects' => 'Названия предметов',
     'plagiarism_platforms' => 'Платформы плагиата',
+    'calendar' => 'Календарь',
 ];
