@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\Models\Order;
 use App\Models\Task;
+use Illuminate\Support\Collection;
 
 class CalendarService
 {
-    public static function getTasks()
+    public static function getTasks(): Collection
     {
         $tasks = Task::all();
 
@@ -26,7 +27,7 @@ class CalendarService
         });
     }
 
-    public static function getTasksOrders()
+    public static function getTasksOrders(): Collection
     {
         $tasksOrders = Task::all();
         $orders = Order::query()->where('manager_id', auth()->user()->id);
@@ -43,7 +44,7 @@ class CalendarService
         });
     }
 
-    public static function getOrders()
+    public static function getOrders(): Collection
     {
         $orders = Order::all();
         if (auth()->user()->role->name == 'manager') {
