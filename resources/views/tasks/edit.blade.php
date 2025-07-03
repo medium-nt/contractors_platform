@@ -27,6 +27,9 @@
                 </div>
             @endif
 
+            @php
+                $isDone = (bool)$task->completed_at;
+            @endphp
 
             <div class="card-body">
                 <div class="row">
@@ -39,11 +42,13 @@
                         @method('DELETE')
                         @csrf
 
+                        @if(!$isDone)
                         <button type="submit" class="btn btn-outline-danger"
                                 onclick="return confirm('Вы уверены что хотите удалить задачу?')">
                             <i class="fas fa-trash mr-1"></i>
                             Удалить задачу
                         </button>
+                        @endif
                     </form>
                 </div>
 
@@ -61,6 +66,7 @@
                                    minlength="5"
                                    placeholder=""
                                    value="{{ old('title', $task->title) }}"
+                                   @if($isDone) readonly @endif
                                    required>
                         </div>
 
@@ -73,6 +79,7 @@
                                    placeholder=""
                                    min="{{ now()->format('Y-m-d\TH:i') }}"
                                    value="{{ old('deadline_at', $task->deadline_at) }}"
+                                   @if($isDone) readonly @endif
                                    required>
                         </div>
                     </div>
@@ -85,10 +92,12 @@
                                name="description"
                                placeholder=""
                                value="{{ old('description', $task->description) }}"
+                               @if($isDone) readonly @endif
                                required>
                     </div>
 
                     <div class="row">
+                        @if(!$isDone)
                         <div class="form-group">
                             <button type="submit" class="btn btn-success mr-5">Сохранить изменения</button>
                         </div>
@@ -99,6 +108,7 @@
                             <i class="fas fa-check mr-1"></i>
                             Отметить выполненной
                         </a>
+                        @endif
                     </div>
                 </form>
             </div>
