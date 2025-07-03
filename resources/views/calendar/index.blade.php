@@ -60,9 +60,14 @@
 
                 dayMaxEventRows: true,
                 eventContent: function(arg) {
+                    let badgeClass = 'bg-primary';
+                    if (arg.event.extendedProps.completed_at) {
+                        badgeClass = 'bg-secondary';
+                    }
+
                     return {
                         html: `
-                            <div class="badge bg-primary text-wrap"
+                            <div class="badge ${badgeClass} text-wrap"
                                 style="display: block;
                                     width: 100%;
                                     white-space: normal;
@@ -79,7 +84,7 @@
 
                 // Ограничение диапазона прокрутки
                 validRange: function(nowDate) {
-                    const start = new Date(nowDate.getFullYear(), nowDate.getMonth() - 1, 1);
+                    const start = new Date(2025, 5, 1);
                     const end = new Date(nowDate.getFullYear() + 1, nowDate.getMonth() + 1, 0);
 
                     return {

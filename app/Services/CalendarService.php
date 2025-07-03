@@ -23,6 +23,11 @@ class CalendarService
                 'url' => ($task->order_id)
                     ? route('orders.show', $task->order_id)
                     : route('tasks.edit', $task->id),
+                'allDay' => true,
+                'extendedProps' => [
+                    'description' => $task->description ?? '',
+                    'completed_at' => $task->completed_at
+                ]
             ];
         });
     }
@@ -40,6 +45,11 @@ class CalendarService
                 'url' => ($task->order_id)
                     ? route('orders.show', $task->order_id)
                     : route('tasks.edit', $task->id),
+                'allDay' => true,
+                'extendedProps' => [
+                    'description' => $task->description ?? '',
+                    'completed_at' => $task->completed_at
+                ]
             ];
         });
     }
@@ -56,6 +66,11 @@ class CalendarService
                 'title' => 'Заказ: "' . $order->title . '"',
                 'start' => $order->deadline_at,
                 'url' => route('orders.show', $order->id),
+                'allDay' => true,
+                'extendedProps' => [
+                    'description' => $order->description ?? '',
+                    'completed_at' => $order->completed_at
+                ]
             ];
         });
     }
