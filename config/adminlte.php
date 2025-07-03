@@ -316,7 +316,7 @@ return [
             'text' => 'calendar',
             'url' => 'admin/calendar',
             'icon' => 'fas fa-fw fa-calendar-alt',
-            'can' => 'is-manager-or-admin',
+            'can' => 'is-approved',
         ],
 
         [

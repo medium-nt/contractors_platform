@@ -12,7 +12,7 @@ class CalendarService
     {
         $tasks = Task::all();
 
-        if (auth()->user()->role->name == 'manager') {
+        if (auth()->user()->role->name == 'manager' || auth()->user()->role->name == 'expert') {
             $tasks = $tasks->where('manager_id', auth()->user()->id);
         }
 
@@ -35,7 +35,14 @@ class CalendarService
     public static function getTasksOrders(): Collection
     {
         $tasksOrders = Task::all();
-        $orders = Order::query()->where('manager_id', auth()->user()->id);
+
+        $orders = Order::query();
+        if (auth()->user()->role->name == 'manager') {
+            $orders = $orders->where('manager_id', auth()->user()->id);
+        } elseif (auth()->user()->role->name == 'expert') {
+            $orders = $orders->where('expert_id', auth()->user()->id);
+        }
+
         $tasksOrders = $tasksOrders->whereIn('order_id', $orders->pluck('id'));
 
         return $tasksOrders->map(function ($task) {
@@ -59,6 +66,8 @@ class CalendarService
         $orders = Order::all();
         if (auth()->user()->role->name == 'manager') {
             $orders = $orders->where('manager_id', auth()->user()->id);
+        } elseif (auth()->user()->role->name == 'expert') {
+            $orders = $orders->where('expert_id', auth()->user()->id);
         }
 
         return $orders->map(function ($order) {

@@ -10,7 +10,7 @@ class TaskPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->role->name == 'manager' || $user->role->name == 'admin';
+        return true;
     }
 
     public function view(User $user, Task $task): bool
@@ -20,17 +20,17 @@ class TaskPolicy
 
     public function create(User $user): bool
     {
-        return $user->role->name == 'manager' || $user->role->name == 'admin';
+        return true;
     }
 
     public function update(User $user, Task $task): bool
     {
-        return $user->role->name == 'manager' || $user->role->name == 'admin';
+        return true;
     }
 
     public function delete(User $user, Task $task): bool
     {
-        return $user->role->name == 'manager' || $user->role->name == 'admin';
+        return true;
     }
 
     public function restore(User $user, Task $task): bool
@@ -44,6 +44,6 @@ class TaskPolicy
     }
     public function complete(User $user, Task $task): bool
     {
-        return $user->role->name == 'manager' || $user->role->name == 'admin';
+        return true;
     }
 }
