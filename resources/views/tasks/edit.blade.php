@@ -51,19 +51,19 @@
                     @method('PUT')
                     @csrf
 
-                    <div class="form-group">
-                        <label for="title">Текст задачи</label>
-                        <input type="text"
-                               class="form-control @error('title') is-invalid @enderror"
-                               id="title"
-                               name="title"
-                               minlength="5"
-                               placeholder=""
-                               value="{{ old('title', $task->title) }}"
-                               required>
-                    </div>
-
                     <div class="row">
+                        <div class="form-group">
+                            <label for="title">Текст задачи</label>
+                            <input type="text"
+                                   class="form-control @error('title') is-invalid @enderror"
+                                   id="title"
+                                   name="title"
+                                   minlength="5"
+                                   placeholder=""
+                                   value="{{ old('title', $task->title) }}"
+                                   required>
+                        </div>
+
                         <div class="form-group col-md-3">
                             <label for="deadline_at">Срок выполнения</label>
                             <input type="datetime-local"
@@ -75,6 +75,17 @@
                                    value="{{ old('deadline_at', $task->deadline_at) }}"
                                    required>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Описание задачи</label>
+                        <input type="text"
+                               class="form-control @error('description') is-invalid @enderror"
+                               id="description"
+                               name="description"
+                               placeholder=""
+                               value="{{ old('description', $task->description) }}"
+                               required>
                     </div>
 
                     <div class="row">

@@ -24,6 +24,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('restrict');
             $table->string('title');
+            $table->string('description')->default('');
             $table->datetime('deadline_at');
             $table->datetime('completed_at')->nullable();
             $table->timestamps();

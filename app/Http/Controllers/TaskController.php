@@ -18,11 +18,16 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|min:5|max:255',
+            'description' => 'required|min:5|max:255',
             'deadline_at' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
         ], [
             'title.required' => 'Поле "Текст задачи" обязательно для заполнения',
             'title.min' => 'В поле "Текст задачи" должно быть не менее 5 символов',
             'title.max' => 'В поле "Текст задачи" должно быть не более 255 символов',
+
+            'description.required' => 'Поле "Описание задачи" обязательно для заполнения',
+            'description.min' => 'В поле "Описание задачи" должно быть не менее 5 символов',
+            'description.max' => 'В поле "Описание задачи" должно быть не более 255 символов',
 
             'deadline_at.required' => 'Поле "Срок выполнения" обязательно для заполнения',
             'deadline_at.date' => 'Поле "Срок выполнения" должно быть датой',
@@ -31,6 +36,7 @@ class TaskController extends Controller
 
         Task::query()->create([
             'title' => $request->title,
+            'description' => $request->description,
             'manager_id' => auth()->user()->id,
             'deadline_at' => $request->deadline_at,
         ]);
@@ -50,11 +56,16 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|min:5|max:255',
+            'description' => 'required|min:5|max:255',
             'deadline_at' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
         ], [
             'title.required' => 'Поле "Текст задачи" обязательно для заполнения',
             'title.min' => 'В поле "Текст задачи" должно быть не менее 5 символов',
             'title.max' => 'В поле "Текст задачи" должно быть не более 255 символов',
+
+            'description.required' => 'Поле "Описание задачи" обязательно для заполнения',
+            'description.min' => 'В поле "Описание задачи" должно быть не менее 5 символов',
+            'description.max' => 'В поле "Описание задачи" должно быть не более 255 символов',
 
             'deadline_at.required' => 'Поле "Срок выполнения" обязательно для заполнения',
             'deadline_at.date' => 'Поле "Срок выполнения" должно быть датой',
@@ -62,6 +73,7 @@ class TaskController extends Controller
         ]);
 
         $task->title = $request->title;
+        $task->description = $request->description;
         $task->deadline_at = $request->deadline_at;
         $task->save();
 
