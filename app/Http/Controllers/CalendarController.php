@@ -14,7 +14,6 @@ class CalendarController extends Controller
 
         return view('calendar.index', [
             'title' => 'Календарь',
-//            'events' => $tasks->merge($tasksOrders)->merge($orders),
             'events' => collect($tasks)
                 ->merge(collect($tasksOrders))
                 ->merge(collect($orders)),
