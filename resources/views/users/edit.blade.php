@@ -51,7 +51,7 @@
                                    name="email" value="{{ $user->email }}" required>
                         </div>
 
-                        @if(!$has_orders)
+                        @if(!$has_orders && $user->role_id != 3)
                         <div class="form-group">
                             <label for="role_id">Роль</label>
                             <select name="role_id" id="role_id" class="form-control" required>

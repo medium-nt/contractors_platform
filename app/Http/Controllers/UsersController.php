@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUsersRequest;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -40,10 +41,14 @@ class UsersController extends Controller
 
     public function edit(User $user): View
     {
+        $countOrders = Order::query()
+            ->where('expert_id', $user->id)
+            ->orWhere('manager_id', $user->id)
+            ->count();
+
         return view('users.edit', [
             'title' => 'Изменить пользователя',
-//            'has_orders' => $user->orders()->count(),
-            'has_orders' => 1,
+            'has_orders' => $countOrders,
             'user' => User::query()->findOrFail($user->id),
         ]);
     }
