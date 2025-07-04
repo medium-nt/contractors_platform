@@ -123,7 +123,7 @@ use Carbon\Carbon;
 
                     <div class="form-group col-md-6">
                         <label for="expert_id">Эксперт:</label>
-                        <input type="text" class="form-control" name="expert_id" value="{{ $order->expert->name ?? '' }}" disabled>
+                        <input type="text" class="form-control" name="expert_id" value="{{ $order->expert->name . ' ' . $order->expert->last_name ?? '' }}" disabled>
                     </div>
                     @endif
                 </div>
