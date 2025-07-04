@@ -23,7 +23,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'title' => 'required|min:5|max:255',
-            'description' => 'required|min:10|max:255',
+            'description' => 'required|min:10|max:10000',
             'hidden_field' => 'nullable|max:255',
             'price' => 'required|numeric|min:1',
             'type_work_id' => 'required|exists:types_work,id',
@@ -54,7 +54,7 @@ class OrderRequest extends FormRequest
 
             'description.required' => 'Поле "Описание" обязательно для заполнения',
             'description.min' => 'В поле "Описание" должно быть не менее 10 символов',
-            'description.max' => 'В поле "Описание" должно быть не более 255 символов',
+            'description.max' => 'В поле "Описание" должно быть не более 10000 символов',
 
             'hidden_field.max' => 'В поле "Скрытое поле" должно быть не более 255 символов',
 
