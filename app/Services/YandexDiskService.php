@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class YandexDiskService {
     public function __construct(string $token)
@@ -73,13 +73,14 @@ class YandexDiskService {
                 ->withOptions([
                     'verify' => self::getCertPath(),
                 ])
-                ->get($url);
+                ->get($url)
+                ->throw();
 
             $data = $response->json();
 
             $res = $data['_embedded']['items'] ?? [];
 
-        } catch (ConnectionException $e) {
+        } catch (Throwable $e) {
             Log::channel('yandex_disk')
                 ->error('Ошибка при обращении к Yandex Disk API', [
                     'message' => $e->getMessage(),
