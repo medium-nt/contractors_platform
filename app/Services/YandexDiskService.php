@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class YandexDiskService {
     public function __construct(string $token)
@@ -57,24 +59,37 @@ class YandexDiskService {
 
     public static function listFiles($path)
     {
-        $url = 'https://cloud-api.yandex.net/v1/disk/resources?' . http_build_query([
+        try {
+            $url = 'https://cloud-api.yandex.net/v1/disk/resources?' . http_build_query([
                 'fields' => '_embedded.items.name,_embedded.items.type,_embedded.items.media_type,_embedded.items.modified,_embedded.items.size',
                 'sort' => 'name',
                 'limit' => 1000,
                 'path' => $path,
             ]);
 
-        $response = Http::withHeaders([
-            'Authorization' => 'OAuth ' . self::getToken(),
-        ])
-            ->withOptions([
-                'verify' => self::getCertPath(),
+            $response = Http::withHeaders([
+                'Authorization' => 'OAuth ' . self::getToken(),
             ])
-            ->get($url);
+                ->withOptions([
+                    'verify' => self::getCertPath(),
+                ])
+                ->get($url);
 
-        $data = $response->json();
+            $data = $response->json();
 
-        return $data['_embedded']['items'] ?? [];
+            $res = $data['_embedded']['items'] ?? [];
+
+        } catch (ConnectionException $e) {
+            Log::channel('yandex')
+                ->error('Ошибка при обращении к Yandex Disk API', [
+                    'message' => $e->getMessage(),
+                    'url' => $path,
+                ]);
+
+            $res = [];
+        }
+
+        return $res;
     }
 
     public static function write(string $path, string $contents): void

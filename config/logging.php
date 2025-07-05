@@ -52,6 +52,12 @@ return [
 
     'channels' => [
 
+        'yandex_disk' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/yandex_disk.log'),
+            'level' => 'debug',
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),
