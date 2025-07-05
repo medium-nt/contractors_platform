@@ -80,7 +80,7 @@ class YandexDiskService {
             $res = $data['_embedded']['items'] ?? [];
 
         } catch (ConnectionException $e) {
-            Log::channel('yandex')
+            Log::channel('yandex_disk')
                 ->error('Ошибка при обращении к Yandex Disk API', [
                     'message' => $e->getMessage(),
                     'url' => $path,
