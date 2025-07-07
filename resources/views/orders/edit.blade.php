@@ -114,10 +114,9 @@
                                    class="form-control @error('price') is-invalid @enderror"
                                    id="price"
                                    name="price"
-                                   min="1"
+                                   min="0"
                                    placeholder=""
-                                   value="{{ old('price', $order->price) }}"
-                                   required>
+                                   value="{{ old('price', $order->price) }}">
                         </div>
 
                         <div class="form-group col-md-9">
@@ -234,7 +233,7 @@
                         <div class="form-group">
                             <label for="files">Добавить файлы к заказу</label>
                             <input type="file"
-                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
+                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                    class="form-control"
                                    id="files"
                                    name="files[]"

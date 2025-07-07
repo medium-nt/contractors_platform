@@ -113,10 +113,9 @@
                                    class="form-control @error('price') is-invalid @enderror"
                                    id="price"
                                    name="price"
-                                   min="1"
+                                   min="0"
                                    placeholder=""
-                                   value="{{ old('price') }}"
-                                   required>
+                                   value="{{ old('price', 0) }}">
                         </div>
 
                         <div class="form-group col-md-9">
@@ -232,7 +231,7 @@
                         <div class="form-group">
                             <label for="description">Файлы к заказу</label>
                             <input type="file"
-                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
+                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                    class="form-control @error('files') is-invalid @enderror"
                                    id="files"
                                    name="files[]"

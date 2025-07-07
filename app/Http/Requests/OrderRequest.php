@@ -25,7 +25,7 @@ class OrderRequest extends FormRequest
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:10|max:10000',
             'hidden_field' => 'nullable|max:255',
-            'price' => 'required|numeric|min:1',
+            'price' => 'numeric|min:0',
             'type_work_id' => 'required|exists:types_work,id',
             'subject_id' => 'required|exists:subjects,id',
             'plagiarism_platform_id' => 'nullable|exists:plagiarism_platforms,id',
@@ -41,7 +41,7 @@ class OrderRequest extends FormRequest
             'deadline_task.*' => 'required|date|after_or_equal:now',
 
             'files' => 'nullable|array',
-            'files.*' => 'required|file|mimetypes:image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc',
+            'files.*' => 'required|file|mimetypes:image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ];
     }
 
@@ -58,9 +58,8 @@ class OrderRequest extends FormRequest
 
             'hidden_field.max' => 'В поле "Скрытое поле" должно быть не более 255 символов',
 
-            'price.required' => 'Поле "Цена" обязательно для заполнения',
             'price.numeric' => 'Поле "Цена" должно быть числом',
-            'price.min' => 'В поле "Цена" должна быть не менее 1',
+            'price.min' => 'В поле "Цена" должна быть не менее 0',
 
             'type_work_id.required' => 'Поле "Тип работы" обязательно для заполнения',
             'type_work_id.exists' => 'Указан неизвестный тип работы',
@@ -97,6 +96,9 @@ class OrderRequest extends FormRequest
             'deadline_task.*.after_or_equal' => 'Поле "Срок выполнения задачи" должно быть больше или равно текущей дате',
 
             'files.array' => 'Техническая ошибка. Раздел "Файлы" содержит неверные значения',
+            'files.*.required' => 'Поле "Файл" обязательно для заполнения',
+            'files.*.file' => 'Вы пытаетесь загрузить не файл',
+            'files.*.mimetypes' => 'Недопустимый тип файла',
         ];
     }
 }
