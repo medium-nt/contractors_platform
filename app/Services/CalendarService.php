@@ -10,7 +10,8 @@ class CalendarService
 {
     public static function getTasks(): Collection
     {
-        $tasks = Task::all();
+        $tasks = Task::query()
+            ->where('order_id', null)->get();
 
         if (auth()->user()->role->name == 'manager' || auth()->user()->role->name == 'expert') {
             $tasks = $tasks->where('manager_id', auth()->user()->id);
@@ -26,7 +27,9 @@ class CalendarService
                 'allDay' => true,
                 'extendedProps' => [
                     'description' => $task->description ?? '',
-                    'completed_at' => $task->completed_at
+                    'completed_at' => $task->completed_at,
+                    'owner_name' => ($task->manager->name  ?? '') .' '. ($task->manager->last_name  ?? ''),
+                    'type' => 2,
                 ]
             ];
         });
@@ -55,7 +58,10 @@ class CalendarService
                 'allDay' => true,
                 'extendedProps' => [
                     'description' => $task->description ?? '',
-                    'completed_at' => $task->completed_at
+                    'completed_at' => $task->completed_at,
+                    'manager_name' => ($task->order->manager->name ?? '') .' '. ($task->order->manager->last_name ?? ''),
+                    'expert_name' => ($task->order->expert->name ?? '') .' '. ($task->order->expert->last_name ?? ''),
+                    'type' => 1,
                 ]
             ];
         });
@@ -78,7 +84,10 @@ class CalendarService
                 'allDay' => true,
                 'extendedProps' => [
                     'description' => $order->description ?? '',
-                    'completed_at' => $order->completed_at
+                    'completed_at' => $order->completed_at,
+                    'manager_name' => ($order->manager->name ?? '') .' '. ($order->manager->last_name ?? ''),
+                    'expert_name' => ($order->expert->name ?? '') .' '. ($order->expert->name ?? ''),
+                    'type' => 0,
                 ]
             ];
         });
