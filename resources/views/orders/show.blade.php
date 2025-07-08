@@ -349,6 +349,25 @@ use Carbon\Carbon;
                 </div>
             </div>
         </div>
+
+        @if($order->status_id > 1)
+        <div class="card">
+            <div id="new-message-indicator" style="
+                display: none;
+                position: fixed;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1050;
+            ">
+                <button class="btn btn-warning btn-sm" onclick="scrollToBottom(true)">
+                    Новое сообщение ↓
+                </button>
+            </div>
+
+            <livewire:chat-component :order-id="$order->id" />
+        </div>
+        @endif
     </div>
 @stop
 
