@@ -335,7 +335,7 @@ use Carbon\Carbon;
                         <div class="form-group">
                             <label for="file">Загрузить результат:</label>
                             <input type="file" class="form-control" name="files[]"
-                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc"
+                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                    multiple required>
                         </div>
                         <div class="form-group">

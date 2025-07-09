@@ -177,7 +177,7 @@ class OrdersController extends Controller
     {
         $request->validate([
             'files' => 'required|array',
-            'files.*' => 'required|file|mimetypes:image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc',
+            'files.*' => 'required|file|mimetypes:image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ], [
             'files.required' => 'Обязательно добавьте хотя бы один файл.',
             'files.array' => 'Обязательно добавьте хотя бы один файл.',
