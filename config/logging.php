@@ -58,6 +58,12 @@ return [
             'level' => 'debug',
         ],
 
+        'tg_api' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/tg_api.log'),
+            'level' => 'debug',
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),
