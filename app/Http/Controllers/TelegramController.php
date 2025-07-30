@@ -37,7 +37,7 @@ class TelegramController extends Controller
             } else {
                 TgService::sendMessage(
                     $tgId,
-                    'Привет, ' . $user->name .
+                    'Привет, ' . $user->name . ' ' . $user->last_name .
                     '! Вы уже авторизованы в системе как ' . $user->role->title .
                     ' и теперь будете получать все уведомления системы через меня.'
                 );

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUsersRequest;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\TgService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
 {
@@ -73,8 +75,31 @@ class UsersController extends Controller
         return redirect()->route('users.index')->with('success', 'Пользователь удален');
     }
 
-    public function profile()
+    public function profile(Request $request)
     {
+        $tgId = $request->all()['tg_id'] ?? null;
+
+        if ($tgId) {
+            auth()->user()->update([
+                'tg_id' => $tgId,
+            ]);
+
+            TgService::sendMessage(
+                $tgId,
+                'Поздравляю, ' . auth()->user()->name . ' ' . auth()->user()->last_name .
+                '! Вы авторизовались в системе как ' . auth()->user()->role->title .
+                ' и теперь будете получать все уведомления системы через меня.'
+            );
+
+            Log::channel('tg_api')
+                ->info(
+                    'Пользователь ' . auth()->user()->name . ' ' . auth()->user()->last_name .
+                    ' (' . auth()->user()->id . ') подключился к боту с tg_id: ' . $tgId
+                );
+
+            return redirect()->route('profile');
+        }
+
         return view('users.profile', [
             'title' => 'Профиль',
             'user' => auth()->user()
@@ -114,5 +139,27 @@ class UsersController extends Controller
         $user->update(['is_approved' => 1]);
 
         return redirect()->route('users.index')->with('success', 'Пользователь одобрен');
+    }
+
+    public function disconnectTg()
+    {
+        $tgId = auth()->user()->tg_id;
+
+        auth()->user()->update([
+            'tg_id' => null,
+        ]);
+
+        Log::channel('tg_api')
+            ->info(
+                'Сотрудник ' . auth()->user()->name . ' ' . auth()->user()->last_name .
+                ' (' . auth()->user()->id . ') отключился от бота.'
+            );
+
+        TgService::sendMessage(
+            $tgId,
+            'Вы успешно отключили свою учетную запись Telegram от системы! Больше вам не будут поступать уведомления.'
+        );
+
+        return redirect()->route('profile');
     }
 }
