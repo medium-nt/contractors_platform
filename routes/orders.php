@@ -47,7 +47,7 @@ Route::prefix('/orders')->group(function () {
         ->can('complete', 'order')
         ->name('orders.complete');
 
-    Route::get('/{order}/{name}/download', [App\Http\Controllers\OrdersController::class, 'downloadFile'])
+    Route::get('/{order}/{name}/download', [App\Http\Controllers\OrdersController::class, 'downloadOrderFile'])
         ->can('downloadFile', 'order')
         ->name('orders.download');
 
@@ -55,10 +55,34 @@ Route::prefix('/orders')->group(function () {
         ->can('downloadFile', 'order')
         ->name('orders.download_result');
 
-    Route::post('/{order}/{name}/delete', [App\Http\Controllers\OrdersController::class, 'deleteFile'])
+    Route::get('/{order}/{name}/download_expert', [App\Http\Controllers\OrdersController::class, 'downloadExpertFile'])
+        ->can('downloadFile', 'order')
+        ->name('orders.download_expert_file');
+
+    Route::get('/{order}/{name}/download_manager_file', [App\Http\Controllers\OrdersController::class, 'downloadManagerFile'])
+        ->can('downloadFile', 'order')
+        ->name('orders.download_manager_file');
+
+    Route::post('/{order}/{name}/delete', [App\Http\Controllers\OrdersController::class, 'deleteOrderFile'])
         ->can('deleteFile', 'order')
         ->name('orders.delete');
 
+    Route::post('/{order}/{name}/delete_file_expert', [App\Http\Controllers\OrdersController::class, 'deleteFileExpert'])
+        ->can('file_operation_expert', 'order')
+        ->name('orders.delete_file_expert');
+
+    Route::post('/{order}/{name}/delete_file_manager', [App\Http\Controllers\OrdersController::class, 'deleteFileManager'])
+        ->can('file_operation_manager', 'order')
+        ->name('orders.delete_file_manager');
+
     Route::get('/{order}/change_status/{status}', [App\Http\Controllers\OrdersController::class, 'changeStatus'])
         ->name('orders.change_status');
+
+    Route::put('/{order}/add_file_expert', [App\Http\Controllers\OrdersController::class, 'addFileExpert'])
+        ->can('file_operation_expert', 'order')
+        ->name('orders.add_file_expert');
+
+    Route::put('/{order}/add_file_manager', [App\Http\Controllers\OrdersController::class, 'addFileManager'])
+        ->can('file_operation_manager', 'order')
+        ->name('orders.add_file_manager');
 });

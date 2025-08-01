@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FileRequest;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\OrderResponse;
@@ -16,7 +17,6 @@ use App\Services\YandexDiskService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 
 class OrdersController extends Controller
 {
@@ -88,6 +88,8 @@ class OrdersController extends Controller
             'order' => $order,
             'files' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/order_files'),
             'resultFiles' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/result_files'),
+            'expertFiles' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/expert_files'),
+            'managerFiles' => YandexDiskService::listFiles('/alexstud/orders/' . $order->id . '/manager_files'),
             'responses' => OrderResponse::query()
                 ->where('order_id', $order->id)
                 ->get()
@@ -173,20 +175,8 @@ class OrdersController extends Controller
         return redirect()->route('orders.index')->with('success', 'Заказ удален');
     }
 
-    public function complete(Request $request, Order $order)
+    public function complete(FileRequest $request, Order $order)
     {
-        $request->validate([
-            'files' => 'required|array',
-            'files.*' => 'required|file|mimetypes:image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        ], [
-            'files.required' => 'Обязательно добавьте хотя бы один файл.',
-            'files.array' => 'Обязательно добавьте хотя бы один файл.',
-
-            'files.*.required' => 'Не загружено ни одного файла.',
-            'files.*.file' => 'Вы пытаетесь загрузить не файл.',
-            'files.*.mimetypes' => 'Допустимые форматы: изображения, PDF, DOC, DOCX.',
-        ]);
-
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $filename = $file->getClientOriginalName();
@@ -203,39 +193,43 @@ class OrdersController extends Controller
         return redirect()->route('orders.index')->with('success', 'Заказ выполнен');
     }
 
-    public function downloadFile(Order $order, $fileName)
+    public function downloadOrderFile(Order $order, $fileName)
     {
         $path = 'orders/' . $order->id . '/order_files/' . $fileName;
-        $content = YandexDiskService::read('alexstud/' . $path);
-        $filename = basename('alexstud/' . $path);
-
-        return Response::make($content, 200, [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-        ]);
+        return OrderService::downloadFile($path);
     }
 
     public function downloadResultFile(Order $order, $fileName)
     {
         $path = 'orders/' . $order->id . '/result_files/' . $fileName;
-        $content = YandexDiskService::read('alexstud/' . $path);
-        $filename = basename('alexstud/' . $path);
-
-        return Response::make($content, 200, [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-        ]);
+        return OrderService::downloadFile($path);
     }
 
-    public function deleteFile(Order $order, $fileName): RedirectResponse
+    public function downloadExpertFile(Order $order, $fileName)
     {
-        $result = YandexDiskService::deleteFile('alexstud/orders/' . $order->id . '/order_files/' . $fileName);
+        $path = 'orders/' . $order->id . '/expert_files/' . $fileName;
+        return OrderService::downloadFile($path);
+    }
 
-        if (!$result) {
-            return redirect()->route('orders.edit', ['order' => $order->id])->with('error', 'Ошибка! Файл не удален');
-        }
+    public function downloadManagerFile(Order $order, $fileName)
+    {
+        $path = 'orders/' . $order->id . '/manager_files/' . $fileName;
+        return OrderService::downloadFile($path);
+    }
 
-        return redirect()->route('orders.edit', ['order' => $order->id])->with('success', 'Файл удален');
+    public function deleteOrderFile(Order $order, $fileName)
+    {
+        return OrderService::deleteFile($order, $fileName, 'order_files');
+    }
+
+    public function deleteFileManager(Order $order, $fileName)
+    {
+        return OrderService::deleteFile($order, $fileName, 'manager_files');
+    }
+
+    public function deleteFileExpert(Order $order, $fileName)
+    {
+        return OrderService::deleteFile($order, $fileName, 'expert_files');
     }
 
     public function changeStatus(Order $order, Status $status): RedirectResponse
@@ -291,5 +285,15 @@ class OrdersController extends Controller
             ->route('orders.show', ['order' => $order->id])
             ->with('success', 'Заказ передан в работу выбранному эксперту');
 
+    }
+
+    public function addFileExpert(FileRequest $request, Order $order)
+    {
+        return OrderService::addFile($request, $order, 'expert_files');
+    }
+
+    public function addFileManager(FileRequest $request, Order $order)
+    {
+        return OrderService::addFile($request, $order, 'manager_files');
     }
 }

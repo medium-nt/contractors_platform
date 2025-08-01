@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Http\Requests\FileRequest;
 use App\Models\Order;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Response;
 
 class OrderService
 {
@@ -86,4 +89,41 @@ class OrderService
         return false;
     }
 
+    public static function downloadFile($path)
+    {
+        $content = YandexDiskService::read('alexstud/' . $path);
+        $filename = basename('alexstud/' . $path);
+
+        return Response::make($content, 200, [
+            'Content-Type' => 'application/octet-stream',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ]);
+    }
+
+    public static function addFile(FileRequest $request, Order $order, $folder): RedirectResponse
+    {
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filename = $file->getClientOriginalName();
+                $path = 'orders/' . $order->id . '/' . $folder . '/' . $filename;
+
+                YandexDiskService::write($path, file_get_contents($file));
+            }
+        }
+
+        return redirect()
+            ->route('orders.show', ['order' => $order->id])
+            ->with('success', 'Файл добавлен');
+    }
+
+    public static function deleteFile(Order $order, $fileName, $folder): bool
+    {
+        $result = YandexDiskService::deleteFile('alexstud/orders/' . $order->id . '/' . $folder . '/' . $fileName);
+
+        if (!$result) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -69,6 +69,16 @@ class OrderPolicy
         return $user->role->name == 'expert' && $user->id == $order->expert_id;
     }
 
+    public function file_operation_expert(User $user, Order $order): bool
+    {
+        return $user->role->name == 'expert' && $user->id == $order->expert_id;
+    }
+
+    public function file_operation_manager(User $user, Order $order): bool
+    {
+        return $user->role->name == 'manager' && $user->id == $order->manager_id;
+    }
+
     public function downloadFile(User $user, Order $order): bool
     {
         return ($user->role->name == 'manager' && $user->id == $order->manager_id)

@@ -184,6 +184,97 @@ use Carbon\Carbon;
             </div>
         </div>
 
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <label for="comment">Дополнительные файлы менеджера:</label>
+                        <ul class="list-group">
+                            @foreach($managerFiles as $file)
+                                <li class="list-group-item d-flex justify-content-between align-items-center file">
+                                    <a href="{{ route('orders.download_manager_file', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
+                                        {{ $file['name'] }}
+                                        ({{ Carbon::parse($file['modified'])->format('d/m/Y H:i') }})
+                                    </a>
+
+                                    @if($roleName == 'manager' && ($order->status_id == 2 || $order->status_id == 4) && $order->manager_id == auth()->user()->id)
+                                        <a href="{{ route('orders.delete_file_manager', ['order' => $order->id, 'name' => $file['name']]) }}"
+                                           class="btn btn-danger btn-sm">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        <hr>
+
+                        @if($roleName == 'manager' && ($order->status_id == 2 || $order->status_id == 4) && $order->manager_id == auth()->user()->id)
+                            <form method="POST"
+                                  enctype="multipart/form-data"
+                                  action="{{ route('orders.add_file_manager', $order->id) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="form-group">
+                                    <label for="file">Загрузить новые файлы:</label>
+                                    <input type="file" class="form-control" name="files[]"
+                                           accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                           multiple required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success">Загрузить</button>
+                                </div>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <label for="comment">Дополнительные файлы эксперта:</label>
+                        <ul class="list-group">
+                            @foreach($expertFiles as $file)
+                                <li class="list-group-item d-flex justify-content-between align-items-center file">
+                                    <a href="{{ route('orders.download_expert_file', ['order' => $order->id, 'name' => $file['name']]) }}" target="_blank">
+                                        {{ $file['name'] }}
+                                        ({{ Carbon::parse($file['modified'])->format('d/m/Y H:i') }})
+                                    </a>
+                                    @if($roleName == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
+                                        <a href="{{ route('orders.delete_file_expert', ['order' => $order->id, 'name' => $file['name']]) }}"
+                                           class="btn btn-danger btn-sm">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        <hr>
+
+                        @if($roleName == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
+                            <form method="POST"
+                                  enctype="multipart/form-data"
+                                  action="{{ route('orders.add_file_expert', $order->id) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="form-group">
+                                    <label for="file">Загрузить новые файлы:</label>
+                                    <input type="file" class="form-control" name="files[]"
+                                           accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                           multiple required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success">Загрузить</button>
+                                </div>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-body">
 
@@ -373,6 +464,32 @@ use Carbon\Carbon;
 
 @section('js')
     <script>
+        $('a.btn-danger').on('click', function(e) {
+            e.preventDefault();
+
+            var button = $(this);
+            var container = button.closest('.file');
+
+            button.hide();
+            button.after('<span class="deleting"><i class="fas fa-spinner fa-pulse mr-1"></i>Удаление...</span>');
+
+            $.ajax({
+                url: button.attr('href'),
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    container.remove();
+                },
+                error: function() {
+                    button.next('.deleting').remove();
+                    button.show();
+                    alert('Ошибка при удалении файла');
+                }
+            });
+        });
+
         $('button[type="submit"]').on('click', function() {
             var button = $(this);
             button.hide();
@@ -381,7 +498,7 @@ use Carbon\Carbon;
             setTimeout(function() {
                 button.next('.saving').remove();
                 button.show();
-            }, 5000);
+            }, 7500);
         });
     </script>
 
