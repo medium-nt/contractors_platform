@@ -110,6 +110,7 @@
                             <th scope="col">Тип работы</th>
                             <th scope="col">Предмет</th>
                             <th scope="col">Создан</th>
+                            <th scope="col">Дедлайн</th>
                             <th scope="col">Действия</th>
                         </tr>
                         </thead>
@@ -128,6 +129,7 @@
                                 <td>{{ $order->typeWork->title }}</td>
                                 <td>{{ $order->subject->title }}</td>
                                 <td>{{ $order->created_date }}</td>
+                                <td>{{ $order->deadline_date }}</td>
                                 <td>
                                     <a href="{{ route('orders.show', $order->id) }}" class="btn btn-info">
                                         <i class="far fa-eye"></i>

@@ -25,9 +25,18 @@ class Order extends Model
         'completed_at',
     ];
 
+    protected $casts = [
+        'deadline_at' => 'datetime',
+    ];
+
     public function getCreatedDateAttribute()
     {
         return $this->updated_at->format('d/m/Y H:i');
+    }
+
+    public function getDeadlineDateAttribute()
+    {
+        return $this->deadline_at->format('d/m/Y H:i');
     }
 
     public function expert(): BelongsTo
