@@ -184,6 +184,7 @@ use Carbon\Carbon;
             </div>
         </div>
 
+        @if($order->status_id > 1)
         <div class="row">
             <div class="form-group col-md-6 col-sm-12">
                 <div class="card">
@@ -274,6 +275,7 @@ use Carbon\Carbon;
                 </div>
             </div>
         </div>
+        @endif
 
         <div class="card">
             <div class="card-body">
@@ -297,7 +299,7 @@ use Carbon\Carbon;
                 @endif
 
                 <div class="row">
-                    <div class="col-xl-6 col-md-6 col-sm-12">
+                    <div class="col-12">
 
                     @if($roleName == 'expert' && $order->status_id == 1 && $order->expert_id == null)
                         @if($response)
