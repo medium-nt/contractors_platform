@@ -194,7 +194,10 @@ class OrdersController extends Controller
             'status_id' => 3
         ]);
 
-        return redirect()->route('orders.index')->with('success', 'Заказ выполнен');
+        OrderService::sendManagerMessageAboutOrderInspection($order);
+
+        return redirect()->route('orders.index')
+            ->with('success', 'Заказ сдан на проверку');
     }
 
     public function downloadOrderFile(Order $order, $fileName)
@@ -241,10 +244,12 @@ class OrdersController extends Controller
         $result = OrderService::changeStatus($order, $status);
 
         if (!$result) {
-            return redirect()->route('orders.show', ['order' => $order->id])->with('error', 'Ошибка! Статус не изменен');
+            return redirect()->route('orders.show', ['order' => $order->id])
+                ->with('error', 'Ошибка! Статус не изменен');
         }
 
-        return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Статус изменен');
+        return redirect()->route('orders.show', ['order' => $order->id])
+            ->with('success', 'Статус изменен');
 
     }
 

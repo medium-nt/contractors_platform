@@ -62,6 +62,8 @@ class OrderService
             case 4:
                 if ($roleName == 'manager' && ($order->status_id == 3 || $order->status_id == 5)) {
                     $accept = true;
+
+                    self::sendExpertMessageAboutReturnToWork($order);
                 }
                 break;
             case 5:
@@ -137,6 +139,44 @@ class OrderService
         }
 
         $text = 'Вы выбраны исполнителем по заказу: ' . $order->id . ' ('. $order->title . "). \n" .
+            'Ссылка на заказ ' . route('orders.show', $order->id);
+
+        Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
+
+        TgService::sendMessage(
+            $tgId,
+            $text
+        );
+    }
+
+    public static function sendExpertMessageAboutReturnToWork(Order $order): void
+    {
+        $tgId = $order->expert->tg_id;
+
+        if (empty($tgId)) {
+            return;
+        }
+
+        $text = 'Заказ: ' . $order->id . ' ('. $order->title . ") возвращен вам на доработку. \n" .
+            'Ссылка на заказ ' . route('orders.show', $order->id);
+
+        Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
+
+        TgService::sendMessage(
+            $tgId,
+            $text
+        );
+    }
+
+    public static function sendManagerMessageAboutOrderInspection(Order $order): void
+    {
+        $tgId = $order->manager->tg_id;
+
+        if (empty($tgId)) {
+            return;
+        }
+
+        $text = 'Исполнитель сдал заказ ' . $order->id . ' ('. $order->title . ") на проверку. \n" .
             'Ссылка на заказ ' . route('orders.show', $order->id);
 
         Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
