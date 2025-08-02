@@ -1,6 +1,9 @@
 <?php
 namespace App\Livewire;
 
+use App\Models\Order;
+use App\Services\TgService;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use App\Models\Chat;
 use Illuminate\Support\Facades\Auth;
@@ -61,14 +64,38 @@ class ChatComponent extends Component
             'orderId' => 'required|integer',
         ]);
 
-        $newMessage = Chat::create([
-            'sender_id' => Auth::id(),
+        $newMessage = Chat::query()->create([
+            'sender_id' => auth()->id(),
             'order_id' => $this->orderId,
             'message' => $this->message,
         ]);
 
-//        $this->message = '';
-//        $this->getNewMessages();
+        $order = Order::query()->find($this->orderId);
+
+        $manager = $order->manager;
+        $expert = $order->expert;
+
+        $tgIds = match (auth()->id()) {
+            $manager->id => [$manager->tg_id],
+            $expert->id => [$expert->tg_id],
+            default => [$manager->tg_id, $expert->tg_id],
+        };
+
+        $text = 'Получено новое сообщение в заказе: ' . $order->id . ' ('. $order->title . "). \n" .
+            'Ссылка на заказ ' . route('orders.show', $order->id);
+
+        foreach ($tgIds as $tgId) {
+            if (empty($tgId)) {
+                continue;
+            }
+
+            Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
+
+            TgService::sendMessage(
+                $tgId,
+                $text
+            );
+        }
 
         $this->messages->push($newMessage);
         $this->lastMessageId = $newMessage->id;
@@ -79,8 +106,6 @@ class ChatComponent extends Component
 
     public function render()
     {
-        logger('ChatComponent render called');
-
         return view('livewire.chat_component');
     }
 

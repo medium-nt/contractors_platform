@@ -56,6 +56,10 @@ class OrdersController extends Controller
 
         $order = Order::query()->create($request->all());
 
+        if ($order->expert_id) {
+            OrderService::sendExpertSelectionMessage($order);
+        }
+
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $filename = $file->getClientOriginalName();
@@ -280,6 +284,8 @@ class OrdersController extends Controller
             'expert_id' => $expert->id,
             'status_id' => 2
         ]);
+
+        OrderService::sendExpertSelectionMessage($order);
 
         return redirect()
             ->route('orders.show', ['order' => $order->id])

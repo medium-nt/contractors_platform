@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
 class OrderService
@@ -125,5 +126,24 @@ class OrderService
         }
 
         return true;
+    }
+
+    public static function sendExpertSelectionMessage(Order $order): void
+    {
+        $tgId = $order->expert->tg_id;
+
+        if (empty($tgId)) {
+            return;
+        }
+
+        $text = 'Вы выбраны исполнителем по заказу: ' . $order->id . ' ('. $order->title . "). \n" .
+            'Ссылка на заказ ' . route('orders.show', $order->id);
+
+        Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
+
+        TgService::sendMessage(
+            $tgId,
+            $text
+        );
     }
 }
