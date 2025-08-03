@@ -115,6 +115,7 @@ class OrderService
 
                 YandexDiskService::write($path, file_get_contents($file));
             }
+            self::sendMessageAddFile($order, $folder);
         }
 
         return redirect()
@@ -218,5 +219,19 @@ class OrderService
                 $text
             );
         }
+    }
+
+    private static function sendMessageAddFile(Order $order, $folder): void
+    {
+        $TgId = match ($folder) {
+            'manager_files' => $order->expert->tg_id,
+            'expert_files' => $order->manager->tg_id,
+        };
+
+        TgService::sendMessage(
+            $TgId,
+            'В заказ #' . $order->id . ' ('. $order->title . ") добавлены новые дополнительные файлы. \n" .
+                'Ссылка на заказ ' . route('orders.show', $order->id)
+        );
     }
 }
