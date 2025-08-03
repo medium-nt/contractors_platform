@@ -5,7 +5,10 @@ namespace App\Services;
 use App\Http\Requests\FileRequest;
 use App\Models\Order;
 use App\Models\Status;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
@@ -132,58 +135,88 @@ class OrderService
 
     public static function sendExpertSelectionMessage(Order $order): void
     {
-        $tgId = $order->expert->tg_id;
-
-        if (empty($tgId)) {
-            return;
-        }
-
-        $text = 'Вы выбраны исполнителем по заказу: ' . $order->id . ' ('. $order->title . "). \n" .
-            'Ссылка на заказ ' . route('orders.show', $order->id);
-
-        Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
-
-        TgService::sendMessage(
-            $tgId,
-            $text
+        TgService::sendMessage($order->expert->tg_id,
+            'Вы выбраны исполнителем по заказу: ' . $order->id . ' ('. $order->title . "). \n" .
+            'Ссылка на заказ ' . route('orders.show', $order->id)
         );
     }
 
     public static function sendExpertMessageAboutReturnToWork(Order $order): void
     {
-        $tgId = $order->expert->tg_id;
-
-        if (empty($tgId)) {
-            return;
-        }
-
-        $text = 'Заказ: ' . $order->id . ' ('. $order->title . ") возвращен вам на доработку. \n" .
-            'Ссылка на заказ ' . route('orders.show', $order->id);
-
-        Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
-
-        TgService::sendMessage(
-            $tgId,
-            $text
+        TgService::sendMessage($order->expert->tg_id,
+            'Заказ: ' . $order->id . ' ('. $order->title . ") возвращен вам на доработку. \n" .
+            'Ссылка на заказ ' . route('orders.show', $order->id)
         );
     }
 
     public static function sendManagerMessageAboutOrderInspection(Order $order): void
     {
-        $tgId = $order->manager->tg_id;
-
-        if (empty($tgId)) {
-            return;
-        }
-
-        $text = 'Исполнитель сдал заказ ' . $order->id . ' ('. $order->title . ") на проверку. \n" .
-            'Ссылка на заказ ' . route('orders.show', $order->id);
-
-        Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
-
         TgService::sendMessage(
-            $tgId,
-            $text
+            $order->manager->tg_id,
+            'Исполнитель сдал заказ ' . $order->id . ' ('. $order->title . ") на проверку. \n" .
+                'Ссылка на заказ ' . route('orders.show', $order->id)
         );
+    }
+
+    public static function sendExpertMessageIfDeadlineNowByOrders(): void
+    {
+        $orders = Order::query()
+            ->whereDate('deadline_at', now())
+            ->get();
+
+        $groupedOrders = $orders->groupBy('expert_id');
+
+        self::sendMessageListTasks($groupedOrders);
+    }
+
+    public static function sendManagerMessageIfDeadlineNowByOrders(): void
+    {
+        $orders = Order::query()
+            ->whereDate('deadline_at', now())
+            ->get();
+
+        $groupedOrders = $orders->groupBy('manager_id');
+
+        self::sendMessageListTasks($groupedOrders);
+    }
+
+    public static function sendManagerMessageIfDeadlineNowByTasks(): void
+    {
+        $tasks = Task::query()
+            ->whereDate('deadline_at', now())
+            ->get();
+
+        $groupedTasks = $tasks->groupBy('manager_id');
+
+        foreach ($groupedTasks as $userId => $userTasks) {
+            $text = "Ваши задачи у которых сегодня дедлайн:\n";
+
+            foreach ($userTasks as $task) {
+                $text .= "- #{$task->id} {$task->title} (до {$task->deadline_at->format('H:i')})."
+                    . " Ссылка на задачу: " . route('tasks.edit', $task->id) . "\n";
+            }
+
+            TgService::sendMessage(
+                User::query()->find($userId)->tg_id,
+                $text
+            );
+        }
+    }
+
+    private static function sendMessageListTasks(Collection $groupedOrders): void
+    {
+        foreach ($groupedOrders as $userId => $userTasks) {
+            $text = "Ваши заказы у которых сегодня дедлайн:\n";
+
+            foreach ($userTasks as $task) {
+                $text .= "- #{$task->id} {$task->title} (до {$task->deadline_at->format('H:i')})."
+                    . " Ссылка на заказ: " . route('tasks.edit', $task->id) . "\n";
+            }
+
+            TgService::sendMessage(
+                User::query()->find($userId)->tg_id,
+                $text
+            );
+        }
     }
 }
