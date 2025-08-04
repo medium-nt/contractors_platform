@@ -3,7 +3,6 @@
 use App\Services\OrderService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Log;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -18,7 +17,3 @@ Schedule::call(function () {
 Schedule::call(function () {
     OrderService::sendMessageIfHalfwayPassedByOrders();
 })->hourly();
-
-Schedule::call(function () {
-    Log::info('тестируем запуск крона');
-})->everyMinute();
