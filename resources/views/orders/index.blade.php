@@ -109,6 +109,18 @@
                             <th scope="col">Название</th>
                             <th scope="col">Тип работы</th>
                             <th scope="col">Предмет</th>
+                            @switch(auth()->user()->role->name)
+                                @case('manager')
+                                    <th scope="col">ФИО эксперта</th>
+                                    @break
+                                @case('expert')
+                                    <th scope="col">ФИО менеджера</th>
+                                    @break
+                                @case('admin')
+                                    <th scope="col">ФИО эксперта</th>
+                                    <th scope="col">ФИО менеджера</th>
+                                    @break
+                            @endswitch
                             <th scope="col">Создан</th>
                             <th scope="col">Дедлайн</th>
                             <th scope="col">Действия</th>
@@ -128,6 +140,18 @@
                                 <td>{{ $order->title }}</td>
                                 <td>{{ $order->typeWork->title }}</td>
                                 <td>{{ $order->subject->title }}</td>
+                                @switch(auth()->user()->role->name)
+                                    @case('manager')
+                                        <td>{{$order->expert->name ?? ''}} {{$order->expert->last_name ?? ''}}</td>
+                                        @break
+                                    @case('expert')
+                                        <td>{{$order->manager->name ?? ''}} {{$order->manager->last_name ?? ''}}</td>
+                                        @break
+                                    @case('admin')
+                                        <td>{{$order->expert->name ?? ''}} {{$order->expert->last_name ?? ''}}</td>
+                                        <td>{{$order->manager->name ?? ''}} {{$order->manager->last_name ?? ''}}</td>
+                                        @break
+                                @endswitch
                                 <td>{{ $order->created_date }}</td>
                                 <td>{{ $order->deadline_date }}</td>
                                 <td>
