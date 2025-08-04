@@ -17,7 +17,6 @@ class TgService
 
         Log::info('Отправлено сообщение в телеграм (tg_id: ' . $chatId . "): \n" . $message );
 
-
         //  если development сервер, то отправляем сообщение в телеграм через guzzle.
         if (!app()->environment('production')) {
             $client = new Client([

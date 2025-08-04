@@ -204,6 +204,28 @@ class OrderService
         }
     }
 
+    public static function sendMessageIfHalfwayPassedByOrders(): void
+    {
+        $orders = Order::query()
+            ->whereRaw('TIMESTAMPDIFF(HOUR, created_at, NOW()) BETWEEN FLOOR(TIMESTAMPDIFF(HOUR, created_at, deadline_at) / 2) AND FLOOR(TIMESTAMPDIFF(HOUR, created_at, deadline_at) / 2) + 1')
+            ->get();
+
+        foreach ($orders as $order) {
+            $text = "Обратите внимание, что до сдачи заказа #{$order->id} \"{$order->title}\" осталось менее 50% срока:\n"
+                . " Ссылка на заказ: " . route('orders.edit', $order->id) . "\n";
+
+            TgService::sendMessage(
+                $order->manager->tg_id,
+                $text
+            );
+
+            TgService::sendMessage(
+                $order->except->tg_id,
+                $text
+            );
+        }
+    }
+
     private static function sendMessageListTasks(Collection $groupedOrders): void
     {
         foreach ($groupedOrders as $userId => $userTasks) {

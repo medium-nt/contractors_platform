@@ -13,3 +13,8 @@ Schedule::call(function () {
     OrderService::sendManagerMessageIfDeadlineNowByOrders();
     OrderService::sendManagerMessageIfDeadlineNowByTasks();
 })->dailyAt('07:00');
+
+Schedule::call(function () {
+    OrderService::sendMessageIfHalfwayPassedByOrders();
+})->hourly();
+
