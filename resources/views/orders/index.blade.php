@@ -15,9 +15,10 @@
                 <form action="{{ route('orders.index') }}" method="get">
                     <div class="row">
                         <div class="form-group col-md-2">
+
                             <select name="type_work_id"
                                     id="type_work_id"
-                                    class="form-control"
+                                    class="select2"
                                     required>
                                 <option value="all" selected>Все</option>
                                 @foreach($typeWorks as $typeWork)
@@ -32,7 +33,7 @@
                         <div class="form-group col-md-2">
                             <select name="subject_id"
                                     id="subject_id"
-                                    class="form-control"
+                                    class="select2"
                                     required>
                                 <option value="all" selected>Все</option>
                                 @foreach($subjects as $subject)
@@ -67,7 +68,6 @@
                 </form>
 
                 <div class="row">
-
                     @foreach($statuses as $status)
                         @if(auth()->user()->role->name == 'expert' && $status->id > 4)
                             @continue
@@ -176,3 +176,14 @@
         </div>
     </div>
 @stop
+
+@section('js')
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/ru.js"></script>
+@stop
+
+@push('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+@endpush

@@ -55,7 +55,7 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="type_work_id">Тип работы</label>
-                            <select name="type_work_id" id="type_work_id" class="form-control" required>
+                            <select name="type_work_id" id="type_work_id" class="form-control select2" required>
                                 <option value="" disabled selected>---</option>
                                 @foreach($typeWorks as $typeWork)
                                     <option value="{{ $typeWork->id }}"
@@ -68,7 +68,7 @@
 
                         <div class="form-group col-md-6">
                             <label for="subject_id">Название предмета</label>
-                            <select name="subject_id" id="subject_id" class="form-control" required>
+                            <select name="subject_id" id="subject_id" class="form-control select2" required>
                                 <option value="" disabled selected>---</option>
                                 @foreach($subjects as $subject)
                                     <option value="{{ $subject->id }}"
@@ -306,4 +306,13 @@
             $(button).parent().parent().remove();
         }
     </script>
+
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/ru.js"></script>
 @stop
+
+@push('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+@endpush
