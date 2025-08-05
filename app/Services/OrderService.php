@@ -167,7 +167,7 @@ class OrderService
 
         $groupedOrders = $orders->groupBy('expert_id');
 
-        self::sendMessageListTasks($groupedOrders);
+        self::sendMessageListOrders($groupedOrders);
     }
 
     public static function sendManagerMessageIfDeadlineNowByOrders(): void
@@ -178,7 +178,7 @@ class OrderService
 
         $groupedOrders = $orders->groupBy('manager_id');
 
-        self::sendMessageListTasks($groupedOrders);
+        self::sendMessageListOrders($groupedOrders);
     }
 
     public static function sendManagerMessageIfDeadlineNowByTasks(): void
@@ -226,14 +226,14 @@ class OrderService
         }
     }
 
-    private static function sendMessageListTasks(Collection $groupedOrders): void
+    private static function sendMessageListOrders(Collection $groupedOrders): void
     {
         foreach ($groupedOrders as $userId => $userTasks) {
             $text = "Ваши заказы у которых сегодня дедлайн:\n";
 
             foreach ($userTasks as $task) {
                 $text .= "- #{$task->id} {$task->title} (до {$task->deadline_at->format('H:i')})."
-                    . " Ссылка на заказ: " . route('tasks.edit', $task->id) . "\n";
+                    . " Ссылка на заказ: " . route('orders.edit', $task->id) . "\n";
             }
 
             TgService::sendMessage(
