@@ -220,7 +220,7 @@ class OrderService
             );
 
             TgService::sendMessage(
-                $order->except->tg_id,
+                $order->expert->tg_id,
                 $text
             );
         }
