@@ -13,7 +13,8 @@
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
         "livewire/livewire": "^3.6",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-zip": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

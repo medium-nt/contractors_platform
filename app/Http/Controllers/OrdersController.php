@@ -307,4 +307,16 @@ class OrdersController extends Controller
     {
         return OrderService::addFile($request, $order, 'manager_files');
     }
+
+    public function downloadArchive(Order $order, $folder)
+    {
+        $archive = YandexDiskService::downloadArchive($order, $folder);
+
+        if (!$archive) {
+            return redirect()->route('orders.show', ['order' => $order->id])
+                ->with('error', 'Не удалось загрузить архив');
+        }
+
+        return $archive;
+    }
 }

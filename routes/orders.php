@@ -63,6 +63,10 @@ Route::prefix('/orders')->group(function () {
         ->can('downloadFile', 'order')
         ->name('orders.download_manager_file');
 
+    Route::get('/{order}/download_archive/{folder}', [App\Http\Controllers\OrdersController::class, 'downloadArchive'])
+        ->can('downloadFile', 'order')
+        ->name('orders.download_archive');
+
     Route::post('/{order}/{name}/delete', [App\Http\Controllers\OrdersController::class, 'deleteOrderFile'])
         ->can('deleteFile', 'order')
         ->name('orders.delete');

@@ -4,7 +4,9 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
+use ZipArchive;
 
 class YandexDiskService {
     public function __construct(string $token)
@@ -154,4 +156,38 @@ class YandexDiskService {
         return $ans;
     }
 
+    public static function downloadArchive($order, $folder): BinaryFileResponse|false
+    {
+        $folderPath = '/alexstud/orders/' . $order->id . '/' . $folder;
+        $listFiles = self::listFiles($folderPath);
+
+        $filesToAdd = array_filter($listFiles, fn($f) => $f['type'] === 'file');
+        if (empty($filesToAdd)) {
+            return false;
+        }
+
+        $zip = new ZipArchive;
+        $zipPath = storage_path("app/temp/order_{$order->id}.zip");
+
+        if (!file_exists(dirname($zipPath))) {
+            mkdir(dirname($zipPath), 0777, true);
+        }
+
+        $result = $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        if ($result !== true) {
+            return false;
+        }
+
+        foreach ($listFiles as $file) {
+            if ($file['type'] !== 'file') continue;
+
+            $filePath = $folderPath . '/' . $file['name'];
+            $content = YandexDiskService::read($filePath);
+            $zip->addFromString($file['name'], $content);
+        }
+
+        $zip->close();
+
+        return response()->download($zipPath)->deleteFileAfterSend(true);
+    }
 }

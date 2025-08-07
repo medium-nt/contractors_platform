@@ -179,6 +179,10 @@ use Carbon\Carbon;
                                 </li>
                             @endforeach
                         </ul>
+                        @if($files)
+                        <a href="{{ route('orders.download_archive', ['order' => $order->id, 'folder' => 'order_files']) }}"
+                           class="btn btn-primary mt-3">Скачать все</a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -208,6 +212,10 @@ use Carbon\Carbon;
                             @endforeach
                         </ul>
 
+                        @if($managerFiles)
+                        <a href="{{ route('orders.download_archive', ['order' => $order->id, 'folder' => 'manager_files']) }}"
+                               class="btn btn-primary mt-3">Скачать все</a>
+                        @endif
                         <hr>
 
                         @if($roleName == 'manager' && ($order->status_id == 2 || $order->status_id == 4) && $order->manager_id == auth()->user()->id)
@@ -252,6 +260,11 @@ use Carbon\Carbon;
                             @endforeach
                         </ul>
 
+                        @if($expertFiles)
+                        <a href="{{ route('orders.download_archive', ['order' => $order->id, 'folder' => 'expert_files']) }}"
+                           class="btn btn-primary mt-3">Скачать все</a>
+                        @endif
+
                         <hr>
 
                         @if($roleName == 'expert' && ($order->status_id == 2 || $order->status_id == 4) && $order->expert_id == auth()->user()->id)
@@ -294,6 +307,10 @@ use Carbon\Carbon;
                                 </li>
                             @endforeach
                         </ul>
+                        @if($resultFiles)
+                        <a href="{{ route('orders.download_archive', ['order' => $order->id, 'folder' => 'result_files']) }}"
+                           class="btn btn-primary mt-3">Скачать все</a>
+                        @endif
                     </div>
                 </div>
                 @endif
