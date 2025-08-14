@@ -29,7 +29,7 @@ class YandexDiskService {
         return storage_path('certs/cacert.pem');
     }
 
-    private static function ensureDirectoryExists(string $path): void
+    public static function ensureDirectoryExists(string $path): void
     {
         $directory = dirname($path);
         if ($directory === '.' || $directory === '/') {
@@ -37,10 +37,11 @@ class YandexDiskService {
         }
 
         $parts = explode('/', trim($directory, '/'));
-        $currentPath = 'alexstud';
+        $currentPath = '';
 
         foreach ($parts as $part) {
             $currentPath .= '/' . $part;
+            $currentPath = ltrim($currentPath, '/');
 
             $response = Http::withHeaders(['Authorization' => 'OAuth ' . self::getToken()])
                 ->withOptions([
@@ -103,7 +104,7 @@ class YandexDiskService {
             ->withOptions([
                 'verify' => self::getCertPath(),
             ])
-            ->get('https://cloud-api.yandex.net/v1/disk/resources/upload?path=' . urlencode('alexstud/' . ltrim($path, '/')) . '&overwrite=true');
+            ->get('https://cloud-api.yandex.net/v1/disk/resources/upload?path=' . urlencode(ltrim($path, '/')) . '&overwrite=true');
 
         $uploadUrl = $uploadResponse->json()['href'] ?? null;
 

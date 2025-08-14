@@ -63,7 +63,7 @@ class OrdersController extends Controller
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $filename = $file->getClientOriginalName();
-                $path = 'orders/' . $order->id . '/order_files/' . $filename;
+                $path = 'alexstud/orders/' . $order->id . '/order_files/' . $filename;
 
                 YandexDiskService::write($path, file_get_contents($file));
             }
@@ -134,7 +134,7 @@ class OrdersController extends Controller
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $filename = $file->getClientOriginalName();
-                $path = 'orders/' . $order->id . '/order_files/' . $filename;
+                $path = 'alexstud/orders/' . $order->id . '/order_files/' . $filename;
 
                 YandexDiskService::write($path, file_get_contents($file));
             }
@@ -184,7 +184,7 @@ class OrdersController extends Controller
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $filename = $file->getClientOriginalName();
-                $path = 'orders/' . $order->id . '/result_files/' . $filename;
+                $path = 'alexstud/orders/' . $order->id . '/result_files/' . $filename;
 
                 YandexDiskService::write($path, file_get_contents($file));
             }
@@ -202,25 +202,25 @@ class OrdersController extends Controller
 
     public function downloadOrderFile(Order $order, $fileName)
     {
-        $path = 'orders/' . $order->id . '/order_files/' . $fileName;
+        $path = 'alexstud/orders/' . $order->id . '/order_files/' . $fileName;
         return OrderService::downloadFile($path);
     }
 
     public function downloadResultFile(Order $order, $fileName)
     {
-        $path = 'orders/' . $order->id . '/result_files/' . $fileName;
+        $path = 'alexstud/orders/' . $order->id . '/result_files/' . $fileName;
         return OrderService::downloadFile($path);
     }
 
     public function downloadExpertFile(Order $order, $fileName)
     {
-        $path = 'orders/' . $order->id . '/expert_files/' . $fileName;
+        $path = 'alexstud/orders/' . $order->id . '/expert_files/' . $fileName;
         return OrderService::downloadFile($path);
     }
 
     public function downloadManagerFile(Order $order, $fileName)
     {
-        $path = 'orders/' . $order->id . '/manager_files/' . $fileName;
+        $path = 'alexstud/orders/' . $order->id . '/manager_files/' . $fileName;
         return OrderService::downloadFile($path);
     }
 

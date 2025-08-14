@@ -97,8 +97,8 @@ class OrderService
 
     public static function downloadFile($path)
     {
-        $content = YandexDiskService::read('alexstud/' . $path);
-        $filename = basename('alexstud/' . $path);
+        $content = YandexDiskService::read($path);
+        $filename = basename($path);
 
         return Response::make($content, 200, [
             'Content-Type' => 'application/octet-stream',
@@ -111,7 +111,7 @@ class OrderService
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $filename = $file->getClientOriginalName();
-                $path = 'orders/' . $order->id . '/' . $folder . '/' . $filename;
+                $path = 'alexstud/orders/' . $order->id . '/' . $folder . '/' . $filename;
 
                 YandexDiskService::write($path, file_get_contents($file));
             }
