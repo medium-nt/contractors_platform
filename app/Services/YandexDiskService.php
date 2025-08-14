@@ -191,4 +191,22 @@ class YandexDiskService {
 
         return response()->download($zipPath)->deleteFileAfterSend(true);
     }
+
+    public static function createFolder(string $path): bool
+    {
+        self::ensureDirectoryExists($path);
+
+        $response = Http::withHeaders([
+            'Authorization' => 'OAuth ' . self::getToken(),
+        ])->withOptions([
+            'verify' => self::getCertPath(),
+        ])->send('PUT', 'https://cloud-api.yandex.net/v1/disk/resources?path=' . urlencode(ltrim($path, '/')));
+
+        if ($response->status() == 201) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

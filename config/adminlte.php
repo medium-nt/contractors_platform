@@ -320,6 +320,13 @@ return [
         ],
 
         [
+            'text' => 'disk',
+            'url' => 'admin/disk',
+            'icon' => 'fas fa-fw fa-hdd',
+            'can' => 'is-manager-or-admin',
+        ],
+
+        [
             'text' => 'settings',
             'icon' => 'fas fa-fw fa-cog',
             'can' => 'is-admin',
