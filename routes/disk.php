@@ -10,6 +10,9 @@ Route::prefix('/disk')->group(function () {
     Route::post('/create_folder', [App\Http\Controllers\DiskController::class, 'createFolder'])
         ->name('disk.create_folder');
 
+    Route::get('/publish', [App\Http\Controllers\DiskController::class, 'getYandexDiskPublicUrl'])
+        ->name('disk.publish');
+
     Route::post('/upload', [App\Http\Controllers\DiskController::class, 'uploadFile'])
         ->name('disk.upload');
 

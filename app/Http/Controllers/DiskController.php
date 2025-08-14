@@ -95,8 +95,14 @@ class DiskController extends Controller
         YandexDiskService::deleteFile($path . $folder);
         sleep(1);
 
+        if (dirname($folder) == '/' || dirname($folder) == '.') {
+            $redirectFolder = '';
+        } else {
+            $redirectFolder = dirname($folder);
+        }
+
         return redirect()
-            ->route('disk.index', ['folder' => dirname($folder)])
+            ->route('disk.index', ['folder' => $redirectFolder])
             ->with('success', 'Удалено.');
     }
 
@@ -135,4 +141,32 @@ class DiskController extends Controller
 
         return $path;
     }
+
+    public function getYandexDiskPublicUrl()
+    {
+        $folder = $_GET['folder'] ?? '';
+        $path = self::getPath($folder) . $folder;
+
+        $result = YandexDiskService::publishYandexDiskResource($path);
+
+        if(!$result) {
+            return redirect()
+                ->route('disk.index')
+                ->with('error', 'ошибка в публикации ссылки');
+        }
+
+        $publicUrl = YandexDiskService::getYandexDiskPublicUrl($path);
+
+        if (dirname($folder) == '/' || dirname($folder) == '.') {
+            $redirectFolder = '';
+        } else {
+            $redirectFolder = dirname($folder);
+        }
+
+        return redirect()
+            ->route('disk.index', ['folder' => $redirectFolder])
+            ->with('success', 'Ссылка опубликована.')
+            ->with('publicUrl', $publicUrl);
+    }
+
 }

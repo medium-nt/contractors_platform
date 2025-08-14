@@ -49,6 +49,17 @@
             </div>
         </div>
 
+        @if(session('publicUrl'))
+            @php
+                $url = session('publicUrl');
+            @endphp
+
+            <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                <span>Публичная ссылка: <a href="{{ $url }}" target="_blank">{{ $url }}</a></span>
+                <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('{{ $url }}')">Скопировать</button>
+            </div>
+        @endif
+
         <div class="card">
             <table class="table">
                 <thead>
@@ -143,6 +154,13 @@
                                 @endif
                             </td>
                             <td>
+                                <a href="{{ route('disk.publish', ['folder' => $link.$resource['name']]) }}"
+                                   class="text-success mr-3"
+                                   title="Опубликовать"
+                                >
+                                    <i class="fas fa-share"></i>
+                                </a>
+
                                 <a href="{{ route('disk.delete', ['folder' => $link.$resource['name']]) }}"
                                    class="text-danger"
                                    onclick="return confirm('Вы действительно хотите удалить?');"
@@ -175,6 +193,14 @@
                 });
             });
         });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Ссылка скопирована!');
+            }, function(err) {
+                alert('Ошибка при копировании');
+            });
+        }
     </script>
 @endpush
 

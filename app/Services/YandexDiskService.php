@@ -209,4 +209,30 @@ class YandexDiskService {
         return false;
     }
 
+    public static function publishYandexDiskResource(string $path): bool
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'OAuth ' . self::getToken(),
+        ])->withOptions([
+            'verify' => self::getCertPath(),
+        ])->send('PUT', 'https://cloud-api.yandex.net/v1/disk/resources/publish?path=' . urlencode(ltrim($path, '/')));
+
+        return $response->successful();
+    }
+
+    public static function getYandexDiskPublicUrl(string $path): ?string
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'OAuth ' . self::getToken(),
+        ])->withOptions([
+            'verify' => self::getCertPath(),
+        ])->get('https://cloud-api.yandex.net/v1/disk/resources?path=' . urlencode(ltrim($path, '/')));
+
+        if ($response->successful()) {
+            return $response->json('public_url');
+        }
+
+        return null;
+    }
+
 }
