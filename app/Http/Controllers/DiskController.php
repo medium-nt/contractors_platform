@@ -25,7 +25,7 @@ class DiskController extends Controller
         }
 
         return view('disk.index', [
-            'title' => 'Диск',
+            'title' => 'Персональный диск',
             'link' => ($folder == '') ? '' : $folder . '/',
             'backLink' => ($dirname == '/' || $dirname == '.' ) ? '' : $dirname,
             'resources' => YandexDiskService::listFiles($path),

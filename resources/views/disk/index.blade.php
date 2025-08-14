@@ -15,7 +15,7 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6 mb-2 mb-md-0">
-                            <input type="file" class="form-control" id="file" name="files[]" required>
+                            <input type="file" class="form-control" id="file" name="files[]" multiple required>
                         </div>
 
                         <div class="col-md-3">
@@ -43,12 +43,6 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-body">
-                <input type="text" id="searchInput" class="form-control" placeholder="Поиск...">
-            </div>
-        </div>
-
         @if(session('publicUrl'))
             @php
                 $url = session('publicUrl');
@@ -64,6 +58,16 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <td colspan="4">
+                        <b> ../{{ $link }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Поиск...">
+                    </td>
+                </tr>
+                <tr>
                     <th scope="col">Имя</th>
                     <th scope="col">Дата изменения</th>
                     <th scope="col">Размер</th>
@@ -71,26 +75,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <a href="{{ route('disk.index', ['folder' => $backLink]) }}" class="active">
-                            <i class="fas fa-reply text-dark mr-3"></i>...
-                        </a>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    <tr>
+                        <td colspan="4">
+                            <a href="{{ route('disk.index', ['folder' => $backLink]) }}" class="active">
+                                <i class="fas fa-reply text-dark mr-3"></i>...
+                            </a>
+                        </td>
+                    </tr>
 
                     @if(auth()->user()->role->name == 'admin' && $myFolderLink)
                     <tr>
-                        <td>
+                        <td colspan="4">
                             <a href="{{ route('disk.index', ['folder' => $allFolders]) }}" class="active">
                                 <i class="fas fa-folder-open text-dark mr-3"></i>Диски всех менеджеров
                             </a>
                         </td>
                     </tr>
-                   @endif
+                    @endif
 
                     @foreach($resources as $resource)
                         @if($resource['name'] == '\\')
@@ -171,7 +172,6 @@
                             </td>
                         </tr>
                     @endforeach
-
                 </tbody>
             </table>
         </div>
