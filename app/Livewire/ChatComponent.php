@@ -76,8 +76,8 @@ class ChatComponent extends Component
         $expert = $order->expert;
 
         $tgIds = match (auth()->id()) {
-            $manager->id => [$manager->tg_id],
-            $expert->id => [$expert->tg_id],
+            $manager->id => [$expert->tg_id],
+            $expert->id => [$manager->tg_id],
             default => [$manager->tg_id, $expert->tg_id],
         };
 
