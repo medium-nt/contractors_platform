@@ -307,7 +307,7 @@ return [
 
         [
             'text' => 'orders',
-            'url' => 'admin/orders',
+            'url' => 'admin/orders?status=2',
             'icon' => 'fas fa-fw fa-clipboard-list',
             'can' => 'is-approved',
         ],
