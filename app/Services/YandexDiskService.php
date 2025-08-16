@@ -206,6 +206,12 @@ class YandexDiskService {
             return true;
         }
 
+        Log::channel('yandex_disk')
+            ->info('Папка не создалась', [
+                'path' => $path,
+                'response' => $response->json(),
+            ]);
+
         return false;
     }
 
