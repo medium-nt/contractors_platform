@@ -36,6 +36,7 @@
 
                                 @if(auth()->user()->role->name == 'manager')
                                     <p data-field="expert" style="display: none;"><strong>Эксперт:</strong> <span id="expertName"></span></p>
+                                    <p data-field="owner" style="display: none;"><strong>Создатель:</strong> <span id="ownerName"></span></p>
                                 @endif
                             </div>
                             <div class="modal-footer">
@@ -51,7 +52,7 @@
     </div>
 @stop
 
-@push('js')
+@push('css')
     <style>
         /* Общие стили для модального окна */
         .modal-content {
@@ -219,6 +220,21 @@
 
                             document.querySelector('[data-field="owner"]').style.display = 'none';
                             document.querySelector('[data-field="manager"]').style.display = 'block';
+                            document.querySelector('[data-field="expert"]').style.display = 'block';
+                        }
+                    @endif
+
+                    @if(auth()->user()->role->name == 'manager')
+                        if (info.event.extendedProps.type === 2) {
+                            // Показываем только владельца
+                            document.getElementById('ownerName').textContent = info.event.extendedProps.owner_name;
+
+                            document.querySelector('[data-field="expert"]').style.display = 'none';
+                        } else {
+                            // Показываем эксперта
+                            document.getElementById('expertName').textContent = info.event.extendedProps.expert_name;
+                        document.getElementById('expertName').textContent = info.event.extendedProps.expert_name;
+
                             document.querySelector('[data-field="expert"]').style.display = 'block';
                         }
                     @endif
