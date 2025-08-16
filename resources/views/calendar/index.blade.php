@@ -33,6 +33,10 @@
                                     <p data-field="expert" style="display: none;"><strong>Эксперт:</strong> <span id="expertName"></span></p>
                                     <p data-field="owner" style="display: none;"><strong>Создатель:</strong> <span id="ownerName"></span></p>
                                 @endif
+
+                                @if(auth()->user()->role->name == 'manager')
+                                    <p data-field="expert" style="display: none;"><strong>Эксперт:</strong> <span id="expertName"></span></p>
+                                @endif
                             </div>
                             <div class="modal-footer">
                                 <a href="" class="btn btn-primary btn-sm" id="eventUrl">Перейти к задаче</a>
