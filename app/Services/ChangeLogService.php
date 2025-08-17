@@ -8,10 +8,11 @@ use Illuminate\Support\Collection;
 
 class ChangeLogService
 {
-    public function getChangeLog(Order $order): Collection
+    public static function getChangeLog(Order $order): Collection
     {
         return ChangeLog::query()
             ->where('order_id', $order->id)
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 

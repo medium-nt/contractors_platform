@@ -478,6 +478,32 @@ use Carbon\Carbon;
             <livewire:chat-component :order-id="$order->id" />
         </div>
         @endif
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Лог изменений</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Кем</th>
+                        <th>Изменение</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($changeLog as $history)
+                        <tr>
+                            <td>{{ $history->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $history->user->name }} {{ $history->user->last_name }}</td>
+                            <td>{{ $history->message }}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @stop
 

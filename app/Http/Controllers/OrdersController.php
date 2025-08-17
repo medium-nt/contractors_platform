@@ -12,6 +12,7 @@ use App\Models\Subject;
 use App\Models\Task;
 use App\Models\TypeWork;
 use App\Models\User;
+use App\Services\ChangeLogService;
 use App\Services\OrderService;
 use App\Services\YandexDiskService;
 use Illuminate\Contracts\View\View;
@@ -111,6 +112,7 @@ class OrdersController extends Controller
                 ->where('order_id', $order->id)
                 ->where('expert_id', auth()->user()->id)
                 ->first(),
+            'changeLog' =>ChangeLogService::getChangeLog($order),
         ]);
     }
 
