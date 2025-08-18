@@ -211,7 +211,7 @@ class OrderService
             ->get();
 
         foreach ($orders as $order) {
-            $text = "Обратите внимание, что до сдачи заказа #{$order->id} \"{$order->title}\" осталось менее 50% срока:\n"
+            $text = "Обратите внимание, что до сдачи заказа #{$order->id} \"{$order->title}\" (Эксперт: {$order->expert->name} {$order->expert->last_name}) осталось менее 50% срока:\n"
                 . " Ссылка на заказ: " . route('orders.edit', $order->id) . "\n";
 
             TgService::sendMessage(
