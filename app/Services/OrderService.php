@@ -17,16 +17,7 @@ class OrderService
 {
     public static function getFiltered($request): Builder
     {
-
         $orders = Order::query();
-
-        if ($request->has('type_work_id') && $request->type_work_id !== 'all') {
-            $orders = $orders->where('type_work_id', $request->type_work_id);
-        }
-
-        if ($request->has('subject_id') && $request->subject_id !== 'all') {
-            $orders = $orders->where('subject_id', $request->subject_id);
-        }
 
         if ($request->has('search') && $request->search !== null && $request->search !== '') {
             $orders = $orders->where(function ($query) use ($request) {
@@ -40,6 +31,14 @@ class OrderService
                 $orders = $orders->whereIn('status_id', [5, 6]);
             } else {
                 $orders = $orders->where('status_id', $statusId);
+            }
+
+            if ($request->has('type_work_id') && $request->type_work_id !== 'all') {
+                $orders = $orders->where('type_work_id', $request->type_work_id);
+            }
+
+            if ($request->has('subject_id') && $request->subject_id !== 'all') {
+                $orders = $orders->where('subject_id', $request->subject_id);
             }
         }
 
