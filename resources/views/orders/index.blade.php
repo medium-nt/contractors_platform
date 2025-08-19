@@ -55,8 +55,6 @@
 
                         <div class="form-group col-md-4">
 
-                            <input type="hidden" name="status" value="{{ request()->get('status') }}">
-
                             <button type="submit"
                                     class="btn btn-primary mr-3"
                                     id="search-btn">
@@ -76,7 +74,7 @@
                         'status' => $status->id,
                         'type_work_id' => request('type_work_id'),
                         'subject_id' => request('subject_id'),
-                        'search' => request('search'),
+//                        'search' => request('search'),
                     ]) }}"
                        class="btn btn-link">{{ Str::ucfirst($status->title) }}</a>
                     @endforeach
@@ -85,7 +83,7 @@
                             'status' => 10,
                             'type_work_id' => request('type_work_id'),
                             'subject_id' => request('subject_id'),
-                            'search' => request('search'),
+//                            'search' => request('search'),
                         ]) }}"
                            class="btn btn-link">Готово</a>
                     @endif
