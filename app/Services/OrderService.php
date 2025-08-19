@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
 class OrderService
@@ -60,6 +59,8 @@ class OrderService
         $roleName = auth()->user()->role->name;
         $accept = false;
 
+        $oldStatus = Status::find($order->status_id);
+
         switch ($newStatus->id) {
             case 4:
                 if ($roleName == 'manager' && ($order->status_id == 3 || $order->status_id == 5)) {
@@ -88,6 +89,10 @@ class OrderService
         if($accept) {
             $order->status_id = $newStatus->id;
             $order->save();
+
+            $text = 'Статус заказа изменился с "' . $oldStatus->title . '" на "' . $newStatus->title . '"';
+            ChangeLogService::setChangeLog($order, $text);
+
             return true;
         }
 
@@ -113,6 +118,15 @@ class OrderService
                 $path = 'alexstud/orders/' . $order->id . '/' . $folder . '/' . $filename;
 
                 YandexDiskService::write($path, file_get_contents($file));
+
+                $folderName = match ($folder) {
+                    'manager_files' => 'файлы менеджера',
+                    'expert_files' => 'файлы эксперта',
+                };
+
+                $text = 'В раздел "' . $folderName . '" загружен файл "' . $filename . '"';
+                ChangeLogService::setChangeLog($order, $text);
+
             }
             self::sendMessageAddFile($order, $folder);
         }
@@ -129,6 +143,15 @@ class OrderService
         if (!$result) {
             return false;
         }
+
+        $folderName = match ($folder) {
+            'order_files' => 'файлы заказа',
+            'manager_files' => 'файлы менеджера',
+            'expert_files' => 'файлы эксперта',
+        };
+
+        $text = 'Из раздела "' . $folderName . '" удален файл "' . $fileName . '"';
+        ChangeLogService::setChangeLog($order, $text);
 
         return true;
     }

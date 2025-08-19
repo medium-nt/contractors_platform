@@ -131,6 +131,14 @@ class OrdersController extends Controller
 
     public function update(OrderRequest $request, Order $order): RedirectResponse
     {
+        $nowDeadline = $order->deadline_at;
+        $newDeadline = $request->input('deadline_at');
+
+        if ($nowDeadline != $newDeadline) {
+            $text = 'Дедлайн изменен с "' . $nowDeadline . '" на "' . $newDeadline . '"';
+            ChangeLogService::setChangeLog($order, $text);
+        }
+
         $order->update($request->all());
 
         if ($request->hasFile('files')) {
@@ -189,8 +197,17 @@ class OrdersController extends Controller
                 $path = 'alexstud/orders/' . $order->id . '/result_files/' . $filename;
 
                 YandexDiskService::write($path, file_get_contents($file));
+
+                $text = 'В раздел "результат" загружен файл "' . $filename . '"';
+                ChangeLogService::setChangeLog($order, $text);
             }
         }
+
+        $nowStatus = $order->status->title;
+        $newStatus = Status::find($request->input('status_id'))->title;
+
+        $text = 'Статус изменен с "' . $nowStatus . '" на "' . $newStatus . '"';
+        ChangeLogService::setChangeLog($order, $text);
 
         $order->update([
             'status_id' => 3
