@@ -227,7 +227,13 @@ use Carbon\Carbon;
                                 <div class="form-group">
                                     <label for="file">Загрузить новые файлы:</label>
                                     <input type="file" class="form-control" name="files[]"
-                                           accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                           accept="image/*,
+                                               application/pdf,
+                                               application/msword,
+                                               application/vnd.openxmlformats-officedocument.wordprocessingml.doc,
+                                               application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                               application/vnd.ms-excel,
+                                               application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                            multiple required>
                                 </div>
                                 <div class="form-group">
@@ -276,7 +282,13 @@ use Carbon\Carbon;
                                 <div class="form-group">
                                     <label for="file">Загрузить новые файлы:</label>
                                     <input type="file" class="form-control" name="files[]"
-                                           accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                           accept="image/*,
+                                               application/pdf,
+                                               application/msword,
+                                               application/vnd.openxmlformats-officedocument.wordprocessingml.doc,
+                                               application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                               application/vnd.ms-excel,
+                                               application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                            multiple required>
                                 </div>
                                 <div class="form-group">
@@ -445,7 +457,13 @@ use Carbon\Carbon;
                         <div class="form-group">
                             <label for="file">Загрузить результат:</label>
                             <input type="file" class="form-control" name="files[]"
-                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                   accept="image/*,
+                                       application/pdf,
+                                       application/msword,
+                                       application/vnd.openxmlformats-officedocument.wordprocessingml.doc,
+                                       application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                       application/vnd.ms-excel,
+                                       application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                    multiple required>
                         </div>
                         <div class="form-group">

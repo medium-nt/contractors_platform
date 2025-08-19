@@ -231,7 +231,13 @@
                         <div class="form-group">
                             <label for="description">Файлы к заказу</label>
                             <input type="file"
-                                   accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                   accept="image/*,
+                                       application/pdf,
+                                       application/msword,
+                                       application/vnd.openxmlformats-officedocument.wordprocessingml.doc,
+                                       application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                       application/vnd.ms-excel,
+                                       application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                    class="form-control @error('files') is-invalid @enderror"
                                    id="files"
                                    name="files[]"
