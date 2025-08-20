@@ -48,7 +48,7 @@
                         <textarea class="form-control  @error('description') is-invalid @enderror"
                                   name="description"
                                   id="description"
-                                  rows="5"
+                                  rows="10"
                                   required
                         >{{ old('description', $order->description) }}</textarea>
                     </div>

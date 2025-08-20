@@ -60,7 +60,7 @@ use Carbon\Carbon;
 
                 <div class="form-group">
                     <label for="description">Описание работы</label>
-                    <textarea class="form-control" rows="5" disabled>{{ $order->description }}</textarea>
+                    <textarea class="form-control" rows="10" disabled>{{ $order->description }}</textarea>
                 </div>
 
                 <div class="row">

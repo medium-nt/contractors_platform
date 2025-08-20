@@ -60,7 +60,7 @@ class ChatComponent extends Component
     public function sendMessage(): void
     {
         $this->validate([
-            'message' => 'required|string|max:255',
+            'message' => 'required|string',
             'orderId' => 'required|integer',
         ]);
 

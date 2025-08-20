@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="direct-chat-text">
-                        {{ $message->message }}
+                        <p style="white-space: pre-line">{{ $message->message }}</p>
                     </div>
                 </div>
             @endforeach
@@ -38,10 +38,15 @@
     <div class="card-footer">
         <form wire:submit.prevent="sendMessage">
             <div class="input-group">
-                <input type="text" wire:model.defer="message" name="message" placeholder="Напишите сообщение..." class="form-control" required>
-                <span class="input-group-append">
+                <textarea wire:model.defer="message"
+                          name="message"
+                          placeholder="Напишите сообщение..."
+                          class="form-control"
+                          rows="2"
+                          required></textarea>
+                <div class="text-end ml-1">
                     <button type="submit" class="btn btn-primary">Отправить</button>
-                </span>
+                </div>
             </div>
         </form>
     </div>
