@@ -26,6 +26,7 @@ class CalendarService
                     : route('tasks.edit', $task->id),
                 'allDay' => true,
                 'extendedProps' => [
+                    'id' => $task->id,
                     'description' => $task->description ?? '',
                     'completed_at' => $task->completed_at,
                     'owner_name' => ($task->manager->name  ?? '') .' '. ($task->manager->last_name  ?? ''),

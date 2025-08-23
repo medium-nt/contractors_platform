@@ -43,6 +43,14 @@
                             </div>
                             <div class="modal-footer">
                                 <a href="" class="btn btn-primary btn-sm" id="eventUrl">Перейти к задаче</a>
+
+                                <a href="#" class="btn btn-outline-success btn-sm complete-task-btn"
+                                   onclick="return confirm('Вы уверены что задача выполнена?')"
+                                   style="display: none;">
+                                    <i class="fas fa-check mr-1"></i>
+                                    Отметить выполненной
+                                </a>
+
                                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" data-bs-dismiss="modal">Закрыть</button>
                             </div>
                         </div>
@@ -214,6 +222,14 @@
                         document.querySelector('[data-field="hidden"]').style.display = 'none';
                     }
 
+                    if (info.event.extendedProps.type === 2 && !info.event.extendedProps.completed_at) {
+                        const taskId = info.event.extendedProps.id;
+                        document.querySelector('.complete-task-btn').setAttribute('href', `/tasks/${taskId}/complete`);
+                        document.querySelector('.complete-task-btn').style.display = 'block';
+                    } else {
+                        document.querySelector('.complete-task-btn').style.display = 'none';
+                    }
+
                     @if(auth()->user()->role->name == 'admin')
                         if (info.event.extendedProps.type === 2) {
                             // Показываем только владельца
@@ -242,7 +258,7 @@
                         } else {
                             // Показываем эксперта
                             document.getElementById('expertName').textContent = info.event.extendedProps.expert_name;
-                        document.getElementById('expertName').textContent = info.event.extendedProps.expert_name;
+                            document.getElementById('expertName').textContent = info.event.extendedProps.expert_name;
 
                             document.querySelector('[data-field="expert"]').style.display = 'block';
                         }
