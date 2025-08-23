@@ -65,7 +65,7 @@ class YandexDiskService {
         try {
             $url = 'https://cloud-api.yandex.net/v1/disk/resources?' . http_build_query([
                 'fields' => '_embedded.items.name,_embedded.items.type,_embedded.items.media_type,_embedded.items.modified,_embedded.items.size',
-                'sort' => 'name',
+                'sort' => '-modified',
                 'limit' => 1000,
                 'path' => $path,
             ]);
