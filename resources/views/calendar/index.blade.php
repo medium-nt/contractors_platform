@@ -38,6 +38,8 @@
                                     <p data-field="expert" style="display: none;"><strong>Эксперт:</strong> <span id="expertName"></span></p>
                                     <p data-field="owner" style="display: none;"><strong>Создатель:</strong> <span id="ownerName"></span></p>
                                 @endif
+
+                                <p data-field="hidden" style="display: none;"><strong>Скрытое поле:</strong> <span id="eventHidden"></span></p>
                             </div>
                             <div class="modal-footer">
                                 <a href="" class="btn btn-primary btn-sm" id="eventUrl">Перейти к задаче</a>
@@ -204,6 +206,13 @@
                     document.getElementById('eventDescription').textContent = info.event.extendedProps.description;
                     document.getElementById('eventStart').textContent = info.event.start.toLocaleString();
                     document.getElementById('eventUrl').href = info.event.url;
+
+                    if (info.event.extendedProps.type === 0) {
+                        document.querySelector('[data-field="hidden"]').style.display = 'block';
+                        document.getElementById('eventHidden').textContent = info.event.extendedProps.hidden_field;
+                    } else {
+                        document.querySelector('[data-field="hidden"]').style.display = 'none';
+                    }
 
                     @if(auth()->user()->role->name == 'admin')
                         if (info.event.extendedProps.type === 2) {

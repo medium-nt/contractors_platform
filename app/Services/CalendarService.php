@@ -88,6 +88,7 @@ class CalendarService
                     'manager_name' => ($order->manager->name ?? '') .' '. ($order->manager->last_name ?? ''),
                     'expert_name' => ($order->expert->name ?? '') .' '. ($order->expert->name ?? ''),
                     'type' => 0,
+                    'hidden_field' => $order->hidden_field ?? '',
                 ]
             ];
         });
