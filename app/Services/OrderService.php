@@ -160,7 +160,8 @@ class OrderService
     {
         TgService::sendMessage($order->expert->tg_id,
             'Вы выбраны исполнителем по заказу: ' . $order->id . ' ('. $order->title . "). \n" .
-            'Ссылка на заказ ' . route('orders.show', $order->id)
+            'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
+            'Менеджер ' . $order->manager->name . ' ' . $order->manager->last_name
         );
     }
 
@@ -168,7 +169,8 @@ class OrderService
     {
         TgService::sendMessage($order->expert->tg_id,
             'Заказ: ' . $order->id . ' ('. $order->title . ") возвращен вам на доработку. \n" .
-            'Ссылка на заказ ' . route('orders.show', $order->id)
+            'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
+            'Менеджер ' . $order->manager->name . ' ' . $order->manager->last_name
         );
     }
 
@@ -177,7 +179,8 @@ class OrderService
         TgService::sendMessage(
             $order->manager->tg_id,
             'Исполнитель сдал заказ ' . $order->id . ' ('. $order->title . ") на проверку. \n" .
-                'Ссылка на заказ ' . route('orders.show', $order->id)
+                'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
+                'Эксперт ' . $order->expert->name . ' ' . $order->expert->last_name
         );
     }
 
@@ -267,15 +270,25 @@ class OrderService
 
     private static function sendMessageAddFile(Order $order, $folder): void
     {
-        $TgId = match ($folder) {
-            'manager_files' => $order->expert->tg_id,
-            'expert_files' => $order->manager->tg_id,
-        };
+        switch ($folder) {
+            case 'manager_files':
+                $TgId = $order->expert->tg_id;
+                $fio = 'ФИО менеджера: ' . $order->manager->name . ' ' . $order->manager->last_name;
+                break;
+            case 'expert_files':
+                $TgId = $order->manager->tg_id;
+                $fio = 'ФИО эксперта: ' . $order->expert->name . ' ' . $order->expert->last_name;
+                break;
+            default:
+                $TgId = null;
+                $fio = '';
+        }
 
         TgService::sendMessage(
             $TgId,
             'В заказ #' . $order->id . ' ('. $order->title . ") добавлены новые дополнительные файлы. \n" .
-                'Ссылка на заказ ' . route('orders.show', $order->id)
+                'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
+                $fio
         );
     }
 }

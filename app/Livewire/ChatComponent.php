@@ -75,14 +75,25 @@ class ChatComponent extends Component
         $manager = $order->manager;
         $expert = $order->expert;
 
-        $tgIds = match (auth()->id()) {
-            $manager->id => [$expert->tg_id],
-            $expert->id => [$manager->tg_id],
-            default => [$manager->tg_id, $expert->tg_id],
-        };
+        switch (auth()->id()) {
+            case $manager->id:
+                $tgIds = [$expert->tg_id];
+                $fio = 'ФИО эксперта: ' . $expert->name . ' ' . $expert->last_name;
+                break;
+            case $expert->id:
+                $tgIds = [$manager->tg_id];
+                $fio = 'ФИО менеджера: ' . $manager->name . ' ' . $manager->last_name;
+                break;
+            default:
+                $tgIds = [$manager->tg_id, $expert->tg_id];
+                $fio = 'ФИО менеджера: ' . $manager->name . ' ' . $manager->last_name . " " .
+                    'ФИО эксперта: ' . $expert->name . ' ' . $expert->last_name;
+                break;
+        }
 
         $text = 'Получено новое сообщение в заказе: ' . $order->id . ' ('. $order->title . "). \n" .
-            'Ссылка на заказ ' . route('orders.show', $order->id);
+            'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
+            $fio . "\n";
 
         foreach ($tgIds as $tgId) {
             if (empty($tgId)) {
