@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-md-1">
                                 @if($user->avatar != null)
-                                    <img src="{{ asset('storage/' . $user->avatar) }}"
+                                    <img src="{{ asset('storage/' . $user->avatar) }}?v={{ time() }}"
                                          style="width:50px; height:50px;" alt="">
                                 @endif
                             </div>
