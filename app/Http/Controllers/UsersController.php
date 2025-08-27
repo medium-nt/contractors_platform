@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -131,6 +132,18 @@ class UsersController extends Controller
             $validatedData['password'] = bcrypt($validatedData['password']);
         } else {
             unset($validatedData['password']);
+        }
+
+        if ($request->hasFile('avatar')) {
+            if (!Storage::disk('public')->exists('avatars')) {
+                Storage::disk('public')->makeDirectory('avatars');
+            }
+
+            $fileName = $user->id . '.' . $request->file('avatar')
+                    ->getClientOriginalExtension();
+
+            $validatedData['avatar'] = $request->file('avatar')
+                ->storeAs('avatars', $fileName, 'public');
         }
 
         $user->update($validatedData);

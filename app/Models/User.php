@@ -25,7 +25,10 @@ class User extends Authenticatable
         'password',
         'role_id',
         'is_approved',
-        'tg_id'
+        'tg_id',
+        'avatar',
+        'description',
+        'hidden_field',
     ];
 
     /**

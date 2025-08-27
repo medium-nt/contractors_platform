@@ -21,7 +21,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('profile.update') }}" method="POST">
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <div class="card-body">
@@ -69,6 +69,21 @@
                         <label for="password_confirmation">Подтверждение пароля</label>
                         <input type="password" class="form-control" id="password_confirmation"
                                name="password_confirmation" placeholder="Подтверждение пароля">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="avatar">Аватар</label>
+                        <div class="row">
+                            <div class="col-md-11 mt-2">
+                                <input class="form-control" type="file" name="avatar" accept="image/*">
+                            </div>
+                            <div class="col-md-1">
+                                @if($user->avatar != null)
+                                    <img src="{{ asset('storage/' . $user->avatar) }}"
+                                         style="width:50px; height:50px;" alt="">
+                                @endif
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
