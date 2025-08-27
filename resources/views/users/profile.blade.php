@@ -87,6 +87,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="password_confirmation">О себе</label>
+                        <textarea class="form-control" id="description" name="description"
+                                  rows="5" placeholder="О себе">{{ $user->description }}</textarea>
+                    </div>
+
+                    <div class="form-group">
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                     </div>
                 </div>
