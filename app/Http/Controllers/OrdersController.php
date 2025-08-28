@@ -204,7 +204,7 @@ class OrdersController extends Controller
         }
 
         $nowStatus = $order->status->title;
-        $newStatus = Status::find($request->input('status_id'))->title;
+        $newStatus = Status::query()->find(3)->title;
 
         $text = 'Статус изменен с "' . $nowStatus . '" на "' . $newStatus . '"';
         ChangeLogService::setChangeLog($order, $text);
