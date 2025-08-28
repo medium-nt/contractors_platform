@@ -30,5 +30,6 @@ Route::prefix('admin')->middleware(['auth', 'approve'])->group(function () {
     require base_path('routes/tasks.php');
     require base_path('routes/chat.php');
     require base_path('routes/disk.php');
+    require base_path('routes/experts.php');
 
 });

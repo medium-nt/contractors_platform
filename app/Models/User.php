@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -69,9 +70,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function orders(): BelongsTo
+    public function orders(): hasMany
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Order::class, 'expert_id', 'id');
     }
 
     public function getUpdatedDateAttribute()

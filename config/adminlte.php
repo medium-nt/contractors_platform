@@ -313,6 +313,13 @@ return [
         ],
 
         [
+            'text' => 'experts',
+            'url' => 'admin/experts',
+            'icon' => 'fas fa-fw fa-user-tie',
+            'can' => 'is-manager-or-admin',
+        ],
+
+        [
             'text' => 'calendar',
             'url' => 'admin/calendar',
             'icon' => 'fas fa-fw fa-calendar-alt',

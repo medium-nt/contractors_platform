@@ -11,4 +11,5 @@ return [
     'plagiarism_platforms' => 'Платформы плагиата',
     'calendar' => 'Календарь',
     'disk' => 'Диск',
+    'experts' => 'Эксперты',
 ];

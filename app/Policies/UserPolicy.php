@@ -14,6 +14,11 @@ class UserPolicy
         return $user->role->name == 'admin';
     }
 
+    public function experts(User $user): bool
+    {
+        return $user->role->name == 'admin' || $user->role->name == 'manager';
+    }
+
     /**
      * Determine whether the user can view the model.
      */
