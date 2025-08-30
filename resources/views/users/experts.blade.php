@@ -18,7 +18,7 @@
                                     id="type_work_id"
                                     class="select2"
                                     required>
-                                <option value="all" selected>Все</option>
+                                <option value="all" selected>---</option>
                                 @foreach($typeWorks as $typeWork)
                                     <option value="{{ $typeWork->id }}"
                                             @if(request('type_work_id') == $typeWork->id) selected @endif>
@@ -33,7 +33,7 @@
                                     id="subject_id"
                                     class="select2"
                                     required>
-                                <option value="all" selected>Все</option>
+                                <option value="all" selected>---</option>
                                 @foreach($subjects as $subject)
                                     <option value="{{ $subject->id }}"
                                             @if(request('subject_id') == $subject->id) selected @endif>

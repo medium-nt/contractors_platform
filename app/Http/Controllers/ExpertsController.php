@@ -11,24 +11,20 @@ class ExpertsController extends Controller
 {
     public function index(Request $request)
     {
-        $typeWorkId = $request->type_work_id ?? 'all';
-        $subjectId = $request->subject_id ?? 'all';
+        $typeWorkId = $request->type_work_id;
+        $subjectId = $request->subject_id;
 
         $users = User::query()
             ->with('typeWorks')
             ->with('subjects');
 
-        if ($typeWorkId != 'all') {
-            $users = $users->whereHas('typeWorks', function ($query) use ($typeWorkId) {
-                $query->where('types_work.id', $typeWorkId);
-            });
-        }
+        $users = $users->whereHas('typeWorks', function ($query) use ($typeWorkId) {
+            $query->where('types_work.id', $typeWorkId);
+        });
 
-        if ($subjectId != 'all') {
-            $users = $users->whereHas('subjects', function ($query) use ($subjectId) {
-                $query->where('subjects.id', $subjectId);
-            });
-        }
+        $users = $users->whereHas('subjects', function ($query) use ($subjectId) {
+            $query->where('subjects.id', $subjectId);
+        });
 
         return view('users.experts', [
             'title' => 'Эксперты',
