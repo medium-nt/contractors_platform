@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUsersRequest;
 use App\Models\Order;
+use App\Models\Subject;
+use App\Models\TypeWork;
 use App\Models\User;
 use App\Services\TgService;
 use Illuminate\Contracts\View\View;
@@ -105,6 +107,10 @@ class UsersController extends Controller
 
         return view('users.profile', [
             'title' => 'Профиль',
+            'subjects' => Subject::all(),
+            'selectedSubjects' => auth()->user()->subjects()->pluck('id')->toArray(),
+            'types_works' => TypeWork::all(),
+            'selectedTypesWork' => auth()->user()->typeWorks()->pluck('id')->toArray(),
             'user' => auth()->user()
         ]);
     }
@@ -113,7 +119,8 @@ class UsersController extends Controller
     {
         $this->saved($request, auth()->user());
 
-        return redirect()->route('profile')->with('success', 'Изменения сохранены.');
+        return back()
+            ->with('success', 'Изменения сохранены.');
     }
 
     private function saved(Request $request, User $user): void
@@ -125,6 +132,8 @@ class UsersController extends Controller
             'password' => 'nullable|confirmed|string|min:6',
             'role_id' => 'sometimes|required|in:1,2',
             'description' => 'nullable|string',
+            'subjects' => 'nullable|array|exists:subjects,id',
+            'types_work' => 'nullable|array|exists:types_work,id',
         ];
 
         $validatedData = $request->validate($rules);
@@ -146,6 +155,9 @@ class UsersController extends Controller
             $validatedData['avatar'] = $request->file('avatar')
                 ->storeAs('avatars', $fileName, 'public');
         }
+
+        $user->subjects()->sync($validatedData['subjects'] ?? []);
+        $user->typeWorks()->sync($validatedData['types_work'] ?? []);
 
         $user->update($validatedData);
     }

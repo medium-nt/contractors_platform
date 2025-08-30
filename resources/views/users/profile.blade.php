@@ -93,6 +93,28 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="subjects">Дисциплины</label>
+                        <select class="form-control choices" name="subjects[]" multiple>
+                            @foreach($subjects as $subject)
+                                <option value="{{ $subject->id }}"
+                                {{ in_array($subject->id, $selectedSubjects) ? 'selected' : '' }}>
+                                {{ $subject->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="types_work">Дисциплины</label>
+                        <select class="form-control choices" name="types_work[]" multiple>
+                            @foreach($types_works as $type_work)
+                                <option value="{{ $type_work->id }}"
+                                    {{ in_array($type_work->id, $selectedTypesWork) ? 'selected' : '' }}>
+                                    {{ $type_work->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                     </div>
                 </div>
@@ -101,15 +123,24 @@
     </div>
 @stop
 
-{{-- Push extra CSS --}}
-
 @push('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 @endpush
 
-{{-- Push extra scripts --}}
-
 @push('js')
-{{--    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>--}}
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script>
+        document.querySelectorAll('.choices').forEach(el => {
+            new Choices(el, {
+                removeItemButton: true,
+                searchEnabled: true,
+                shouldSort: false,
+                noResultsText: 'Ничего не найдено',
+                noChoicesText: 'Нет доступных вариантов',
+                itemSelectText: 'Нажмите, чтобы выбрать',
+                placeholderValue: 'Выберите...'
+            });
+        });
+    </script>
 @endpush

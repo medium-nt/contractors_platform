@@ -14,16 +14,20 @@ class ExpertsController extends Controller
         $typeWorkId = $request->type_work_id ?? 'all';
         $subjectId = $request->subject_id ?? 'all';
 
-        $users = User::query();
+        $users = User::query()
+            ->with('typeWorks')
+            ->with('subjects');
 
         if ($typeWorkId != 'all') {
-            //  условие запроса
-            $users = $users;
+            $users = $users->whereHas('typeWorks', function ($query) use ($typeWorkId) {
+                $query->where('types_work.id', $typeWorkId);
+            });
         }
 
         if ($subjectId != 'all') {
-            //  условие запроса
-            $users = $users;
+            $users = $users->whereHas('subjects', function ($query) use ($subjectId) {
+                $query->where('subjects.id', $subjectId);
+            });
         }
 
         return view('users.experts', [
