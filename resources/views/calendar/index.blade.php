@@ -160,7 +160,7 @@
                 headerToolbar: {
                     left: 'myCustomButton prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
                 },
                 customButtons: {
                     myCustomButton: {
