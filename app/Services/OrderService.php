@@ -291,4 +291,15 @@ class OrderService
                 $fio
         );
     }
+
+    public static function finalizeWarrantyLifecycle(): void
+    {
+        Order::query()
+            ->where('status_id', 5)
+            ->whereDate('warranty_up_to', '<=', now())
+            ->update([
+                'status_id' => 6,
+                'completed_at' => now(),
+            ]);
+    }
 }

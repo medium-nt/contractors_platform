@@ -17,3 +17,7 @@ Schedule::call(function () {
 Schedule::call(function () {
     OrderService::sendMessageIfHalfwayPassedByOrders();
 })->hourly();
+
+Schedule::call(function () {
+    OrderService::finalizeWarrantyLifecycle();
+})->dailyAt('01:00');
