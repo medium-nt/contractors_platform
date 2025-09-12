@@ -51,7 +51,7 @@ class OrderService
             $orders = $orders->where('expert_id', $user->id);
         }
 
-        return $orders;
+        return $orders->orderBy('created_at', 'desc');
     }
 
     public static function changeStatus(Order $order, Status $newStatus): bool

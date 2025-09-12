@@ -83,7 +83,9 @@ class OrdersController extends Controller
             }
         }
 
-        return redirect()->route('orders.index')->with('success', 'Новый заказ создан');
+        return redirect()
+            ->route('orders.index', ['status' => 2])
+            ->with('success', 'Новый заказ создан');
     }
 
     public function show(Order $order): View

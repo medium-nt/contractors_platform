@@ -104,9 +104,6 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Статус</th>
-                            <th scope="col">Название</th>
-                            <th scope="col">Тип работы</th>
-                            <th scope="col">Предмет</th>
                             @switch(auth()->user()->role->name)
                                 @case('manager')
                                     <th scope="col">ФИО эксперта</th>
@@ -119,15 +116,19 @@
                                     <th scope="col">ФИО менеджера</th>
                                     @break
                             @endswitch
+                            <th scope="col">Название</th>
+                            <th scope="col">Тип работы</th>
+                            <th scope="col">Предмет</th>
                             <th scope="col">Создан</th>
                             <th scope="col">Дедлайн</th>
-                            <th scope="col">Действия</th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse($orders as $order)
                             <tr>
-                                <td>{{ $order->id }}</td>
+                                <td>
+                                    <a href="{{ route('orders.show', $order->id) }}">{{ $order->id }}</a>
+                                </td>
                                 <td>
                                     @if(auth()->user()->role->name == 'expert' && ($order->status_id == 5 || $order->status_id == 6))
                                         <span class="badge" style="background-color: #28a745">готово</span>
@@ -135,9 +136,6 @@
                                         <span class="badge" style="background-color: {{ $order->status->color }}"> {{ $order->status->title }}</span>
                                     @endif
                                 </td>
-                                <td>{{ $order->title }}</td>
-                                <td>{{ $order->typeWork->title }}</td>
-                                <td>{{ $order->subject->title }}</td>
                                 @switch(auth()->user()->role->name)
                                     @case('manager')
                                         <td>{{$order->expert->name ?? ''}} {{$order->expert->last_name ?? ''}}</td>
@@ -150,13 +148,11 @@
                                         <td>{{$order->manager->name ?? ''}} {{$order->manager->last_name ?? ''}}</td>
                                         @break
                                 @endswitch
+                                <td>{{ $order->title }}</td>
+                                <td>{{ $order->typeWork->title }}</td>
+                                <td>{{ $order->subject->title }}</td>
                                 <td>{{ $order->created_date }}</td>
                                 <td>{{ $order->deadline_date }}</td>
-                                <td>
-                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-info">
-                                        <i class="far fa-eye"></i>
-                                    </a>
-                                </td>
                             </tr>
                         @empty
                             <tr>
