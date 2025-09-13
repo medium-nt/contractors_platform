@@ -16,16 +16,45 @@
         </div>
     @endif
 
+    @php
+        $users_count = $orders_count = 0;
+    @endphp
+
+    @if(auth()->user()->role->name == 'admin' || auth()->user()->role->name == 'manager')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Пример</h3>
+            <h3 class="card-title">Статистика менеджеров</h3>
         </div>
         <div class="card-body">
-            <p>
-                Тут какой-то текст
-            </p>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Менеджер</th>
+                        <th scope="col" class="text-center">выставленных заказов</th>
+                        <th scope="col" class="text-center">в работе</th>
+                        <th scope="col" class="text-center">на доработке</th>
+                        <th scope="col" class="text-center">на гарантий</th>
+                        <th scope="col" class="text-center">сдано</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($managersOrders as $managerOrders)
+                    <tr>
+                        <td>{{ $managerOrders['managerName'] }}</td>
+                        <td class="text-center">{{ $managerOrders['all'] }}</td>
+                        <td class="text-center">{{ $managerOrders['inWork'] }}</td>
+                        <td class="text-center">{{ $managerOrders['inFixing'] }}</td>
+                        <td class="text-center">{{ $managerOrders['warranty'] }}</td>
+                        <td class="text-center">{{ $managerOrders['done'] }}</td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+    @endif
 @stop
 
 @push('js')

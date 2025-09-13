@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Services\OrderService;
 
 class HomeController extends Controller
 {
@@ -25,7 +25,8 @@ class HomeController extends Controller
     {
         return view('home',
             [
-                'title' => 'Home'
+                'title' => 'Home',
+                'managersOrders' => OrderService::getManagersOrders()
             ]);
     }
 }

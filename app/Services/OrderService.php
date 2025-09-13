@@ -302,4 +302,35 @@ class OrderService
                 'completed_at' => now(),
             ]);
     }
+
+    public static function getManagersOrders(): array
+    {
+        if(auth()->user()->role->name == 'expert') {
+            return [];
+        }
+
+        $managers = User::query()
+            ->where('role_id', 1);
+
+        if(auth()->user()->role->name == 'manager') {
+            $managers = $managers->where('id', auth()->id());
+        }
+
+        $allOrders = Order::query()->get();
+        foreach ($managers->get() as $manager) {
+            $managerOrders = $allOrders->where('manager_id', $manager->id);
+
+            $return[$manager->id] = [
+                'managerName' => $manager->name . ' ' . $manager->last_name,
+                'all' => $managerOrders->count(),
+                'inWork' => $managerOrders->where('status_id', 2)->count(),
+                'inFixing' => $managerOrders->where('status_id', 4)->count(),
+                'warranty' => $managerOrders->where('status_id', 5)->count(),
+                'done' => $managerOrders->where('status_id', 6)->count(),
+            ];
+        }
+
+        return $return ?? [];
+    }
+
 }
