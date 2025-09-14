@@ -32,7 +32,18 @@ class ExpertsController extends Controller
             'subjects' => Subject::all(),
             'users' => $users
                 ->where('role_id', 2)
-                ->withCount('orders')
+                ->withCount([
+                    'orders',
+                    'orders as orders_in_work' => function ($query) {
+                        $query->where('orders.status_id', 2);
+                    },
+                    'orders as orders_fixing' => function ($query) {
+                        $query->where('orders.status_id', 4);
+                    },
+                    'orders as orders_warranty' => function ($query) {
+                        $query->where('orders.status_id', 5);
+                    }
+                ])
                 ->orderBy('orders_count', 'desc')
                 ->paginate(10),
         ]);

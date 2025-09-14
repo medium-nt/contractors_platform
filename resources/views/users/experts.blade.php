@@ -65,8 +65,12 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">ФИО</th>
-                            <th scope="col">email</th>
-                            <th scope="col">кол-во работ</th>
+                            <th scope="col">Контактные данные</th>
+                            <th scope="col">в работе</th>
+                            <th scope="col">в корректировке</th>
+                            <th scope="col">на гарантии</th>
+                            <th scope="col">предметы</th>
+                            <th scope="col">типы работ</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -75,7 +79,19 @@
                                 <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                                 <td><a href="{{ route('experts.show', $user->id) }}"> {{ $user->name }} {{ $user->last_name }} </a></td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->orders_count }}</td>
+                                <td>{{ $user->orders_in_work }}</td>
+                                <td>{{ $user->orders_fixing }}</td>
+                                <td>{{ $user->orders_warranty }}</td>
+                                <td>
+                                    @foreach($user->subjects as $subject)
+                                        <li>{{ $subject->title }} </li>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($user->typeWorks as $typeWork)
+                                        <li>{{ $typeWork->title }} </li>
+                                    @endforeach
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
