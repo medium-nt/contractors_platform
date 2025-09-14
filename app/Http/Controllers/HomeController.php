@@ -26,7 +26,8 @@ class HomeController extends Controller
         return view('home',
             [
                 'title' => 'Home',
-                'managersOrders' => OrderService::getManagersOrders()
+                'managersOrders' => OrderService::getCountOrders('manager'),
+                'expertsOrders' => OrderService::getCountOrders('expert'),
             ]);
     }
 }

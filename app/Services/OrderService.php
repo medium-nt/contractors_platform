@@ -303,25 +303,31 @@ class OrderService
             ]);
     }
 
-    public static function getManagersOrders(): array
+    public static function getCountOrders($role): array
     {
-        if(auth()->user()->role->name == 'expert') {
-            return [];
+        switch ($role) {
+            case 'manager':
+                $users = User::query()->where('role_id', 1);
+                $field = 'manager_id';
+                break;
+            case 'expert':
+                $users = User::query()->where('role_id', 2);
+                $field = 'expert_id';
+                break;
+            default:
+                return [];
         }
 
-        $managers = User::query()
-            ->where('role_id', 1);
-
-        if(auth()->user()->role->name == 'manager') {
-            $managers = $managers->where('id', auth()->id());
+        if(auth()->user()->role->name == $role) {
+            $users = $users->where('id', auth()->id());
         }
 
         $allOrders = Order::query()->get();
-        foreach ($managers->get() as $manager) {
-            $managerOrders = $allOrders->where('manager_id', $manager->id);
+        foreach ($users->get() as $user) {
+            $managerOrders = $allOrders->where($field, $user->id);
 
-            $return[$manager->id] = [
-                'managerName' => $manager->name . ' ' . $manager->last_name,
+            $return[$user->id] = [
+                'name' => $user->name . ' ' . $user->last_name,
                 'all' => $managerOrders->count(),
                 'inWork' => $managerOrders->where('status_id', 2)->count(),
                 'inFixing' => $managerOrders->where('status_id', 4)->count(),
