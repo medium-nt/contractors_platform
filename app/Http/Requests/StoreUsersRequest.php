@@ -25,6 +25,9 @@ class StoreUsersRequest extends FormRequest
             'name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'email' => 'required|max:255|email',
+            'phone' => 'nullable|max:50',
+            'wats_app' => 'nullable|max:50',
+            'telegram' => 'nullable|max:50',
             'password' => 'required|confirmed|min:6|string',
             'role_id' => 'required|in:1,2',
         ];
@@ -43,6 +46,12 @@ class StoreUsersRequest extends FormRequest
 
             'email.required' => 'Поле "Email" обязательно для заполнения',
             'email.email' => 'Поле "Email" должно быть адресом электронной почты',
+
+            'phone.max' => 'Поле "Телефон" должно быть не больше 50 символов',
+
+            'wats_app.max' => 'Поле "WhatsApp" должно быть не больше 50 символов',
+
+            'telegram.max' => 'Поле "Telegram" должно быть не больше 50 символов',
 
             'password.required' => 'Поле "Пароль" обязательно для заполнения',
             'password.confirmed' => 'Поля "Пароль" и "Подтверждение пароля" должны совпадать',

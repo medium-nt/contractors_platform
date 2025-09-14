@@ -51,6 +51,24 @@
                                    name="email" value="{{ $user->email }}" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="text" class="form-control" id="phone"
+                                   name="phone" value="{{ $user->phone }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wats_app">WatsApp</label>
+                            <input type="text" class="form-control" id="wats_app"
+                                   name="wats_app" value="{{ $user->wats_app }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telegram">Telegram</label>
+                            <input type="text" class="form-control" id="telegram"
+                                   name="telegram" value="{{ $user->telegram }}">
+                        </div>
+
                         @if(!$has_orders && $user->role_id != 3)
                         <div class="form-group">
                             <label for="role_id">Роль</label>

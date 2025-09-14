@@ -60,6 +60,24 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="text" class="form-control" id="phone" value="{{ $user->phone }}"
+                               name="phone" placeholder="Телефон">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wats_app">WatsApp</label>
+                        <input type="text" class="form-control" id="wats_app" value="{{ $user->wats_app }}"
+                               name="wats_app" placeholder="WatsApp">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telegram">Telegram</label>
+                        <input type="text" class="form-control" id="telegram" value="{{ $user->telegram }}"
+                               name="telegram" placeholder="Telegram">
+                    </div>
+
+                    <div class="form-group">
                         <label for="password">Новый пароль</label>
                         <input type="password" class="form-control" id="password" name="password"
                                placeholder="Пароль">

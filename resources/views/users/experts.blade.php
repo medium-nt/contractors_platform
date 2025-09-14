@@ -78,7 +78,12 @@
                             <tr>
                                 <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                                 <td><a href="{{ route('experts.show', $user->id) }}"> {{ $user->name }} {{ $user->last_name }} </a></td>
-                                <td>{{ $user->email }}</td>
+                                <td>
+                                    Email: <b>{{ $user->email }}</b><br>
+                                    @if($user->phone)Телефон: <b>{{ $user->phone }}</b><br>@endif
+                                    @if($user->wats_app)WatsApp: <b>{{ $user->wats_app }}</b><br>@endif
+                                    @if($user->telegram)Telegram: <b>{{ $user->telegram }}</b>@endif
+                                </td>
                                 <td>{{ $user->orders_in_work }}</td>
                                 <td>{{ $user->orders_fixing }}</td>
                                 <td>{{ $user->orders_warranty }}</td>

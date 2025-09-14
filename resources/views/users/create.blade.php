@@ -65,6 +65,36 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="text"
+                               class="form-control @error('phone') is-invalid @enderror"
+                               id="phone"
+                               name="phone"
+                               placeholder=""
+                               value="{{ old('phone') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wats_app">WatsApp</label>
+                        <input type="text"
+                               class="form-control @error('wats_app') is-invalid @enderror"
+                               id="wats_app"
+                               name="wats_app"
+                               placeholder=""
+                               value="{{ old('wats_app') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telegram">Telegram</label>
+                        <input type="text"
+                               class="form-control @error('telegram') is-invalid @enderror"
+                               id="telegram"
+                               name="telegram"
+                               placeholder=""
+                               value="{{ old('telegram') }}">
+                    </div>
+
+                    <div class="form-group">
                         <label for="password">Пароль</label>
                         <input type="password"
                                class="form-control @error('password') is-invalid @enderror"

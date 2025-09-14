@@ -52,6 +52,24 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="text" class="form-control" id="phone"
+                                   name="phone" value="{{ $user->phone }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wats_app">WatsApp</label>
+                            <input type="text" class="form-control" id="wats_app"
+                                   name="wats_app" value="{{ $user->wats_app }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telegram">Telegram</label>
+                            <input type="text" class="form-control" id="telegram"
+                                   name="telegram" value="{{ $user->telegram }}" disabled>
+                        </div>
+
+                        <div class="form-group">
                             <label for="description">О себе</label>
                             <textarea class="form-control" id="description" name="description"
                                       rows="5" placeholder="не заполнено" disabled>{{ $user->description }}</textarea>
