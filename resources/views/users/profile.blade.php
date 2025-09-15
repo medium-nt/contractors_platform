@@ -122,7 +122,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="types_work">Дисциплины</label>
+                        <label for="types_work">Типы работ</label>
                         <select class="form-control choices" name="types_work[]" multiple>
                             @foreach($types_works as $type_work)
                                 <option value="{{ $type_work->id }}"

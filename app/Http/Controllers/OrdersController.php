@@ -36,12 +36,13 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         return view('orders.create', [
             'title' => 'Создать новый заказ',
             'typeWorks' => TypeWork::all(),
             'subjects' => Subject::all(),
+            'expert_id' => $request->expert_id ?? null,
             'experts' => User::query()->where('role_id', 2)->get(),
             'plagiarismPlatforms' => PlagiarismPlatform::all(),
         ]);

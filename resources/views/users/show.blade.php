@@ -100,6 +100,11 @@
                         На гарантии: {{ $user->orders()->where('status_id', 5)->count() }} <br>
                         Завершено: {{ $user->orders()->where('status_id', 6)->count() }}
                     </div>
+                    <div class="form-group">
+                        <a href="{{ route('orders.create', ['expert_id' => $user->id]) }}" class="btn btn-primary">
+                            Создать заказ
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -160,7 +160,7 @@
                                 <option value="" disabled selected>---</option>
                                 @foreach($experts as $expert)
                                     <option value="{{ $expert->id }}"
-                                        {{ old('expert_id') == $expert->id ? 'selected' : '' }}>
+                                        {{ old('expert_id', $expert_id) == $expert->id ? 'selected' : '' }}>
                                         {{ $expert->name }} {{ $expert->last_name }}
                                     </option>
                                 @endforeach
