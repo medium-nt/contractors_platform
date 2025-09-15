@@ -159,8 +159,10 @@ class UsersController extends Controller
                 ->storeAs('avatars', $fileName, 'public');
         }
 
-        $user->subjects()->sync($validatedData['subjects'] ?? []);
-        $user->typeWorks()->sync($validatedData['types_work'] ?? []);
+        if(auth()->user()->role->name == 'expert') {
+            $user->subjects()->sync($validatedData['subjects'] ?? []);
+            $user->typeWorks()->sync($validatedData['types_work'] ?? []);
+        }
 
         $user->update($validatedData);
     }
