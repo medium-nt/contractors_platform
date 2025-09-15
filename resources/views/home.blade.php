@@ -56,41 +56,39 @@
     </div>
     @endif
 
-    @if(auth()->user()->role->name == 'admin' || auth()->user()->role->name == 'expert')
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Статистика экспертов</h3>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
-                        <thead class="thead-dark">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Статистика экспертов</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Эксперт</th>
+                        <th scope="col" class="text-center">всего</th>
+                        <th scope="col" class="text-center">в работе</th>
+                        <th scope="col" class="text-center">на доработке</th>
+                        <th scope="col" class="text-center">на гарантий</th>
+                        <th scope="col" class="text-center">сдано</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($expertsOrders as $expertOrders)
                         <tr>
-                            <th scope="col">Эксперт</th>
-                            <th scope="col" class="text-center">всего</th>
-                            <th scope="col" class="text-center">в работе</th>
-                            <th scope="col" class="text-center">на доработке</th>
-                            <th scope="col" class="text-center">на гарантий</th>
-                            <th scope="col" class="text-center">сдано</th>
+                            <td>{{ $expertOrders['name'] }}</td>
+                            <td class="text-center">{{ $expertOrders['all'] }}</td>
+                            <td class="text-center">{{ $expertOrders['inWork'] }}</td>
+                            <td class="text-center">{{ $expertOrders['inFixing'] }}</td>
+                            <td class="text-center">{{ $expertOrders['warranty'] }}</td>
+                            <td class="text-center">{{ $expertOrders['done'] }}</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($expertsOrders as $expertOrders)
-                            <tr>
-                                <td>{{ $expertOrders['name'] }}</td>
-                                <td class="text-center">{{ $expertOrders['all'] }}</td>
-                                <td class="text-center">{{ $expertOrders['inWork'] }}</td>
-                                <td class="text-center">{{ $expertOrders['inFixing'] }}</td>
-                                <td class="text-center">{{ $expertOrders['warranty'] }}</td>
-                                <td class="text-center">{{ $expertOrders['done'] }}</td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
-    @endif
+    </div>
 @stop
 
 @push('js')
