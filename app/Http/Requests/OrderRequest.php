@@ -41,7 +41,19 @@ class OrderRequest extends FormRequest
             'deadline_task.*' => 'required|date|after_or_equal:now',
 
             'files' => 'nullable|array',
-            'files.*' => 'required|file|mimetypes:image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'files.*' => 'required|file| ' .
+                'mimetypes:' .
+                'image/*,' .
+                'application/pdf,' .
+                'application/msword,' .
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document,' .
+                'application/vnd.oasis.opendocument.text' .
+                'application/vnd.ms-excel,' .
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,' .
+                'application/vnd.oasis.opendocument.spreadsheet,' .
+                'application/vnd.ms-powerpoint,' .
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation,' .
+                'application/vnd.oasis.opendocument.presentation,'
         ];
     }
 
