@@ -327,7 +327,7 @@ class OrderService
             $managerOrders = $allOrders->where($field, $user->id);
 
             $return[$user->id] = [
-                'name' => $user->name . ' ' . $user->last_name,
+                'user' => $user,
                 'all' => $managerOrders->count(),
                 'inWork' => $managerOrders->where('status_id', 2)->count(),
                 'inFixing' => $managerOrders->where('status_id', 4)->count(),

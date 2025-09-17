@@ -41,7 +41,7 @@
                     <tbody>
                     @foreach($managersOrders as $managerOrders)
                     <tr>
-                        <td>{{ $managerOrders['name'] }}</td>
+                        <td>{{ $managerOrders['user']->name }} {{ $managerOrders['user']->last_name }}</td>
                         <td class="text-center">{{ $managerOrders['all'] }}</td>
                         <td class="text-center">{{ $managerOrders['inWork'] }}</td>
                         <td class="text-center">{{ $managerOrders['inFixing'] }}</td>
@@ -69,18 +69,22 @@
                         <th scope="col" class="text-center">всего</th>
                         <th scope="col" class="text-center">в работе</th>
                         <th scope="col" class="text-center">на доработке</th>
+                        @if(auth()->user()->role->name != 'expert')
                         <th scope="col" class="text-center">на гарантий</th>
+                        @endif
                         <th scope="col" class="text-center">сдано</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($expertsOrders as $expertOrders)
                         <tr>
-                            <td>{{ $expertOrders['name'] }}</td>
+                            <td><a href="{{ route('experts.show', $expertOrders['user']->id) }}"> {{ $expertOrders['user']->name }} {{ $expertOrders['user']->last_name }} </a></td>
                             <td class="text-center">{{ $expertOrders['all'] }}</td>
                             <td class="text-center">{{ $expertOrders['inWork'] }}</td>
                             <td class="text-center">{{ $expertOrders['inFixing'] }}</td>
+                            @if(auth()->user()->role->name != 'expert')
                             <td class="text-center">{{ $expertOrders['warranty'] }}</td>
+                            @endif
                             <td class="text-center">{{ $expertOrders['done'] }}</td>
                         </tr>
                     @endforeach
