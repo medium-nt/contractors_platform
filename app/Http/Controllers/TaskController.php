@@ -92,6 +92,6 @@ class TaskController extends Controller
         $task->completed_at = now();
         $task->save();
 
-        return redirect()->route('calendar.index')->with('success', 'Задача выполнена');
+        return back()->with('success', 'Задача выполнена');
     }
 }

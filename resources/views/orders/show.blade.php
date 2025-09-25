@@ -130,6 +130,8 @@ use Carbon\Carbon;
 
                 <hr>
                 <div class="row">
+                    <div class="form-group col-md-1">
+                    </div>
                     <div class="form-group col-md-8">
                         <label for="task">Задача</label>
                     </div>
@@ -148,13 +150,26 @@ use Carbon\Carbon;
 
                     @for ($i = 0; $i < $count; $i++)
                         <div class="row">
-                            <div class="form-group col-md-8">
-                                <input type="text"
-                                       class="form-control"
-                                       value="{{ $tasks[$i]->title ?? $tasks[$i] }}"
-                                       disabled>
+                            <div class="form-group col-12 col-md-9">
+                                <div class="d-flex align-items-center">
+                                    <div style="flex: 0 0 auto;">
+                                        <a href="{{ route('tasks.complete', $tasksIds[$i]) }}"
+                                           class="btn btn-success @if($tasks[$i]->completed_at) invisible @endif"
+                                           onclick="return confirm('Вы уверены что задача выполнена?')">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+                                    </div>
+
+                                    <input type="text"
+                                           value="{{ $tasks[$i]->title ?? $tasks[$i] }}"
+                                           class="form-control ml-2 @if($tasks[$i]->completed_at) is-valid @endif"
+                                           style="flex: 1 1 auto; min-width: 0;
+                                           @if($tasks[$i]->completed_at) text-decoration: line-through; @endif"
+                                           disabled>
+                                </div>
                             </div>
-                            <div class="form-group col-md-3">
+
+                            <div class="form-group col-12 col-md-3 mt-2 mt-md-0">
                                 <input type="datetime-local"
                                        class="form-control"
                                        value="{{ $deadlines[$i]->deadline_at ?? $deadlines[$i] }}"
@@ -502,24 +517,26 @@ use Carbon\Carbon;
                 <h3 class="card-title">Лог изменений</h3>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>Дата</th>
-                        <th>Кем</th>
-                        <th>Изменение</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($changeLog as $history)
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
                         <tr>
-                            <td>{{ $history->created_at->format('d/m/Y H:i') }}</td>
-                            <td>{{ $history->user->name }} {{ $history->user->last_name }}</td>
-                            <td>{{ $history->message }}</td>
+                            <th>Дата</th>
+                            <th>Кем</th>
+                            <th>Изменение</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @foreach($changeLog as $history)
+                            <tr>
+                                <td>{{ $history->created_at->format('d/m/Y H:i') }}</td>
+                                <td>{{ $history->user->name }} {{ $history->user->last_name }}</td>
+                                <td>{{ $history->message }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
