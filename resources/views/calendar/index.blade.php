@@ -224,7 +224,7 @@
 
                     if (info.event.extendedProps.type === 2 && !info.event.extendedProps.completed_at) {
                         const taskId = info.event.extendedProps.id;
-                        document.querySelector('.complete-task-btn').setAttribute('href', `/tasks/${taskId}/complete`);
+                        document.querySelector('.complete-task-btn').setAttribute('href', `/admin/tasks/${taskId}/complete`);
                         document.querySelector('.complete-task-btn').style.display = 'block';
                     } else {
                         document.querySelector('.complete-task-btn').style.display = 'none';
