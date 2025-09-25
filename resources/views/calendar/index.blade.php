@@ -129,6 +129,12 @@
             padding: 0.375rem 0.75rem;
         }
 
+        .badge.completed {
+            /*background-color: #f8f9fa;*/
+            color: #b5b5b5 !important;
+            /*opacity: 0.6;*/
+        }
+
         /* Адаптивность */
         @media (max-width: 576px) {
             .modal-dialog {
@@ -181,9 +187,15 @@
 
                 dayMaxEventRows: true,
                 eventContent: function(arg) {
-                    let badgeClass = 'bg-primary';
+                    console.log(arg);
+                    // let badgeClass = 'bg-primary';
+                    let badgeClass = '';
+                    let titleHtml = arg.event.title;
+                    let color = arg.event.extendedProps.color;
                     if (arg.event.extendedProps.completed_at) {
-                        badgeClass = 'bg-secondary';
+                        // badgeClass = 'completed bg-light';
+                        badgeClass = 'completed';
+                        titleHtml = `<s>${arg.event.title}</s>`;
                     }
 
                     return {
@@ -196,9 +208,9 @@
                                     padding: 4px 6px;
                                     font-size: 1.0em;
                                     text-align: left;
-                                "
+                                    background-color: ${color};"
                             >
-                                ${arg.event.title}
+                                ${titleHtml}
                             </div>`
                     };
                 },
