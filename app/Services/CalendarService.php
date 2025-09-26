@@ -32,6 +32,7 @@ class CalendarService
                     'owner_name' => ($task->manager->name  ?? '') .' '. ($task->manager->last_name  ?? ''),
                     'type' => 2,
                     'color' => '#a8cbfe',
+                    'status' => 2
                 ]
             ];
         });
@@ -65,6 +66,7 @@ class CalendarService
                     'expert_name' => ($task->order->expert->name ?? '') .' '. ($task->order->expert->last_name ?? ''),
                     'type' => 1,
                     'color' => $task->order->status->color,
+                    'status' => $task->order->status->id
                 ]
             ];
         });
@@ -86,6 +88,7 @@ class CalendarService
                 'url' => route('orders.show', $order->id),
                 'allDay' => true,
                 'extendedProps' => [
+                    'id' => $order->id,
                     'description' => $order->description ?? '',
                     'completed_at' => $order->completed_at,
                     'manager_name' => ($order->manager->name ?? '') .' '. ($order->manager->last_name ?? ''),
@@ -93,6 +96,7 @@ class CalendarService
                     'hidden_field' => $order->hidden_field ?? '',
                     'type' => 0,
                     'color' => $order->status->color,
+                    'status' => $order->status->id
                 ]
             ];
         });

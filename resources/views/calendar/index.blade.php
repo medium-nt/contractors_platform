@@ -51,6 +51,13 @@
                                     Отметить выполненной
                                 </a>
 
+                                <a href="#" class="btn btn-warning warranty-order-btn"
+                                   onclick="return confirm('Вы уверены что заказ выполнен?')"
+                                   style="display: none;">
+                                    <i class="fas fa-check mr-1"></i>
+                                    На гарантию
+                                </a>
+
                                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" data-bs-dismiss="modal">Закрыть</button>
                             </div>
                         </div>
@@ -187,13 +194,10 @@
 
                 dayMaxEventRows: true,
                 eventContent: function(arg) {
-                    console.log(arg);
-                    // let badgeClass = 'bg-primary';
                     let badgeClass = '';
                     let titleHtml = arg.event.title;
                     let color = arg.event.extendedProps.color;
                     if (arg.event.extendedProps.completed_at) {
-                        // badgeClass = 'completed bg-light';
                         badgeClass = 'completed';
                         titleHtml = `<s>${arg.event.title}</s>`;
                     }
@@ -234,12 +238,13 @@
                         document.querySelector('[data-field="hidden"]').style.display = 'none';
                     }
 
+                    const completeOrderBtn = document.querySelector('.complete-task-btn');
                     if (info.event.extendedProps.type === 2 && !info.event.extendedProps.completed_at) {
                         const taskId = info.event.extendedProps.id;
-                        document.querySelector('.complete-task-btn').setAttribute('href', `/admin/tasks/${taskId}/complete`);
-                        document.querySelector('.complete-task-btn').style.display = 'block';
+                        completeOrderBtn.setAttribute('href', `/admin/tasks/${taskId}/complete`);
+                        completeOrderBtn.style.display = 'block';
                     } else {
-                        document.querySelector('.complete-task-btn').style.display = 'none';
+                        completeOrderBtn.style.display = 'none';
                     }
 
                     @if(auth()->user()->role->name == 'admin')
@@ -262,6 +267,15 @@
                     @endif
 
                     @if(auth()->user()->role->name == 'manager')
+                        const warrantyOrderBtn = document.querySelector('.warranty-order-btn');
+                        if (info.event.extendedProps.type === 0 && info.event.extendedProps.status === 3) {
+                            const orderId = info.event.extendedProps.id;
+                            warrantyOrderBtn.setAttribute('href', `/admin/orders/${orderId}/change_status/5`);
+                            warrantyOrderBtn.style.display = 'block';
+                        } else {
+                            warrantyOrderBtn.style.display = 'none';
+                        }
+
                         if (info.event.extendedProps.type === 2) {
                             // Показываем только владельца
                             document.getElementById('ownerName').textContent = info.event.extendedProps.owner_name;
