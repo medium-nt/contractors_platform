@@ -142,6 +142,12 @@ class OrdersController extends Controller
             ChangeLogService::setChangeLog($order, $text);
         }
 
+        if ($order->status_id == 1 && $order->expert_id == null && $request->has('expert_id')) {
+            $order->expert_id = $request->expert_id;
+            $order->status_id = 2;
+            $order->save();
+        }
+
         $order->update($request->all());
 
         if ($request->hasFile('files')) {

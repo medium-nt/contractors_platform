@@ -157,7 +157,8 @@
 
                         <div class="form-group col-md-6">
                             <label for="expert_id">Персонально для эксперта:</label>
-                            <select name="expert_id" id="expert_id" class="form-control">
+                            <select name="expert_id" id="expert_id" class="form-control"
+                            @if($order->status->id > 1) disabled @endif>
                                 <option value="" disabled selected>---</option>
                                 @foreach($experts as $expert)
                                     <option value="{{ $expert->id }}"
