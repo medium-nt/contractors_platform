@@ -78,7 +78,15 @@
                     <tbody>
                     @foreach($expertsOrders as $expertOrders)
                         <tr>
-                            <td><a href="{{ route('experts.show', $expertOrders['user']->id) }}"> {{ $expertOrders['user']->name }} {{ $expertOrders['user']->last_name }} </a></td>
+                            <td>
+                                @if(auth()->user()->role->name != 'expert')
+                                    <a href="{{ route('experts.show', $expertOrders['user']->id) }}">
+                                        {{ $expertOrders['user']->name }} {{ $expertOrders['user']->last_name }}
+                                    </a>
+                                @else
+                                    {{ $expertOrders['user']->name }} {{ $expertOrders['user']->last_name }}
+                                @endif
+                            </td>
                             <td class="text-center">{{ $expertOrders['all'] }}</td>
                             <td class="text-center">{{ $expertOrders['inWork'] }}</td>
                             <td class="text-center">{{ $expertOrders['inFixing'] }}</td>
