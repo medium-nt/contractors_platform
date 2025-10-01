@@ -157,6 +157,8 @@ class OrdersController extends Controller
 
                 YandexDiskService::write($path, file_get_contents($file));
             }
+
+            OrderService::sendMessageAddFile($order, 'order_files');
         }
 
         $taskIds = $request->input('task_ids', []);

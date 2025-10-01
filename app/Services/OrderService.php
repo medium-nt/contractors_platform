@@ -302,27 +302,44 @@ class OrderService
         }
     }
 
-    private static function sendMessageAddFile(Order $order, $folder): void
+    public static function sendMessageAddFile(Order $order, $folder): void
     {
         switch ($folder) {
+            case 'order_files':
             case 'manager_files':
-                $TgId = $order->expert->tg_id;
+                $receiver = $order->expert;
                 $fio = 'ФИО менеджера: ' . $order->manager->name . ' ' . $order->manager->last_name;
                 break;
             case 'expert_files':
-                $TgId = $order->manager->tg_id;
+                $receiver = $order->manager;
                 $fio = 'ФИО эксперта: ' . $order->expert->name . ' ' . $order->expert->last_name;
                 break;
             default:
-                $TgId = null;
-                $fio = '';
+                return;
         }
 
+        $title = 'Добавлены новые дополнительные файлы';
+        $text = "В заказ #{$order->id} \"{$order->title}\" добавлены новые дополнительные файлы.";
+
+        if($folder == 'order_files') {
+            $text = "В заказ #{$order->id} \"{$order->title}\" добавлены новые файлы.";
+            $title = 'Добавлены новые файлы';
+        }
+
+        NotificationService::create(
+            Notification::TYPE_FILE_UPLOAD,
+            $title,
+            $text,
+            $receiver->id,
+            auth()->id(),
+            $order->id
+        );
+
         TgService::sendMessage(
-            $TgId,
-            'В заказ #' . $order->id . ' ('. $order->title . ") добавлены новые дополнительные файлы. \n" .
-                'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
-                $fio
+            $receiver->tg_id,
+            $text . " \n" .
+            'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
+            $fio
         );
     }
 
