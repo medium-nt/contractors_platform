@@ -33,5 +33,6 @@ Route::prefix('admin')->middleware(['auth', 'approve', 'updateLastActive'])->gro
     require base_path('routes/chat.php');
     require base_path('routes/disk.php');
     require base_path('routes/experts.php');
+    require base_path('routes/notifications.php');
 
 });

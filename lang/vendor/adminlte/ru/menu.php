@@ -12,4 +12,5 @@ return [
     'calendar' => 'Календарь',
     'disk' => 'Диск',
     'experts' => 'Эксперты',
+    'notifications' => 'Уведомления',
 ];

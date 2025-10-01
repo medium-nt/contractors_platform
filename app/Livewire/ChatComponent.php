@@ -1,12 +1,14 @@
 <?php
 namespace App\Livewire;
 
+use App\Models\Notification;
 use App\Models\Order;
+use App\Services\ChatService;
+use App\Services\NotificationService;
 use App\Services\TgService;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use App\Models\Chat;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 
 class ChatComponent extends Component
@@ -42,19 +44,16 @@ class ChatComponent extends Component
 
     public function getNewMessages(): void
     {
-        $new = Chat::with('sender')
-            ->where('order_id', $this->orderId)
-            ->where('id', '>', $this->lastMessageId)
-            ->orderBy('id')
-            ->get();
+        $newMessages = ChatService::getNewMessages($this->orderId, $this->lastMessageId);
 
-        if ($new->isNotEmpty()) {
-            $this->messages = $this->messages->merge($new);
-            $this->lastMessageId = $new->last()->id;
-
-            // ✅ Только получатель получит это событие
-            $this->dispatch('newMessageReceived', ['senderId' => $new->last()->sender_id]);
+        if ($newMessages->isEmpty()) {
+            return;
         }
+
+        $this->messages = $this->messages->merge($newMessages);
+        $this->lastMessageId = $newMessages->last()->id;
+
+        $this->dispatch('newMessageReceived', ['senderId' => $newMessages->last()->sender_id]);
     }
 
     public function sendMessage(): void
@@ -70,40 +69,35 @@ class ChatComponent extends Component
             'message' => $this->message,
         ]);
 
-        $order = Order::query()->find($this->orderId);
-
-        $manager = $order->manager;
-        $expert = $order->expert;
-
-        switch (auth()->id()) {
-            case $manager->id:
-                $tgIds = [$expert->tg_id];
-                $fio = 'ФИО эксперта: ' . $expert->name . ' ' . $expert->last_name;
-                break;
-            case $expert->id:
-                $tgIds = [$manager->tg_id];
-                $fio = 'ФИО менеджера: ' . $manager->name . ' ' . $manager->last_name;
-                break;
-            default:
-                $tgIds = [$manager->tg_id, $expert->tg_id];
-                $fio = 'ФИО менеджера: ' . $manager->name . ' ' . $manager->last_name . " " .
-                    'ФИО эксперта: ' . $expert->name . ' ' . $expert->last_name;
-                break;
-        }
-
+        $order = Order::find($this->orderId);
+        $fio = ChatService::getFioSummary($order);
         $text = 'Получено новое сообщение в заказе: ' . $order->id . ' ('. $order->title . "). \n" .
             'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
             $fio . "\n";
 
-        foreach ($tgIds as $tgId) {
-            if (empty($tgId)) {
+        $users = ChatService::getNotificationRecipients($order);
+        foreach ($users as $user) {
+            $hasUnreadChatNotifications = ChatService::hasUnreadChatNotifications($order, $user);
+
+            if (!$hasUnreadChatNotifications) {
+                NotificationService::create(
+                    Notification::TYPE_CHAT,
+                    'Новое сообщение в чате.',
+                    'Текст сообщения: ' . $this->message,
+                    $user->id,
+                    auth()->id(),
+                    $order->id
+                );
+            }
+
+            if (empty($user->tg_id) || $user->isOnline()) {
                 continue;
             }
 
-            Log::info('Отправлено сообщение в телеграм (tg_id: ' . $tgId . "): \n" . $text );
+            Log::info('Отправлено сообщение в телеграм (tg_id: ' . $user->tg_id . "): \n" . $text );
 
             TgService::sendMessage(
-                $tgId,
+                $user->tg_id,
                 $text
             );
         }

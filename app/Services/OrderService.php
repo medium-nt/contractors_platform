@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\FileRequest;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Status;
 use App\Models\Task;
@@ -158,8 +159,19 @@ class OrderService
 
     public static function sendExpertSelectionMessage(Order $order): void
     {
+        $text = 'Вы выбраны исполнителем по заказу: ' . $order->id . ' ('. $order->title . ").";
+
+        NotificationService::create(
+            Notification::TYPE_STATUS,
+            'Вы выбраны исполнителем.',
+            $text,
+            $order->expert->id,
+            auth()->id(),
+            $order->id
+        );
+
         TgService::sendMessage($order->expert->tg_id,
-            'Вы выбраны исполнителем по заказу: ' . $order->id . ' ('. $order->title . "). \n" .
+            $text . "\n" .
             'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
             'Менеджер ' . $order->manager->name . ' ' . $order->manager->last_name
         );
@@ -167,8 +179,19 @@ class OrderService
 
     public static function sendExpertMessageAboutReturnToWork(Order $order): void
     {
+        $text = 'Заказ: ' . $order->id . ' ('. $order->title . ") возвращен вам на доработку.";
+
+        NotificationService::create(
+            Notification::TYPE_STATUS,
+            'Заказ возвращен на доработку.',
+            $text,
+            $order->expert->id,
+            auth()->id(),
+            $order->id
+        );
+
         TgService::sendMessage($order->expert->tg_id,
-            'Заказ: ' . $order->id . ' ('. $order->title . ") возвращен вам на доработку. \n" .
+            $text . " \n" .
             'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
             'Менеджер ' . $order->manager->name . ' ' . $order->manager->last_name
         );
@@ -176,9 +199,20 @@ class OrderService
 
     public static function sendManagerMessageAboutOrderInspection(Order $order): void
     {
+        $text = 'Исполнитель сдал заказ ' . $order->id . ' ('. $order->title . ") на проверку.";
+
+        NotificationService::create(
+            Notification::TYPE_STATUS,
+            'Исполнитель сдал заказ на проверку.',
+            $text,
+            $order->manager->id,
+            auth()->id(),
+            $order->id
+        );
+
         TgService::sendMessage(
             $order->manager->tg_id,
-            'Исполнитель сдал заказ ' . $order->id . ' ('. $order->title . ") на проверку. \n" .
+            $text . " \n" .
                 'Ссылка на заказ ' . route('orders.show', $order->id) . "\n" .
                 'Эксперт ' . $order->expert->name . ' ' . $order->expert->last_name
         );

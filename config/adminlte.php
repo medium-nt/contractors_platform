@@ -334,6 +334,12 @@ return [
         ],
 
         [
+            'text' => 'notifications',
+            'url' => 'admin/notifications',
+            'icon' => 'fas fa-fw fa-bell',
+        ],
+
+        [
             'text' => 'settings',
             'icon' => 'fas fa-fw fa-cog',
             'can' => 'is-admin',
