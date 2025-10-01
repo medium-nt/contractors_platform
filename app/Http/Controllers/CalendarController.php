@@ -6,11 +6,11 @@ use App\Services\CalendarService;
 
 class CalendarController extends Controller
 {
-    public function index()
+    public function index(CalendarService $calendarService)
     {
-        $tasks = CalendarService::getTasks();
-        $orders = CalendarService::getOrders();
-        $tasksOrders = CalendarService::getTasksOrders();
+        $tasks = $calendarService->getTasks();
+        $orders = $calendarService->getOrders();
+        $tasksOrders = $calendarService->getTasksOrders();
 
         return view('calendar.index', [
             'title' => 'Календарь',
