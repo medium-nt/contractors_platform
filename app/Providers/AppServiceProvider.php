@@ -52,22 +52,22 @@ class AppServiceProvider extends ServiceProvider
             return $user->is_approved;
         });
 
-        View::composer('*', function ($view) {
-            if (Auth::check()) {
-                $user = Auth::user();
-
-                $notifications = Notification::query()
-                    ->where('receiver_id', $user->id)
-                    ->whereNull('read_at')
-                    ->latest()->take(5)->get();
-
-                $unreadCount = Notification::query()
-                    ->where('receiver_id', $user->id)
-                    ->whereNull('read_at')->count();
-
-                $view->with(compact('notifications', 'unreadCount'));
-            }
-        });
+//        View::composer('*', function ($view) {
+//            if (Auth::check()) {
+//                $user = Auth::user();
+//
+//                $notifications = Notification::query()
+//                    ->where('receiver_id', $user->id)
+//                    ->whereNull('read_at')
+//                    ->latest()->take(5)->get();
+//
+//                $unreadCount = Notification::query()
+//                    ->where('receiver_id', $user->id)
+//                    ->whereNull('read_at')->count();
+//
+//                $view->with(compact('notifications', 'unreadCount'));
+//            }
+//        });
 
     }
 }
