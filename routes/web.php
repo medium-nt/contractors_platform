@@ -15,9 +15,11 @@ if (App::environment(['local'])) {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+    ->middleware(['auth', 'updateLastActive'])
+    ->name('home');
 
-Route::prefix('admin')->middleware(['auth', 'approve'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'approve', 'updateLastActive'])->group(function () {
 
     require base_path('routes/users.php');
     require base_path('routes/profile.php');

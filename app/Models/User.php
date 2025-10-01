@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -34,6 +35,7 @@ class User extends Authenticatable
         'avatar',
         'description',
         'hidden_field',
+        'last_active_at',
     ];
 
     /**
@@ -98,4 +100,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(TypeWork::class);
     }
+
+    public function isOnline(): bool
+    {
+        return Carbon::parse($this->last_active_at ?? '2025-01-01')
+            ->gt(now()->subMinutes(2));
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'receiver_id', 'id');
+    }
+
 }

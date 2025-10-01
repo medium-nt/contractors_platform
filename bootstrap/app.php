@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckApprove;
+use App\Http\Middleware\UpdateLastActive;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Собственные именованные middleware
         $middleware->alias([
             'approve' => CheckApprove::class,
+            'updateLastActive' => UpdateLastActive::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

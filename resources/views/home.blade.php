@@ -41,7 +41,14 @@
                     <tbody>
                     @foreach($managersOrders as $managerOrders)
                     <tr>
-                        <td>{{ $managerOrders['user']->name }} {{ $managerOrders['user']->last_name }}</td>
+                        <td>
+                            {{ $managerOrders['user']->name }} {{ $managerOrders['user']->last_name }}
+                            @if($managerOrders['user']->isOnline())
+                                <span title="Online" style="color: green;">●</span>
+                            @else
+                                <span title="Offline" style="color: gray;">●</span>
+                            @endif
+                        </td>
                         <td class="text-center">{{ $managerOrders['all'] }}</td>
                         <td class="text-center">{{ $managerOrders['inWork'] }}</td>
                         <td class="text-center">{{ $managerOrders['inFixing'] }}</td>
@@ -83,6 +90,11 @@
                                     <a href="{{ route('experts.show', $expertOrders['user']->id) }}">
                                         {{ $expertOrders['user']->name }} {{ $expertOrders['user']->last_name }}
                                     </a>
+                                    @if($expertOrders['user']->isOnline())
+                                        <span title="Online" style="color: green;">●</span>
+                                    @else
+                                        <span title="Offline" style="color: gray;">●</span>
+                                    @endif
                                 @else
                                     {{ $expertOrders['user']->name }} {{ $expertOrders['user']->last_name }}
                                 @endif
