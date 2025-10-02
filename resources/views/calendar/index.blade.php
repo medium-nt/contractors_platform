@@ -231,7 +231,9 @@
                     document.getElementById('eventStart').textContent = info.event.start.toLocaleString();
                     document.getElementById('eventUrl').href = info.event.url;
 
-                    if (info.event.extendedProps.type === 0) {
+                    const type = info.event.extendedProps.type;
+
+                    if (type === 0) {
                         document.querySelector('[data-field="hidden"]').style.display = 'block';
                         document.getElementById('eventHidden').textContent = info.event.extendedProps.hidden_field;
                     } else {
@@ -239,7 +241,7 @@
                     }
 
                     const completeOrderBtn = document.querySelector('.complete-task-btn');
-                    if (info.event.extendedProps.type === 2 && !info.event.extendedProps.completed_at) {
+                    if ((type === 2 || type === 1) && !info.event.extendedProps.completed_at) {
                         const taskId = info.event.extendedProps.id;
                         completeOrderBtn.setAttribute('href', `/admin/tasks/${taskId}/complete`);
                         completeOrderBtn.style.display = 'block';
@@ -248,7 +250,7 @@
                     }
 
                     @if(auth()->user()->role->name == 'admin')
-                        if (info.event.extendedProps.type === 2) {
+                        if (type === 2) {
                             // Показываем только владельца
                             document.getElementById('ownerName').textContent = info.event.extendedProps.owner_name;
 
@@ -268,7 +270,7 @@
 
                     @if(auth()->user()->role->name == 'manager')
                         const warrantyOrderBtn = document.querySelector('.warranty-order-btn');
-                        if (info.event.extendedProps.type === 0 && info.event.extendedProps.status === 3) {
+                        if (type === 0 && info.event.extendedProps.status === 3) {
                             const orderId = info.event.extendedProps.id;
                             warrantyOrderBtn.setAttribute('href', `/admin/orders/${orderId}/change_status/5`);
                             warrantyOrderBtn.style.display = 'block';
@@ -276,7 +278,7 @@
                             warrantyOrderBtn.style.display = 'none';
                         }
 
-                        if (info.event.extendedProps.type === 2) {
+                        if (type === 2) {
                             // Показываем только владельца
                             document.getElementById('ownerName').textContent = info.event.extendedProps.owner_name;
 

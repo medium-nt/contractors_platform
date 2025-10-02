@@ -60,6 +60,7 @@ class CalendarService
                     : route('tasks.edit', $task->id),
                 'allDay' => true,
                 'extendedProps' => [
+                    'id' => $task->id,
                     'description' => $task->description ?? '',
                     'completed_at' => $task->completed_at,
                     'manager_name' => ($task->order->manager->name ?? '') .' '. ($task->order->manager->last_name ?? ''),
