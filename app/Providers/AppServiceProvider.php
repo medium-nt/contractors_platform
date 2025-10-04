@@ -52,6 +52,10 @@ class AppServiceProvider extends ServiceProvider
             return $user->is_approved;
         });
 
+        Gate::define('viewLogViewer', function (User $user) {
+            return $user->isAdmin();
+        });
+
         View::composer('*', function ($view) {
             if (Auth::check()) {
                 $user = Auth::user();
