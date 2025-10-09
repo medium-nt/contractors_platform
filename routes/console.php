@@ -25,4 +25,4 @@ Schedule::call(function () {
 
 Schedule::call(function () {
     CalendarService::createNotificationsForDeadlineToday();
-})->dailyAt('08:45');
+})->dailyAt('08:30');
