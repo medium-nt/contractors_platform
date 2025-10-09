@@ -8,9 +8,10 @@ class CalendarController extends Controller
 {
     public function index(CalendarService $calendarService)
     {
-        $tasks = $calendarService->getTasks();
-        $orders = $calendarService->getOrders();
-        $tasksOrders = $calendarService->getTasksOrders();
+        $user = auth()->user();
+        $tasks = $calendarService->getTasks($user);
+        $orders = $calendarService->getOrders($user);
+        $tasksOrders = $calendarService->getTasksOrders($user);
 
         return view('calendar.index', [
             'title' => 'Календарь',

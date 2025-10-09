@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\CalendarService;
 use App\Services\OrderService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -21,3 +22,7 @@ Schedule::call(function () {
 Schedule::call(function () {
     OrderService::finalizeWarrantyLifecycle();
 })->dailyAt('01:00');
+
+Schedule::call(function () {
+    CalendarService::createNotificationsForDeadlineToday();
+})->dailyAt('08:45');

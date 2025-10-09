@@ -51,7 +51,7 @@
                                     </a>
                                 </td>
                                 <td>{{ $notificationUser->body }}</td>
-                                <td>{{ $notificationUser->sender->name }} {{ $notificationUser->sender->last_name }}</td>
+                                <td>{{ $notificationUser->sender?->name }} {{ $notificationUser->sender?->last_name }}</td>
                                 <td>
                                     @if($notificationUser->order_id)
                                         <a href="{{ route('orders.show', $notificationUser->order_id) }}">
