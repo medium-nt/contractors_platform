@@ -55,6 +55,7 @@ class CalendarService
                     'completed_at' => $task->completed_at,
                     'manager_name' => ($task->order->manager->name ?? '') .' '. ($task->order->manager->last_name ?? ''),
                     'expert_name' => ($task->order->expert->name ?? '') .' '. ($task->order->expert->last_name ?? ''),
+                    'hidden_field' => $task->order->hidden_field ?? '',
                     'type' => 1,
                     'color' => $task->order->status->color,
                     'status' => $task->order->status->id

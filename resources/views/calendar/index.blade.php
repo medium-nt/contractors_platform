@@ -138,7 +138,7 @@
 
         .badge.completed {
             /*background-color: #f8f9fa;*/
-            color: #b5b5b5 !important;
+            color: #707070 !important;
             /*opacity: 0.6;*/
         }
 
@@ -212,6 +212,7 @@
                                     padding: 4px 6px;
                                     font-size: 1.0em;
                                     text-align: left;
+                                    color: #000000;
                                     background-color: ${color};"
                             >
                                 ${titleHtml}
@@ -233,7 +234,7 @@
 
                     const type = info.event.extendedProps.type;
 
-                    if (type === 0) {
+                    if (type === 0 || type === 1) {
                         document.querySelector('[data-field="hidden"]').style.display = 'block';
                         document.getElementById('eventHidden').textContent = info.event.extendedProps.hidden_field;
                     } else {
